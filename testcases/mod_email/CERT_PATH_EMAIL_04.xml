@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EMAIL_04" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EMAIL_04</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an email client when the target certificate specifies an EKU other than emailProtection or anyExtendedKeyUsage. This path is invalid. When this extension is present, then it must contain one of those two values.</Purpose>
+    <Profile>EMAIL</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.12] and RFC 5750 [Sec. 4.4.4]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EMAIL_04.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

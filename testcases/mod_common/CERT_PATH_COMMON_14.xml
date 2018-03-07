@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_COMMON_14" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_COMMON_14</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when it should construct and validate a path based on a set of certificates, for which a valid path can be constructed but where invalid paths can be constructed as well. Failing this test indicates that the application does not perform an exhaustive search for all possible paths.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_COMMON_14.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EMAIL_01" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EMAIL_01</Title>
+    <Version>1.0</Version>
+    <Purpose>Positive test checking whether an email client can verify a certificate. This path conforms to RFC 5280 and RFC 5750 specifications and is valid.</Purpose>
+    <Profile>EMAIL</Profile>
+    <Reference>RFC 5280, RFC 5750</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EMAIL_01.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

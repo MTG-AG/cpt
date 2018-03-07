@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_09" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_09</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the target certificate does not contain the Authority Key Identifier Extension. This path is valid, although this certificate does not support path construction because of the missing AKIE.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.1]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_09.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

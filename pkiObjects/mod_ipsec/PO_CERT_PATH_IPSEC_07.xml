@@ -1,0 +1,60 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_IPSEC_07_ROOT_CA_OLD" refid="CERT_PATH_IPSEC_01_ROOT_CA" overwrite="false"
+        type="TA" />
+    <Certificate id="CERT_PATH_IPSEC_07_ROOT_CA_NEW" refid="CERT_PATH_IPSEC_01_ROOT_CA" overwrite="true">
+        <VerifiedBy>CERT_PATH_IPSEC_07_ROOT_CA_NEW</VerifiedBy>
+        <SerialNumber>73007</SerialNumber>
+        <NotBefore>-2D</NotBefore>
+        <NotAfter>+10Y</NotAfter>
+        <PublicKey type="raw">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</PublicKey>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.14" critical="false" name="Subject Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">keyCertSign,cRLSign</Extension>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <Extension oid="2.5.29.19" critical="true" name="Basic Constraints" type="pretty">true,1</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_IPSEC_07_CROSS_OLD_NEW" refid="CERT_PATH_IPSEC_07_ROOT_CA_NEW" overwrite="true">
+        <VerifiedBy>CERT_PATH_IPSEC_07_ROOT_CA_OLD</VerifiedBy>
+        <SerialNumber>72007</SerialNumber>
+        <NotBefore>-1D</NotBefore>
+        <NotAfter>+5Y</NotAfter>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.14" critical="false" name="Subject Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">keyCertSign,cRLSign</Extension>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <Extension oid="2.5.29.19" critical="true" name="Basic Constraints" type="pretty">true,1</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_IPSEC_07_SUB_CA_NEW">
+        <VerifiedBy>CERT_PATH_IPSEC_07_CROSS_OLD_NEW</VerifiedBy>
+        <Version>2</Version>
+        <SerialNumber>71007</SerialNumber>
+        <Signature>1.2.840.113549.1.1.11</Signature>
+        <IssuerDN encoding="UTF8">CN=Test Root, C=DE</IssuerDN>
+        <SubjectDN encoding="UTF8">CN=Test Sub CA, C=DE</SubjectDN>
+        <NotBefore>-1D</NotBefore>
+        <NotAfter>+3Y</NotAfter>
+        <PublicKey type="pretty">${publicKey}</PublicKey>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.14" critical="false" name="Subject Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">keyCertSign,cRLSign</Extension>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <Extension oid="2.5.29.19" critical="true" name="Basic Constraints" type="pretty">true,0</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_IPSEC_07_EE" type="TC">
+        <VerifiedBy>CERT_PATH_IPSEC_07_SUB_CA_NEW</VerifiedBy>
+        <Version>2</Version>
+        <SerialNumber>70007</SerialNumber>
+        <Signature>1.2.840.113549.1.1.11</Signature>
+        <IssuerDN encoding="UTF8">CN=Test Sub CA, C=DE</IssuerDN>
+        <SubjectDN encoding="UTF8">CN=Test EE, C=DE</SubjectDN>
+        <NotBefore>-8H</NotBefore>
+        <NotAfter>+1Y</NotAfter>
+        <PublicKey type="pretty">${publicKey}</PublicKey>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.14" critical="false" name="Subject Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">${extension.ku.value}</Extension>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <Extension oid="2.5.29.19" critical="true" name="Basic Constraints" type="pretty">false</Extension>
+        <Extension oid="2.5.29.17" critical="false" name="Subject Alternative Name" type="pretty">${extension.san.value}</Extension>
+    </Certificate>
+</PKIObjects>

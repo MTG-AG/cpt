@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_IPSEC_07" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_IPSEC_07</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an IP node when the target certificates is issued by an older generation CA which is cross-certified by the trust anchor. This path conforms to RFC 5280 and RFC 4945 specification and is valid.</Purpose>
+    <Profile>IPSEC_AUGMENTED</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.10]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_IPSEC_07.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

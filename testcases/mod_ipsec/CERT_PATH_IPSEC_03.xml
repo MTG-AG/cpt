@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_IPSEC_03" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_IPSEC_03</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an IPsec node when the target certificate contains a different iPAddress in the SAN Extension as the IP address, in which this node is connecting. This path is invalid. This data must match the target address, otherwise any valid certificate could be used to identify this node.</Purpose>
+    <Profile>IPSEC</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.6] and RFC 4945 [Sec. 5.1.3.6]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_IPSEC_03.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

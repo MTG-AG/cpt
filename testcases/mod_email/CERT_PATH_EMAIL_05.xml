@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EMAIL_05" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EMAIL_05</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an email client when the intermediate certificate contains the Name Constraints extension that excludes or does not include the email address of the sender of a signed email. This path is invalid because the name constraints are not satisfied.</Purpose>
+    <Profile>EMAIL</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.10]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EMAIL_05.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

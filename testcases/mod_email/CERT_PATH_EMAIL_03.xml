@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EMAIL_03" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EMAIL_03</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an email client during verification of a signed email when the target certificate specifies only the keyAgreement Key Usage. This path is invalid because either digitalSignature or nonRepudiation must be set in the target certificate to accept a signed email.</Purpose>
+    <Profile>EMAIL_AUGMENTED</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.3] and RFC 5750 [Sec. 4.4.2]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EMAIL_03.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

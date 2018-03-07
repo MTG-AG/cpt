@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_CRL_01" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_CRL_01</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when it cannot locate revocation information about the certificate. This path is invalid because revocation information for a certificate is not available.</Purpose>
+    <Profile>COMMON</Profile>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_CRL_01.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

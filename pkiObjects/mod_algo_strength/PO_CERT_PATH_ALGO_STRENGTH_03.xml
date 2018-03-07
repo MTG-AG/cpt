@@ -1,0 +1,13 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_ALGO_STRENGTH_03_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false"
+        type="TA">
+    </Certificate>
+    <Certificate id="CERT_PATH_ALGO_STRENGTH_03_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="true">
+        <SerialNumber>51003</SerialNumber>
+        <Modification id="RSA_LOW_EXPONENT"/>
+    </Certificate>
+    <Certificate id="CERT_PATH_ALGO_STRENGTH_03_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+        <SerialNumber>50003</SerialNumber>
+        <VerifiedBy>CERT_PATH_ALGO_STRENGTH_03_SUB_CA</VerifiedBy>
+    </Certificate>
+</PKIObjects>

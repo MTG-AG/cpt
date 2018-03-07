@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_01" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_01</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a v1 certificate contains extensions. Certificates of version v1 are not allowed to contain extensions and therefore this path is invalid.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.1.2.1]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_01.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

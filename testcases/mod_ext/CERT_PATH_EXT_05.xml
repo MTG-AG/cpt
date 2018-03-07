@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_05" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_05</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a certificate contains an extension two times, possibly with different values. This path is invalid because this is not allowed and additionally the client could not decide which to use.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.2]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_05.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

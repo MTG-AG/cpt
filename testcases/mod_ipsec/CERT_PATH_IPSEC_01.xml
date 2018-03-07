@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_IPSEC_01" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_IPSEC_01</Title>
+    <Version>1.0</Version>
+    <Purpose>Positive test checking whether an IPSec node can verify the certificate of another node. This path conforms to RFC 5280 and RFC 4945 specifications and is valid.</Purpose>
+    <Profile>IPSEC</Profile>
+    <Reference>RFC 5280, RFC 4945</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_IPSEC_01.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

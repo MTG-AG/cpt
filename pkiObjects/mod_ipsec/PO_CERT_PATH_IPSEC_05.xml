@@ -1,0 +1,9 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_IPSEC_05_ROOT_CA" refid="CERT_PATH_IPSEC_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_IPSEC_05_SUB_CA" refid="CERT_PATH_IPSEC_01_SUB_CA" overwrite="false" />
+    <Certificate id="CERT_PATH_IPSEC_05_EE" refid="CERT_PATH_IPSEC_01_EE" overwrite="true" type="TC">
+        <SerialNumber>70005</SerialNumber>
+        <Extension oid="2.5.29.37" critical="false" name="Extended Key Usage" type="pretty">1.3.6.1.5.5.7.3.4</Extension>
+    </Certificate>
+</PKIObjects>
+

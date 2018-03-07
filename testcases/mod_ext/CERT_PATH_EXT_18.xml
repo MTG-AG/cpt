@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_18" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_18</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an application when the intermediate certificate contains a Policy Constraints extension with requireExplicitPolicy=0 and the target certificate does not have the Certificate Policies extension. This path is invalid because an explicit policy is required but the last certificate in the path renders it impossible.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.11 and 6.1.3 (f)]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_18.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

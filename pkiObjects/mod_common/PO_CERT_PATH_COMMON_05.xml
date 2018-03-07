@@ -1,0 +1,10 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_COMMON_05_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA">
+    </Certificate>
+    <Certificate id="CERT_PATH_COMMON_05_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="false">
+    </Certificate>
+    <Certificate id="CERT_PATH_COMMON_05_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+        <SerialNumber>10005</SerialNumber>
+        <Modification id="WRONG_DER_ENCODING" />
+    </Certificate>
+</PKIObjects>

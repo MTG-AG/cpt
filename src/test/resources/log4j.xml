@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration >
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+		  <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS z} %-5p [%t] %X{name}: %m (%c{3} %M:%L)%n" />
+		</layout>
+	</appender>
+
+	<appender name="FILE" class="org.apache.log4j.FileAppender">
+		<param name="Append" value="false" />
+		<param name="File" value="test.log" />
+		<layout class="org.apache.log4j.PatternLayout">			
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS z} %-5p [%t] %X{name}: %m (%c.%M:%L)%n" />
+		</layout>
+	</appender>
+
+	<appender name="ROLLER" class="org.apache.log4j.DailyRollingFileAppender">
+	    <param name="Append" value="true" />
+	    <param name="DatePattern" value=".yyyy-MM-dd" />
+	    <param name="File" value="test.log" />
+	    <layout class="org.apache.log4j.PatternLayout">
+	      <param name="ConversionPattern" value="%d %-5p %c{3} - %m%n" />
+	    </layout>
+        </appender>
+	
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</log4j:configuration>

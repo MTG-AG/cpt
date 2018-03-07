@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_COMMON_08" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_COMMON_08</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when an intermediate certificate has expired (now &gt; notAfter). This path is not valid, because one CA certificate has expired.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.1.2.5]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_COMMON_08.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_COMMON_06" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_COMMON_06</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the serial number of the certificate is negative. This path is not valid, because serial number must be positive integers. However, negative numbers should be gracefully handled.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.1.2.2]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_COMMON_06.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>WARNING</Severity>
+    </TestStep>
+</testCase>

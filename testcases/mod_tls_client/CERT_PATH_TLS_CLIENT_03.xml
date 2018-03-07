@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_TLS_CLIENT_03" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_TLS_CLIENT_03</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of a TLS client when the target certificate that belongs to a TLS server has the dNSName=x\0y, where x is the domain name of the TLS server. This path is invalid, because the client application must check the complete name, and may not ignore the part after the null character.</Purpose>
+    <Profile>TLS CLIENT</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.6], RFC 2818 [Sec. 3.1], RFC 6125</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_TLS_CLIENT_03.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

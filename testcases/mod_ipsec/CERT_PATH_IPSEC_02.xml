@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_IPSEC_02" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_IPSEC_02</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a v3 certificate contains a non-critical extension which must be critical according to RFC 5280. This path is valid if the application recognises the extension. This path is invalid if the application does not recognise the extension. RFC 4945 mandates to reject the certificate if it contains an extension which is critical according to RFC 5280 even if the criticality of the extension is set to false in the certificate.</Purpose>
+    <Profile>IPSEC</Profile>
+    <Reference>RFC 5280 and RFC 4945 [Sec. 5.1.3]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_IPSEC_02.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>WARNING</Severity>
+    </TestStep>
+</testCase>

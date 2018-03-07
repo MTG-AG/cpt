@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_COMMON_04" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_COMMON_04</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the signature algorithm of the target certificate is unknown. This path is not valid, because the application cannot verify the certificate's signature.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.1.1.2 and 4.1.2.3]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_COMMON_04.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_TLS_SERVER_01" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_TLS_SERVER_01</Title>
+    <Version>1.0</Version>
+    <Purpose>Positive test checking whether a TLS server can verify a TLS client certificate. This path conforms to RFC 5280 specification and is valid.</Purpose>
+    <Profile>TLS SERVER</Profile>
+    <Reference>RFC 5280, RFC 2818</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_TLS_SERVER_01.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

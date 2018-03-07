@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_TLS_SERVER_02" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_TLS_SERVER_02</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of a TLS server when the target certificate that belongs to a TLS client specifies only the dataEncipherment Key Usage. This path is invalid because this key usage is not sufficient for TLS.</Purpose>
+    <Profile>TLS SERVER</Profile>
+    <Reference>RFC 5280 [4.2.1.3]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_TLS_SERVER_02.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

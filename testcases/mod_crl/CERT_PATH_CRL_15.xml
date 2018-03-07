@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_CRL_15" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_CRL_15</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the CRL for an intermediate certificate is missing. This path is invalid because revocation information for a CA certificate in the path is not available.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 5.2.5]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_CRL_15.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

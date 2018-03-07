@@ -1,0 +1,13 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_COMMON_08_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA">
+    </Certificate>
+    <Certificate id="CERT_PATH_COMMON_08_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="true">
+        <SerialNumber>11008</SerialNumber>
+        <NotBefore>-2D</NotBefore>
+        <NotAfter>-1D</NotAfter>
+    </Certificate>
+    <Certificate id="CERT_PATH_COMMON_08_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+        <SerialNumber>10008</SerialNumber>
+        <VerifiedBy>CERT_PATH_COMMON_08_SUB_CA</VerifiedBy>
+    </Certificate>
+</PKIObjects>

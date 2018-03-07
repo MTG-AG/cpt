@@ -1,0 +1,19 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_EXT_09_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_EXT_09_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA" overwrite="false" />
+    <Certificate id="CERT_PATH_EXT_09_EE" type="TC">
+        <VerifiedBy>CERT_PATH_EXT_09_SUB_CA</VerifiedBy>
+        <Version>2</Version>
+        <SerialNumber>20009</SerialNumber>
+        <Signature>1.2.840.113549.1.1.11</Signature>
+        <IssuerDN encoding="UTF8">CN=Test Sub CA, C=DE</IssuerDN>
+        <SubjectDN encoding="UTF8">CN=Test EE, C=DE</SubjectDN>
+        <NotBefore>-8H</NotBefore>
+        <NotAfter>+1Y</NotAfter>
+        <PublicKey type="pretty">${publicKey}</PublicKey>
+        <Extension oid="2.5.29.14" critical="false" name="Subject Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">${extension.ku.value}</Extension>
+        <Extension oid="2.5.29.19" critical="true" name="Basic Constraints" type="pretty">false</Extension>
+        <Extension oid="2.5.29.17" critical="false" name="Subject Alternative Name" type="pretty">${extension.san.value}</Extension>
+    </Certificate>
+</PKIObjects>

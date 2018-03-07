@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_COMMON_13" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_COMMON_13</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a self-issued certificate is found in the path. This path is not invalid, because self-issued certificates are allowed in the path and processing rules have been specified.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 6.1]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_COMMON_13.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

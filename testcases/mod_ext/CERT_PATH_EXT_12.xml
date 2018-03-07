@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_12" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_12</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the target certificate contains a policy OID two times in the Certificates Policies Extension. A policy OID is allowed to be contained only one time within this extension and therefore this path is invalid.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.4]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_12.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>WARNING</Severity>
+    </TestStep>
+</testCase>

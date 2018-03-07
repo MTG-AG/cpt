@@ -1,0 +1,10 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_EMAIL_02_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_EMAIL_02_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="false" />
+    <Certificate id="CERT_PATH_EMAIL_02_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+        <SerialNumber>60002</SerialNumber>
+        <Extension oid="2.5.29.37" critical="false" name="Extended Key Usage" type="pretty">1.3.6.1.5.5.7.3.4</Extension>
+        <Extension oid="2.5.29.17" critical="false" name="Subject Alternative Name" type="pretty">dNSName=notexistenthost</Extension>
+    </Certificate>
+</PKIObjects>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_CRL_05" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_CRL_05</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a CRL contains an unknown non-critical extension. The target certificate is contained in this CRL. This path is invalid because it is allowed for an application to ignore unknown non-critical extensions.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_CRL_05.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

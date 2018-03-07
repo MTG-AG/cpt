@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_COMMON_05" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_COMMON_05</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a certificate has a wrong DER encoding. This path is not valid, because the certificate is not a properly encoded structure.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_COMMON_05.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

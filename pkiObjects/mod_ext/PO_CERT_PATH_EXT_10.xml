@@ -1,0 +1,9 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_EXT_10_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_EXT_10_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA" overwrite="false" />
+    <Certificate id="CERT_PATH_EXT_10_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+        <SerialNumber>20010</SerialNumber>
+        <Extension oid="${extension.oid}" critical="true" name="${extension.name}" type="raw">${extension.value}</Extension>
+        <Extension oid="2.5.29.17" critical="false" name="Subject Alternative Name" type="pretty">${extension.san.value}</Extension>
+    </Certificate>
+</PKIObjects>

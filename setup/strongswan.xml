@@ -1,0 +1,10 @@
+<PKIObjects>
+    <Certificate id="setup_strongswan_root" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA">
+    </Certificate>
+    <Certificate id="setup_strongswan_subca" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="false">
+    </Certificate>
+    <Certificate id="setup_strongswan_ee" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+        <SerialNumber>234</SerialNumber>
+        <Extension oid="2.5.29.17" critical="false" name="Subject Alternative Name" type="pretty">iPAddress=192.168.1.241</Extension>
+    </Certificate>
+</PKIObjects>

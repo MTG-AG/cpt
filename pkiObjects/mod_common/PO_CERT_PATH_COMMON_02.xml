@@ -1,0 +1,51 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_COMMON_02_ROOT_CA">
+        <VerifiedBy>CERT_PATH_COMMON_02_ROOT_CA</VerifiedBy>
+        <Version>2</Version>
+        <SerialNumber>12002</SerialNumber>
+        <Signature>1.2.840.113549.1.1.11</Signature>
+        <IssuerDN encoding="UTF8">CN=Test Root No TA, C=DE</IssuerDN>
+        <SubjectDN encoding="UTF8">CN=Test Root No TA, C=DE</SubjectDN>
+        <NotBefore>-2D</NotBefore>
+        <NotAfter>+5Y</NotAfter>
+        <PublicKey type="pretty">${publicKey}</PublicKey>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.14" critical="false" name="Subject Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">keyCertSign,cRLSign</Extension>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <Extension oid="2.5.29.19" critical="true" name="Basic Constraints" type="pretty">true,1</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_COMMON_02_SUB_CA">
+        <VerifiedBy>CERT_PATH_COMMON_02_ROOT_CA</VerifiedBy>
+        <Version>2</Version>
+        <SerialNumber>11002</SerialNumber>
+        <Signature>1.2.840.113549.1.1.11</Signature>
+        <IssuerDN encoding="UTF8">CN=Test Root No TA, C=DE</IssuerDN>
+        <SubjectDN encoding="UTF8">CN=Test Sub CA No TA, C=DE</SubjectDN>
+        <NotBefore>-1D</NotBefore>
+        <NotAfter>+3Y</NotAfter>
+        <PublicKey type="pretty">${publicKey}</PublicKey>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.14" critical="false" name="Subject Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">keyCertSign,cRLSign</Extension>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <Extension oid="2.5.29.19" critical="true" name="Basic Constraints" type="pretty">true,0</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_COMMON_02_EE" type="TC">
+        <VerifiedBy>CERT_PATH_COMMON_02_SUB_CA</VerifiedBy>
+        <Version>2</Version>
+        <SerialNumber>10002</SerialNumber>
+        <Signature>1.2.840.113549.1.1.11</Signature>
+        <IssuerDN encoding="UTF8">CN=Test Sub CA No TA, C=DE</IssuerDN>
+        <SubjectDN encoding="UTF8">CN=Test EE No TA, C=DE</SubjectDN>
+        <NotBefore>-1M</NotBefore>
+        <NotAfter>+1Y</NotAfter>
+        <PublicKey type="pretty">${publicKey}</PublicKey>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.14" critical="false" name="Subject Key Identifier" type="pretty"></Extension>
+        <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">${extension.ku.value}</Extension>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <Extension oid="2.5.29.19" critical="true" name="Basic Constraints" type="pretty">false</Extension>
+        <Extension oid="2.5.29.17" critical="false" name="Subject Alternative Name" type="pretty">${extension.san.value}</Extension>
+    </Certificate>
+</PKIObjects>

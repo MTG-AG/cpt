@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_17" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_17</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an application when the intermediate certificate contains a non-critical Policy Constraints extension. This path is invalid because this extension must be critical.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.11]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_17.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>WARNING</Severity>
+    </TestStep>
+</testCase>

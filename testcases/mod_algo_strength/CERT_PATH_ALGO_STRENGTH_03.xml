@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_ALGO_STRENGTH_03" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_ALGO_STRENGTH_03</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the last intermediate certificate contains an RSA public key with exponent e=3 and the target certificate features a malformed signature the acceptance of which indicates an implementation flaw that allows the Bleichenbacher's Low Exponent Attack. This path is invalid because the certificate's signature is invalid.</Purpose>
+    <Profile>COMMON_AUGMENTED</Profile>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_ALGO_STRENGTH_03.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

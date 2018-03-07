@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_ALGO_STRENGTH_01" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_ALGO_STRENGTH_01</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when an insecure hash algorithm has been used in the production of the intermediate certificate's signature. This path is not valid, because the hash algorithm is insecure.</Purpose>
+    <Profile>COMMON_AUGMENTED</Profile>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_ALGO_STRENGTH_01.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

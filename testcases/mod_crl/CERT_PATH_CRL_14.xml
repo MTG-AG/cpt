@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_CRL_14" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_CRL_14</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the CRL does not have a signature. This path is invalid because the integrity and authenticity of the source of revocation information cannot be verified.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 5.2.5]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_CRL_14.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

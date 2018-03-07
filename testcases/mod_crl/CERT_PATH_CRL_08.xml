@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_CRL_08" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_CRL_08</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a CRL is not valid yet (now &lt; thisUpdate). The target certificate is not contained in the CRL. This path is invalid because the CRL is not valid yet.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 5.1.2.4]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_CRL_08.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

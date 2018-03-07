@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_03" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_03</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a v3 certificate contains an unknown non-critical extension. This path is valid because a client application does not necessarily need to be able to parse and interpret such extensions.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.2]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_03.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>WARNING</Severity>
+    </TestStep>
+</testCase>

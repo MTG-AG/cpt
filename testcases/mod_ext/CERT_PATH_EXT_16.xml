@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_16" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_16</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an application when the intermediate certificate contains a non-critical Name Constraints extension. This path is invalid because this extension must be critical.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.5]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_16.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>WARNING</Severity>
+    </TestStep>
+</testCase>

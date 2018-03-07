@@ -1,0 +1,37 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_CRL_04_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_CRL_04_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="true">
+        <SerialNumber>31004</SerialNumber>
+        <Extension oid="2.5.29.31" critical="false" name="CRL Distribution Points" type="pretty">http://${httpHost}:${httpPort}/cert_path_crl_04/cert_path_crl_04_root_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_04_root_crl,OU=cert_path_crl_04,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_CRL_04_EE" refid="CERT_PATH_CRL_02_EE" overwrite="true" type="TC">
+        <SerialNumber>30004</SerialNumber>
+        <Extension oid="2.5.29.31" critical="false" name="CRL Distribution Points" type="pretty">http://${httpHost}:${httpPort}/cert_path_crl_04/cert_path_crl_04_sub_ca_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_04_sub_ca_crl,OU=cert_path_crl_04,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Extension>
+        <VerifiedBy>CERT_PATH_CRL_04_SUB_CA</VerifiedBy>
+    </Certificate>
+    <CRL id="CERT_PATH_CRL_04_ROOT_CRL">
+         <Location>http://${httpHost}:${httpPort}/cert_path_crl_04/cert_path_crl_04_root_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_04_root_crl,OU=cert_path_crl_04,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Location>
+        <VerifiedBy>CERT_PATH_CRL_04_ROOT_CA</VerifiedBy>
+        <Version>1</Version>
+        <Signature>1.2.840.113549.1.1.11</Signature>
+        <IssuerDN encoding="UTF8">CN=Test Root, C=DE</IssuerDN>
+        <ThisUpdate>-1D</ThisUpdate>
+        <NextUpdate>+6D</NextUpdate>
+        <Extension oid="2.5.29.20" critical="false" name="CRL Number" type="pretty">4</Extension>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+    </CRL>
+    <CRL id="CERT_PATH_CRL_04_SUB_CA_CRL">
+        <Location>http://${httpHost}:${httpPort}/cert_path_crl_04/cert_path_crl_04_sub_ca_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_04_sub_ca_crl,OU=cert_path_crl_04,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Location>
+        <VerifiedBy>CERT_PATH_CRL_04_SUB_CA</VerifiedBy>
+        <Version>1</Version>
+        <Signature>1.2.840.113549.1.1.11</Signature>
+        <IssuerDN encoding="UTF8">CN=Test Sub CA, C=DE</IssuerDN>
+        <ThisUpdate>-1D</ThisUpdate>
+        <NextUpdate>+6D</NextUpdate>
+        <Extension oid="2.5.29.20" critical="false" name="CRL Number" type="pretty">4</Extension>
+        <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
+        <Modification id="WRONG_SIGNATURE"/>
+    </CRL>
+</PKIObjects>
+
+

@@ -1,0 +1,16 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_EXT_13_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_EXT_13_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA" overwrite="true">
+        <VerifiedBy>CERT_PATH_EXT_13_ROOT_CA</VerifiedBy>
+        <SerialNumber>21013</SerialNumber>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <Extension oid="2.5.29.36" critical="true" name="Policy Constraints" type="pretty">requireExplicitPolicy=0</Extension>
+        <Extension oid="2.5.29.33" critical="true" name="Policy Mappings" type="pretty">1.2.3.4,2.5.29.32.0</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_EXT_13_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+        <VerifiedBy>CERT_PATH_EXT_13_SUB_CA</VerifiedBy>
+        <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
+        <SerialNumber>20013</SerialNumber>
+    </Certificate>
+</PKIObjects>
+

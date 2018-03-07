@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_CRL_04" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_CRL_04</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the signature of the CRL is wrong. The target certificate is not contained in the CRL. This path is invalid because the signature of a CRL is wrong.</Purpose>
+    <Profile>COMMON</Profile>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_CRL_04.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

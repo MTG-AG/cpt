@@ -1,0 +1,11 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_IPSEC_06_ROOT_CA" refid="CERT_PATH_IPSEC_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_IPSEC_06_SUB_CA" refid="CERT_PATH_IPSEC_01_SUB_CA" overwrite="true">
+        <SerialNumber>71006</SerialNumber>
+        <Extension oid="2.5.29.30" critical="true" name="Name Constraints" type="pretty">excluded:${extension.nameconstraints.san.value}</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_IPSEC_06_EE" refid="CERT_PATH_IPSEC_01_EE" overwrite="true" type="TC">
+        <SerialNumber>70006</SerialNumber>
+        <VerifiedBy>CERT_PATH_IPSEC_06_SUB_CA</VerifiedBy>
+    </Certificate>
+</PKIObjects>

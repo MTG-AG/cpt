@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_TLS_CLIENT_05" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_TLS_CLIENT_05</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of a TLS client when the target certificate that belongs to a TLS server contains an Extended Key Usage Extension that does not specify the serverAuth or anyExtendedKeyUsage EKU. This path is invalid because the certificate must be used for the specified extended key usage which is not the one reserved for this type of application.</Purpose>
+    <Profile>TLS CLIENT</Profile>
+    <Reference>RFC 5280</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_TLS_CLIENT_05.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

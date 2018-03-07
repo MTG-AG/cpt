@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EXT_14" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EXT_14</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the target certificate is a CA certificate that contains a Policy Mappings Extension which maps a policy to the anyPolicy. This path is invalid because it is not allowed to map a concrete policy to the special anyPolicy. The RFC 5280 validation algorithm does not explicitly verify that.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.5 and 6.1.4]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EXT_14.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>WARNING</Severity>
+    </TestStep>
+</testCase>

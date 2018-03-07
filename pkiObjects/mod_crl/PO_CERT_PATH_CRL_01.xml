@@ -1,0 +1,11 @@
+<PKIObjects>
+    <Certificate id="CERT_PATH_CRL_01_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_CRL_01_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="false" />
+    <Certificate id="CERT_PATH_CRL_01_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+        <SerialNumber>30001</SerialNumber>
+        <Extension oid="2.5.29.31" critical="false" name="CRL Distribution Points" type="pretty">http://localhost/doesnotexist/crl.crl|ldap://localhost:389/CN=doesnotexist,dc=cpt-de?certificateRevocationList?base?objectClass=cRLDistributionPoint</Extension>
+    </Certificate>
+</PKIObjects>
+
+
+

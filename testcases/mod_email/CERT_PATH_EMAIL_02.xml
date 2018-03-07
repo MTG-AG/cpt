@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_EMAIL_02" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_EMAIL_02</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of an email client when the sender address of a signed email is not contained in the SAN Extension of the target certificate as an rfc822name. This path is valid because it is not mandatory that the email address is contained in the certificate.</Purpose>
+    <Profile>EMAIL</Profile>
+    <Reference>RFC 5280 [Sec. 4.2.1.6] and RFC 5750 [Sec. 4.4.3]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_EMAIL_02.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

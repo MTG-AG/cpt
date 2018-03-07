@@ -1,0 +1,28 @@
+Test Case: ${testcase.id}
+
+Purpose: ${testcase.purpose}
+
+Test Object (Name): ${report.testobject.name}
+
+Test Object (Version): ${report.testobject.version}
+
+Test executed at: ________________________
+
+Test executed by: _______________________
+
+Result: _______________________
+
+Expected Result: ${testcase.expectedResult}
+
+Severity: ${testcase.severity}
+
+Data:
+${testcase.data}
+
+Remarks: __________________________
+
+___________________________________
+
+___________________________________
+
+___________________________________
