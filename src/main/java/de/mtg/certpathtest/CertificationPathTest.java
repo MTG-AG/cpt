@@ -351,6 +351,7 @@ public class CertificationPathTest
                     ObjectCache objectCache = ObjectCache.getInstance();
                     objectCache.addTestCase(dummyTestCase, id);
                     PKIObjects pkiObjectsToWorkOn = Utils.applyReplacementsOnPKIObjects(setupObject.getPkiObjects());
+                    pkiObjectsToWorkOn = Utils.applyVariableValuesOnPKIObjects(pkiObjectsToWorkOn);
                     objectCache.addPKIobjectsToTestCase(id, pkiObjectsToWorkOn);
                     ExtractDataReader.assignObjectsToTestCase(dummyTestCase, setupObject.getPkiObjects());
 

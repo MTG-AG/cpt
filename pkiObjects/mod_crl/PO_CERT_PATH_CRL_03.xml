@@ -1,16 +1,18 @@
 <PKIObjects>
+    <Variable name="rootCrldp">http://${httpHost}:${httpPort}/cert_path_crl_03/cert_path_crl_03_root_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_03_root_crl,OU=cert_path_crl_03,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Variable>
+    <Variable name="subCrldp">http://${httpHost}:${httpPort}/cert_path_crl_03/cert_path_crl_03_sub_ca_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_03_sub_ca_crl,OU=cert_path_crl_03,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Variable>
     <Certificate id="CERT_PATH_CRL_03_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA" />
     <Certificate id="CERT_PATH_CRL_03_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="true">
         <SerialNumber>31003</SerialNumber>
-        <Extension oid="2.5.29.31" critical="false" name="CRL Distribution Points" type="pretty">http://${httpHost}:${httpPort}/cert_path_crl_03/cert_path_crl_03_root_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_03_root_crl,OU=cert_path_crl_03,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Extension>
+        <Extension oid="2.5.29.31" critical="false" name="CRL Distribution Points" type="pretty">%rootCrldp%</Extension>
     </Certificate>
     <Certificate id="CERT_PATH_CRL_03_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
         <SerialNumber>30003</SerialNumber>
-        <Extension oid="2.5.29.31" critical="false" name="CRL Distribution Points" type="pretty">http://${httpHost}:${httpPort}/cert_path_crl_03/cert_path_crl_03_sub_ca_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_03_sub_ca_crl,OU=cert_path_crl_03,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Extension>
+        <Extension oid="2.5.29.31" critical="false" name="CRL Distribution Points" type="pretty">%subCrldp%</Extension>
         <VerifiedBy>CERT_PATH_CRL_03_SUB_CA</VerifiedBy>
     </Certificate>
     <CRL id="CERT_PATH_CRL_03_ROOT_CRL">
-        <Location>http://${httpHost}:${httpPort}/cert_path_crl_03/cert_path_crl_03_root_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_03_root_crl,OU=cert_path_crl_03,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Location>
+        <Location>%rootCrldp%</Location>
         <VerifiedBy>CERT_PATH_CRL_03_ROOT_CA</VerifiedBy>
         <Version>1</Version>
         <Signature>1.2.840.113549.1.1.11</Signature>
@@ -24,7 +26,7 @@
         <Extension oid="2.5.29.35" critical="false" name="Authority Key Identifier" type="pretty"></Extension>
     </CRL>
     <CRL id="CERT_PATH_CRL_03_SUB_CA_CRL">
-        <Location>http://${httpHost}:${httpPort}/cert_path_crl_03/cert_path_crl_03_sub_ca_crl.crl|ldap://${ldapHost}:${ldapPort}/CN=cert_path_crl_03_sub_ca_crl,OU=cert_path_crl_03,${ldapRoot}?certificateRevocationList?base?objectClass=cRLDistributionPoint</Location>
+        <Location>%subCrldp%</Location>
         <VerifiedBy>CERT_PATH_CRL_03_SUB_CA</VerifiedBy>
         <Version>1</Version>
         <Signature>1.2.840.113549.1.1.11</Signature>

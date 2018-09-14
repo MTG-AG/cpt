@@ -1,24 +1,35 @@
 
 package de.mtg.certpathtest.pkiobjects;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.StringWriter;
+import java.util.ArrayList;
 
 @XmlRootElement(name = "PKIObjects")
 public class PKIObjects
 {
 
+    private ArrayList<Variable> variables = new ArrayList<>();
     private ArrayList<Certificate> certificates = new ArrayList<>();
     private ArrayList<CRL> revocationLists = new ArrayList<>();
 
     public PKIObjects()
     {
 
+    }
+
+    public ArrayList<Variable> getVariables()
+    {
+        return this.variables;
+    }
+
+    @XmlElement(name = "Variable")
+    public void setVariables(ArrayList<Variable> variables)
+    {
+        this.variables = variables;
     }
 
     public ArrayList<Certificate> getCertificates()

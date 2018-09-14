@@ -184,6 +184,7 @@ public class ExtractDataReader extends SimpleFileVisitor<Path>
                                 {
                                     logger.info("Applying replacements on PKI Objects.");
                                     pkiObjectsToWorkOn = Utils.applyReplacementsOnPKIObjects(pkiObjects);
+                                    pkiObjectsToWorkOn = Utils.applyVariableValuesOnPKIObjects(pkiObjectsToWorkOn);
                                 }
                                 catch (JAXBException e)
                                 {

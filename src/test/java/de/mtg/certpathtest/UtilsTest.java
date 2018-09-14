@@ -1,10 +1,7 @@
 
 package de.mtg.certpathtest;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.cert.CertificateException;
@@ -13,12 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Random;
-
-import javax.xml.bind.JAXBException;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.mtg.certpathtest.pkiobjects.Certificate;
 import de.mtg.certpathtest.pkiobjects.Extension;
@@ -29,19 +22,24 @@ import de.mtg.certpathtest.pkiobjects.NotBefore;
 import de.mtg.certpathtest.pkiobjects.PKIObjects;
 import de.mtg.certpathtest.pkiobjects.PublicKey;
 import de.mtg.certpathtest.pkiobjects.SubjectDN;
+import de.mtg.certpathtest.pkiobjects.Variable;
 import junit.framework.Assert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
- *
  * Unit tests for {@link Utils}
  *
  * @see Utils Utils
- *
  */
 public class UtilsTest
 {
     /**
-     *
      * Prepares the environment before every test.
      *
      * @throws Exception if any exception occurs.
@@ -53,12 +51,9 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#convertBitString(String)} method.
      *
      * @see Utils#convertBitString(String) convertBitString
-     *
-     * @throws Exception if any Exception occurs.
      */
     @Test
     public void testConvertBitString()
@@ -110,13 +105,11 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#cloneCertificate(Certificate)} method.
-     *
-     * @see Utils#cloneCertificate(Certificate) cloneCertificate
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
+     * @see Utils#cloneCertificate(Certificate) cloneCertificate
      */
     @Test
     public void testCloneCertificate() throws JAXBException, IOException
@@ -132,15 +125,13 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#createCompleteCertificateFromReference(Certificate)} method for the simple case in which a
      * certificate references a complete certificate directly.
-     *
-     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
      * @throws DuplicateKeyException if a certificate from the tests is added twice in the cache.
+     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      */
     @Test
     public void copyCertificateOneLevel() throws JAXBException, IOException, DuplicateKeyException
@@ -193,15 +184,13 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#createCompleteCertificateFromReference(Certificate)} method for a complex case in which a
      * certificate references a certificate which references a complete certificate directly.
-     *
-     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
      * @throws DuplicateKeyException if a certificate from the tests is added twice in the cache.
+     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      */
     @Test
     public void copyCertificateTwoLevels() throws JAXBException, IOException, DuplicateKeyException
@@ -263,15 +252,13 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#createCompleteCertificateFromReference(Certificate)} method for a complex case with
      * reference over three levels.
-     *
-     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
      * @throws DuplicateKeyException if a certificate from the tests is added twice in the cache.
+     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      */
     @Test
     public void copyCertificateThreeLevels() throws JAXBException, IOException, DuplicateKeyException
@@ -343,15 +330,13 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#createCompleteCertificateFromReference(Certificate)} method for a complex case with
      * reference over three levels and extensions.
-     *
-     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
      * @throws DuplicateKeyException if a certificate from the tests is added twice in the cache.
+     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      */
     @Test
     public void copyCertificateThreeLevelsWithExtensions() throws JAXBException, IOException, DuplicateKeyException
@@ -375,7 +360,7 @@ public class UtilsTest
 
         Extension firstExtension = new Extension("First Extension", "1.2.3.4.1", "true", "First Extension", "pretty");
         Extension secondExtension =
-            new Extension("Second Extension", "1.2.3.4.2", "true", "Second Extension", "pretty");
+                new Extension("Second Extension", "1.2.3.4.2", "true", "Second Extension", "pretty");
         Extension thirdExtension = new Extension("Third Extension", "1.2.3.4.3", "true", "Third Extension", "pretty");
         Extension forthExtension = new Extension("Forth Extension", "1.2.3.4.4", "true", "Forth Extension", "pretty");
         ArrayList<Extension> extensions = new ArrayList<Extension>();
@@ -408,7 +393,7 @@ public class UtilsTest
         levelThree.setRefid(levelTwoId);
 
         Extension updatedforthExtension =
-            new Extension("Updated Forth Extension", "1.2.3.4.4", "true", "Updated Forth Extension", "pretty");
+                new Extension("Updated Forth Extension", "1.2.3.4.4", "true", "Updated Forth Extension", "pretty");
         ArrayList<Extension> updatedExtensions = new ArrayList<Extension>();
         updatedExtensions.add(updatedforthExtension);
         levelThree.setExtensions(updatedExtensions);
@@ -453,19 +438,17 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#createCompleteCertificateFromReference(Certificate)} method for a complex case with
      * reference over three levels, extensions, and the DUPLICATE_EXTENSION modification.
-     *
-     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
      * @throws DuplicateKeyException if a certificate from the tests is added twice in the cache.
+     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      */
     @Test
     public void copyCertificateThreeLevelsWithExtensionsAndModification()
-                    throws JAXBException, IOException, DuplicateKeyException
+            throws JAXBException, IOException, DuplicateKeyException
     {
 
         String levelZeroId = "JUnit-Level0";
@@ -486,7 +469,7 @@ public class UtilsTest
 
         Extension firstExtension = new Extension("First Extension", "1.2.3.4.1", "true", "First Extension", "pretty");
         Extension secondExtension =
-            new Extension("Second Extension", "1.2.3.4.2", "true", "Second Extension", "pretty");
+                new Extension("Second Extension", "1.2.3.4.2", "true", "Second Extension", "pretty");
         Extension thirdExtension = new Extension("Third Extension", "1.2.3.4.3", "true", "Third Extension", "pretty");
         Extension forthExtension = new Extension("Forth Extension", "1.2.3.4.4", "true", "Forth Extension", "pretty");
         ArrayList<Extension> extensions = new ArrayList<Extension>();
@@ -519,7 +502,7 @@ public class UtilsTest
         levelThree.setRefid(levelTwoId);
 
         Extension updatedforthExtension =
-            new Extension("Updated Forth Extension", "1.2.3.4.4", "true", "Updated Forth Extension", "pretty");
+                new Extension("Updated Forth Extension", "1.2.3.4.4", "true", "Updated Forth Extension", "pretty");
         ArrayList<Extension> updatedExtensions = new ArrayList<Extension>();
         updatedExtensions.add(updatedforthExtension);
         levelThree.setExtensions(updatedExtensions);
@@ -566,11 +549,9 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#getDifferentAlgorithm(String)} method.
      *
      * @see Utils#getDifferentAlgorithm(String) getDifferentAlgorithm
-     *
      */
     @Test
     public void testGetDifferentAlgorithm()
@@ -583,15 +564,13 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#createCompleteCertificateFromReference(Certificate)} method checking especially whether
      * the original certificate id remains intact.
-     *
-     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
      * @throws DuplicateKeyException if a certificate from the tests is added twice in the cache.
+     * @see Utils#createCompleteCertificateFromReference(Certificate) createCompleteCertificateFromReference
      */
     @Test
     public void copyCheckIds() throws JAXBException, IOException, DuplicateKeyException
@@ -659,13 +638,11 @@ public class UtilsTest
     }
 
     /**
-     *
      * Tests the {@link Utils#applyReplacementsOnPKIObjects(PKIObjects)} method .
-     *
-     * @see Utils#applyReplacementsOnPKIObjects(PKIObjects) applyReplacementsOnPKIObjects
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
+     * @see Utils#applyReplacementsOnPKIObjects(PKIObjects) applyReplacementsOnPKIObjects
      */
     @Test
     public void testApplyReplacements() throws JAXBException, IOException
@@ -711,14 +688,113 @@ public class UtilsTest
 
     }
 
+
     /**
+     * Tests the {@link Utils#applyVariableValuesOnPKIObjects(PKIObjects)} (PKIObjects)} method .
      *
+     * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
+     * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
+     * @see Utils#applyVariableValuesOnPKIObjects(PKIObjects) applyVariableValuesOnPKIObjects
+     */
+    @Test
+    public void testApplyVariableValuesOnPKIObjects() throws JAXBException, IOException
+    {
+
+        Random random = new Random();
+
+        String id = "JUNIT-" + random.nextInt(Integer.MAX_VALUE);
+
+        Certificate xmlCertificate = new Certificate();
+
+        xmlCertificate.setId(id);
+        xmlCertificate.setIssuerDN(new IssuerDN("${issuerDN}", "UTF8"));
+        xmlCertificate.setSubjectDN(new SubjectDN("CN=Test User, C=DE", "UTF8"));
+        xmlCertificate.setSerialNumber("${serialNumber}");
+        xmlCertificate.setVersion("2");
+        xmlCertificate.setNotBefore(new NotBefore("-3D", "UTC"));
+        xmlCertificate.setNotAfter(new NotAfter("+3D", "UTC"));
+        xmlCertificate.setPublicKey(new PublicKey("${publicKey}", "pretty"));
+        xmlCertificate.setSignature("1.2.840.113549.1.1.11"); // SHA256WithRSAEncryption
+        xmlCertificate.setVerifiedBy(id);
+
+        String crlDistributionPointValue =
+                "%rootCrldp%";
+        xmlCertificate.getExtensions().add(new Extension(
+                "%rootCrldp%",
+                "2.5.29.31",
+                "false",
+                "CRL Distribution Points",
+                "pretty"));
+        xmlCertificate.getExtensions().add(new Extension(
+                "%subCrldp%",
+                "2.5.29.31",
+                "false",
+                "CRL Distribution Points",
+                "pretty"));
+
+        Variable firstVar = new Variable();
+        firstVar.setName("rootCrldp");
+        firstVar.setValue("https://root.crl");
+        Variable secondVar = new Variable();
+        secondVar.setName("subCrldp");
+        secondVar.setValue("https://sub.crl");
+
+        PKIObjects pkiObjects = new PKIObjects();
+        pkiObjects.getCertificates().add(xmlCertificate);
+        pkiObjects.getVariables().add(firstVar);
+        pkiObjects.getVariables().add(secondVar);
+
+        ConfigurationProperties properties = ConfigurationProperties.getInstance();
+
+        properties.getProperties();
+        properties.addSimpleProperty("replace.publicKey", "RSA,2048");
+        properties.addSimpleProperty("replace.issuerDN", "CN=Test Issuer, C=DE");
+        properties.addSimpleProperty("replace.serialNumber", "12345678");
+        Hashtable<String, String> replacementProperties = properties.getReplacementProperties();
+
+        Assert.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
+        Assert.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
+        Assert.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
+
+        pkiObjects = Utils.applyReplacementsOnPKIObjects(pkiObjects);
+
+        PKIObjects newPkiObjects = Utils.applyVariableValuesOnPKIObjects(pkiObjects);
+
+        Assert.assertTrue(newPkiObjects.toString().indexOf("RSA,2048") != -1);
+        Assert.assertTrue(newPkiObjects.toString().indexOf("CN=Test Issuer, C=DE") != -1);
+        Assert.assertTrue(newPkiObjects.toString().indexOf("12345678") != -1);
+        Assert.assertTrue(newPkiObjects.toString().indexOf("https://root.crl") != -1);
+
+        Pattern pattern = Pattern.compile(Pattern.quote("https://root.crl"));
+        Matcher matcher = pattern.matcher(newPkiObjects.toString());
+        int matchCounter = 0;
+        while (matcher.find())
+        {
+            matchCounter++;
+        }
+
+        // once as a variable and once as a replaced value
+        Assert.assertEquals(2, matchCounter);
+
+        pattern = Pattern.compile(Pattern.quote("https://sub.crl"));
+        matcher = pattern.matcher(newPkiObjects.toString());
+        matchCounter = 0;
+        while (matcher.find())
+        {
+            matchCounter++;
+        }
+
+        // once as a variable and once as a replaced value
+        Assert.assertEquals(2, matchCounter);
+
+    }
+
+    /**
      * Tests the {@link Utils#createDummyCertificate(int)} method .
-     *
-     * @see Utils#createDummyCertificate(int) createDummyCertificate
      *
      * @throws CertificateException if an exception occurs while creating the certificate.
      * @throws IOException if an exception occurs while creating the certificate.
+     * @see Utils#createDummyCertificate(int) createDummyCertificate
      */
     @Test
     public void testCreateDummyCertificate() throws CertificateException, IOException
@@ -752,7 +828,6 @@ public class UtilsTest
     }
 
     /**
-     *
      * Performs any necessary cleaning after each test run.
      *
      * @throws Exception if any exception occurs.

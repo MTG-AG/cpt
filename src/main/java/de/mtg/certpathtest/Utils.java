@@ -47,6 +47,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import de.mtg.certpathtest.pkiobjects.Variable;
+import org.apache.commons.collections4.CollectionUtils;
 import org.bouncycastle.asn1.ASN1GeneralizedTime;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
@@ -1093,6 +1095,39 @@ public class Utils
 
         return replacedPKIObjects;
 
+    }
+
+    public static PKIObjects applyVariableValuesOnPKIObjects(PKIObjects pkiObjects) throws JAXBException, IOException
+    {
+
+        JAXBContext jaxbContext = JAXBContext.newInstance(PKIObjects.class);
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8");
+        marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        StringWriter stringWriter = new StringWriter();
+        marshaller.marshal(pkiObjects, stringWriter);
+        stringWriter.flush();
+        stringWriter.close();
+        String pkiObjectsString = stringWriter.toString();
+
+        ArrayList<Variable> variables = pkiObjects.getVariables();
+
+        if (CollectionUtils.isNotEmpty(variables)) {
+            for (Variable var :variables) {
+                String name =  var.getName();
+                String value =  var.getValue();
+                pkiObjectsString = pkiObjectsString.replaceAll(Pattern.quote("%" + name + "%"), value);
+            }
+        }
+
+        byte[] pkiObjectsBytes = pkiObjectsString.getBytes();
+        ByteArrayInputStream bais = new ByteArrayInputStream(pkiObjectsBytes);
+
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        PKIObjects replacedPKIObjects = (PKIObjects) unmarshaller.unmarshal(bais);
+        bais.close();
+
+        return replacedPKIObjects;
     }
 
     /**
