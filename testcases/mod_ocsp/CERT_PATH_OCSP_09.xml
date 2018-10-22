@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_09" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_09</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when an OCSP response has expired (now &gt; nextUpdate). The target certificate is contained in the OCSP with status "good". This path is invalid because the OCSP response has expired.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 6960 [Sec. 5.1.2.5]</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_09.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

@@ -52,7 +52,7 @@ public class OutputHandler extends TestCaseHandler
      *
      * Constructs a newly allocated OutputHandler object.
      *
-     * @param testCaseFile the file containing a test case for which the produced PKI objects are exported.
+     * @param testCase the file containing a test case for which the produced PKI objects are exported.
      */
     public OutputHandler(TestCase testCase)
     {
@@ -85,6 +85,7 @@ public class OutputHandler extends TestCaseHandler
         List<String> certificateIds = objectCache.getCertificateIds(testCaseId);
 
         List<String> crlIds = objectCache.getCRLIds(testCaseId);
+        List<String> ocspIds = objectCache.getOCSPResponsesIds(testCaseId);
 
         String outputDirectoryName =
             ConfigurationProperties.getInstance().getProperties()
@@ -228,6 +229,47 @@ public class OutputHandler extends TestCaseHandler
         {
             MDC.remove("CRL");
         }
+
+        // Output OCSP responses
+
+        try
+        {
+            for (String ocspId : ocspIds)
+            {
+                MDC.put("OCSP", ocspId);
+                logger.info("Exporting OCSP responses.");
+
+                testCaseObjects.append(ocspId);
+                testCaseObjects.append(System.getProperty("line.separator"));
+
+                byte[] rawOCSPResponse = objectCache.getRawOcspResponse(ocspId);
+
+                if (rawOCSPResponse == null)
+                {
+                    Utils.logError("OCSP Response has not been issued.");
+                    ObjectCache.getInstance().addError("OCSP Response  '" + ocspId + "' has not been issued.");
+                    continue;
+                }
+
+                String filename = ocspId + ".ocsp.der";
+
+                Path ocspOutputPath = Paths.get(outputDirectoryName, testCaseId, "ocspResponses");
+
+                if (!ocspOutputPath.toFile().exists())
+                {
+                    ocspOutputPath.toFile().mkdirs();
+                }
+
+                Files.write(Paths.get(outputDirectoryName, testCaseId, "ocspResponses", filename), rawOCSPResponse);
+                logger.info("Successfully exported OCSP response.");
+            }
+        }
+        finally
+        {
+            MDC.remove("OCSP");
+        }
+
+
 
         logger.info("Creating report.");
 

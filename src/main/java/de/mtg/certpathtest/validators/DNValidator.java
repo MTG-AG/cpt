@@ -1,6 +1,7 @@
 
 package de.mtg.certpathtest.validators;
 
+import de.mtg.certpathtest.pkiobjects.ResponderId;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,12 @@ public class DNValidator extends ValueValidator
             SubjectDN subjectDN = (SubjectDN) xmlValue;
             value = subjectDN.getValue();
             encoding = subjectDN.getEncoding();
+        }
+        else if (xmlValue instanceof ResponderId)
+        {
+            ResponderId responderId = (ResponderId) xmlValue;
+            value = responderId.getValue();
+            encoding = responderId.getEncoding();
         }
 
         boolean correctValue = !value.isEmpty();

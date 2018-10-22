@@ -17,7 +17,6 @@ public class Certificate
     private String id;
     private String type;
     private String refid;
-    private String overwrite;
 
     private String verifiedBy;
     private String version;
@@ -69,17 +68,6 @@ public class Certificate
     public void setRefid(String refid)
     {
         this.refid = refid;
-    }
-
-    public String getOverwrite()
-    {
-        return overwrite;
-    }
-
-    @XmlAttribute
-    public void setOverwrite(String overwrite)
-    {
-        this.overwrite = overwrite;
     }
 
     public String getVerifiedBy()

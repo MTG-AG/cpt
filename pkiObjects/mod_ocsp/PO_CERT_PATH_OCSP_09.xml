@@ -1,0 +1,49 @@
+<PKIObjects>
+    <Variable name="rootAIA">http://${httpHost}:${httpPort}/CERT_PATH_OCSP_09_ROOT_CA_AIA</Variable>
+    <Variable name="subAIA">http://${httpHost}:${httpPort}/CERT_PATH_OCSP_09_SUB_CA_AIA</Variable>
+    <Certificate id="CERT_PATH_OCSP_09_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_OCSP_09_SUB_CA" refid="CERT_PATH_OCSP_01_SUB_CA">
+        <VerifiedBy>CERT_PATH_OCSP_09_ROOT_CA</VerifiedBy>
+        <SerialNumber>42109</SerialNumber>
+        <Extension oid="1.3.6.1.5.5.7.1.1" critical="false" name="Authority Information Access" type="pretty">${rootAIA}</Extension>
+    </Certificate>
+    <Certificate id="CERT_PATH_OCSP_09_EE" refid="CERT_PATH_COMMON_01_EE" type="TC">
+        <VerifiedBy>CERT_PATH_OCSP_09_SUB_CA</VerifiedBy>
+        <SerialNumber>32109</SerialNumber>
+        <Extension oid="1.3.6.1.5.5.7.1.1" critical="false" name="Authority Information Access" type="pretty">${subAIA}</Extension>
+    </Certificate>
+	  
+	<OcspResponse id="CERT_PATH_OCSP_09_SUB_CA_RESP" responseStatus="successful">
+        <Location>${rootAIA}</Location>
+        <Version>0</Version>
+        <VerifiedBy>CERT_PATH_OCSP_09_ROOT_CA</VerifiedBy>
+        <Signature>${ocsp.signature}</Signature>
+        <ResponderId type="byName"></ResponderId>
+        <ProducedAt encoding="GEN">-1S</ProducedAt>
+        <ResponseEntry refid="CERT_PATH_OCSP_09_SUB_CA"> 
+          <HashAlgorithm>${ocsp.idHash}</HashAlgorithm> 
+          <CertStatus>
+            <Status>good</Status>
+          </CertStatus>
+          <ThisUpdate encoding="GEN">-1D</ThisUpdate>
+          <NextUpdate encoding="GEN">+6D</NextUpdate>
+        </ResponseEntry>
+    </OcspResponse>
+	
+	<OcspResponse id="CERT_PATH_OCSP_09_EE_RESP" responseStatus="successful">
+        <Location>${subAIA}</Location>
+        <Version>0</Version>
+        <VerifiedBy>CERT_PATH_OCSP_09_SUB_CA</VerifiedBy>
+        <Signature>${ocsp.signature}</Signature>
+        <ResponderId type="byName"></ResponderId>
+        <ProducedAt encoding="GEN">-1S</ProducedAt>
+        <ResponseEntry refid="CERT_PATH_OCSP_09_EE"> 
+          <HashAlgorithm>${ocsp.idHash}</HashAlgorithm> 
+          <CertStatus>
+            <Status>unknown</Status>
+          </CertStatus>
+          <ThisUpdate encoding="GEN">-3D</ThisUpdate>
+          <NextUpdate encoding="GEN">-2D</NextUpdate>
+        </ResponseEntry>
+    </OcspResponse>
+</PKIObjects>

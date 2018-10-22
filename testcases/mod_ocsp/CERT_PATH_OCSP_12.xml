@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_12" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_12</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when a valid delegated OCSP-signer certificate is used to sign the OCSP response indicating that the certificate is "good". This path is valid because the OCSP signer certificate is valid. In this test the responder ID is referenced "byKey" within the response. This is in contrast to the majority of the test cases, where the responder ID is referenced "byName".</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 6960</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_12.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

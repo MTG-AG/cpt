@@ -15,6 +15,8 @@ public class PKIObjects
     private ArrayList<Variable> variables = new ArrayList<>();
     private ArrayList<Certificate> certificates = new ArrayList<>();
     private ArrayList<CRL> revocationLists = new ArrayList<>();
+    private ArrayList<OcspResponse> ocspResponses = new ArrayList<>();
+    private Path path;
 
     public PKIObjects()
     {
@@ -30,6 +32,17 @@ public class PKIObjects
     public void setVariables(ArrayList<Variable> variables)
     {
         this.variables = variables;
+    }
+
+    public Path getPath()
+    {
+        return this.path;
+    }
+
+    @XmlElement(name = "Path")
+    public void setPath(Path path)
+    {
+        this.path = path;
     }
 
     public ArrayList<Certificate> getCertificates()
@@ -52,6 +65,17 @@ public class PKIObjects
     public void setCRLs(ArrayList<CRL> revocationLists)
     {
         this.revocationLists = revocationLists;
+    }
+
+    public ArrayList<OcspResponse> getOcspResponses()
+    {
+        return this.ocspResponses;
+    }
+
+    @XmlElement(name = "OcspResponse")
+    public void setOcspResponses(ArrayList<OcspResponse> ocspResponses)
+    {
+        this.ocspResponses = ocspResponses;
     }
 
     @Override

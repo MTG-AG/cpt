@@ -84,7 +84,7 @@ public class TestToolCRL
      * Constructs a newly allocated TestToolCRL object.
      *
      * <ul>
-     * <li>It extracts the data from this xmlCertificate.</li>
+     * <li>It extracts the data from this xmlCrl.</li>
      * <li>It verifies that these data are correct</li>
      * </ul>
      */
@@ -643,7 +643,7 @@ public class TestToolCRL
             return null;
         }
         TestToolCertificate.checkInputData(nextUpdate, new DateValidator(),
-                                           "Wrong value for notAfter in XML CRL with id '" + xmlCRL.getId() + "'.");
+                                           "Wrong value for nextUpdate in XML CRL with id '" + xmlCRL.getId() + "'.");
 
         String value = nextUpdate.getValue();
 

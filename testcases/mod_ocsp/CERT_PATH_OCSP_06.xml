@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_06" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_06</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when an OCSP response contains an unknown non-critical extension. The target certificate is contained in this OCSP response with status "good". This path is valid because it is allowed for an application to ignore unknown non-critical extensions.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 6960</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_06.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>VALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

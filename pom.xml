@@ -32,7 +32,7 @@
                 <version>2.20.1</version>
                 <configuration>
                     <skip>false</skip>
-                    <skipTests>true</skipTests>
+                    <skipTests>false</skipTests>
                     <argLine>-Xmx192m -Xms192m</argLine>
                 </configuration>
             </plugin>

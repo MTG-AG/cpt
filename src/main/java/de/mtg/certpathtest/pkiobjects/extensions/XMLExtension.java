@@ -3,8 +3,10 @@ package de.mtg.certpathtest.pkiobjects.extensions;
 
 import java.io.ByteArrayInputStream;
 
+import org.bouncycastle.asn1.ASN1Encoding;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.util.encoders.Base64;
 import org.slf4j.Logger;
@@ -152,7 +154,6 @@ public abstract class XMLExtension
      * }
      * </pre>
      *
-     * @param xmlValue the pretty value of this extension specified in the XML data.
      * @return the encoded value of this extension, that is the extnValue of the extension (RFC 5280)
      * @throws Exception if this extension cannot be encoded from the XML representation.
      */
@@ -326,6 +327,14 @@ public abstract class XMLExtension
         simpleExtension.setExtnId(getOID());
         simpleExtension.setExtnValueOctets(getEncoded());
         return simpleExtension;
+    }
+
+    public ASN1Sequence getSimpleExtensionAsSequence() throws Exception
+    {
+        SimpleExtension simpleExtension = getSimpleExtension();
+        try(ASN1InputStream asn1InputStream = new ASN1InputStream(simpleExtension.getEncoded(ASN1Encoding.DER))) {
+            return(ASN1Sequence) asn1InputStream.readObject();
+        }
     }
 
 }

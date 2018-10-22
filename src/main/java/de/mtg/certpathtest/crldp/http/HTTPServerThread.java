@@ -48,6 +48,7 @@ public class HTTPServerThread extends Thread
 
         ServletHandler servletHandler = new ServletHandler();
         server.setHandler(servletHandler);
+        servletHandler.addServletWithMapping(OCSPServlet.class, "/*");
 
         ResourceHandler resourceHandler = new ResourceHandler();
 
@@ -55,7 +56,7 @@ public class HTTPServerThread extends Thread
         resourceHandler.setResourceBase(resourcesDirectory);
 
         HandlerList handlerList = new HandlerList();
-        handlerList.setHandlers(new Handler[] {resourceHandler, new DefaultHandler()});
+        handlerList.setHandlers(new Handler[] {resourceHandler, servletHandler, new DefaultHandler()});
         server.setHandler(handlerList);
 
         try

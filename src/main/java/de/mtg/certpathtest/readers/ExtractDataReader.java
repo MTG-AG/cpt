@@ -12,9 +12,11 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.xml.bind.JAXBException;
 
+import de.mtg.certpathtest.pkiobjects.OcspResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -183,8 +185,7 @@ public class ExtractDataReader extends SimpleFileVisitor<Path>
                                 try
                                 {
                                     logger.info("Applying replacements on PKI Objects.");
-                                    pkiObjectsToWorkOn = Utils.applyReplacementsOnPKIObjects(pkiObjects);
-                                    pkiObjectsToWorkOn = Utils.applyVariableValuesOnPKIObjects(pkiObjectsToWorkOn);
+                                    pkiObjectsToWorkOn = Utils.applyVariableValuesOnPKIObjects(pkiObjects);
                                 }
                                 catch (JAXBException e)
                                 {
@@ -251,6 +252,8 @@ public class ExtractDataReader extends SimpleFileVisitor<Path>
 
         ArrayList<CRL> crls = pkiObjects.getCRLs();
 
+        ArrayList<OcspResponse> ocspResponses = pkiObjects.getOcspResponses();
+
         for (Certificate certificate : certificates)
         {
 
@@ -299,7 +302,7 @@ public class ExtractDataReader extends SimpleFileVisitor<Path>
             {
 
                 Utils.exitProgramm("CRL with the same id '{" + crl.getId()
-                    + "}' already exists. The id of a certificate must be unique. Please correct this.");
+                    + "}' already exists. The id of a CRL must be unique. Please correct this.");
             }
 
             // crl2testcase
@@ -307,6 +310,34 @@ public class ExtractDataReader extends SimpleFileVisitor<Path>
 
             // testcase2crl
             objectCache.assignTestCaseToCRLId(crl, testCase);
+        }
+
+        for (OcspResponse ocspResponse : ocspResponses)
+        {
+
+            Optional<String> ocspResponseId = Utils.getOcspResponseId(ocspResponse);
+
+            if (!ocspResponseId.isPresent())
+            {
+                Utils.exitProgramm("Wrong OCSP response or response with an empty id found in test case with id '{" + testCaseId
+                                           + "}'. The id of an OCSP response must be present. Please correct this.");
+            }
+
+            try
+            {
+                objectCache.addOCSPResponse(ocspResponse);
+            }
+            catch (DuplicateKeyException e)
+            {
+                Utils.exitProgramm("OCSP response with the same id '{" + ocspResponseId.get()
+                                           + "}' already exists. The id of an OCSP response must be unique. Please correct this.");
+            }
+
+            // ocsp2testcase
+            objectCache.assignOCSPIdToTestCase(testCase, ocspResponse);
+
+            // testcase2ocsp
+            objectCache.assignTestCaseToOCSPId(ocspResponse, testCase);
         }
     }
 

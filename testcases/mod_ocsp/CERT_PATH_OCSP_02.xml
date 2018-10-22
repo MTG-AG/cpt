@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_02" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_02</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the OCSP response indicates the certificate status "unknown". This path is invalid because revocation information for a certificate is not available.</Purpose>
+    <Profile>COMMON</Profile>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_02.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

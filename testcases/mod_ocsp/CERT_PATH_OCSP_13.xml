@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_13" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_13</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when it receives an exceptional response of the type "try-later". This path is invalid because revocation information is not available to the application.</Purpose>
+    <Profile>COMMON</Profile>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_13.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

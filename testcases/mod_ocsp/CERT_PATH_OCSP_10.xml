@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_10" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_10</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the OCSP response's signature can be verified by a certificate whose certification path is invalid. Specifically, the OCSP signer certificate is a delegated certificate signed by the CA but does not feature the mandatory extended key usage value to be considered an authorized signer. This path is invalid because revocation information for the certificate is not available.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 6960</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_10.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

@@ -1,6 +1,10 @@
 
 package de.mtg.certpathtest;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -11,44 +15,43 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.KeyFactory;
-import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Security;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.sound.midi.SysexMessage;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
+import de.mtg.certpathtest.pkiobjects.CRL;
+import de.mtg.certpathtest.pkiobjects.Certificate;
+import de.mtg.certpathtest.pkiobjects.Extension;
+import de.mtg.certpathtest.pkiobjects.OcspResponse;
+import de.mtg.certpathtest.pkiobjects.PKIObjects;
 import de.mtg.certpathtest.pkiobjects.Variable;
+import de.mtg.security.asn1.x509.cert.SimpleCertificate;
+import de.mtg.security.asn1.x509.cert.SimpleTBSCertificate;
+import de.mtg.tr03124.TestCase;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.asn1.ASN1GeneralizedTime;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
@@ -69,15 +72,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
-
-import de.mtg.certpathtest.pkiobjects.CRL;
-import de.mtg.certpathtest.pkiobjects.Certificate;
-import de.mtg.certpathtest.pkiobjects.Extension;
-import de.mtg.certpathtest.pkiobjects.PKIObjects;
-import de.mtg.security.asn1.x509.cert.SimpleCertificate;
-import de.mtg.security.asn1.x509.cert.SimpleTBSCertificate;
-import de.mtg.security.asn1.x509.common.SimpleExtension;
-import de.mtg.tr03124.TestCase;
 
 public class Utils
 {
@@ -168,6 +162,16 @@ public class Utils
         {
             calendar.add(Calendar.YEAR, difference);
         }
+        occurence = value.indexOf("m");
+        if (occurence != -1)
+        {
+            calendar.add(Calendar.MINUTE, difference);
+        }
+        occurence = value.indexOf("S");
+        if (occurence != -1)
+        {
+            calendar.add(Calendar.SECOND, difference);
+        }
 
         return calendar.getTime();
     }
@@ -257,7 +261,7 @@ public class Utils
         }
         catch (JAXBException e)
         {
-            Utils.logError("Could not parse XML file '"+testCaseFile.getName()+"'.");
+            Utils.logError("Could not parse XML file '" + testCaseFile.getName() + "'.");
             throw new IOException(e);
         }
 
@@ -352,7 +356,7 @@ public class Utils
     }
 
     private static ArrayList<String> sortCertificates(PKIObjects pkiObjects, boolean fromTA)
-                    throws IOException, JAXBException
+            throws IOException
     {
         ArrayList<String> ids = new ArrayList<String>();
         String targetCertificateId = Utils.getTargetCertificateCertificateID(pkiObjects);
@@ -391,7 +395,8 @@ public class Utils
             if (counter > 500)
             {
                 String message =
-                    "Could not build information about the chaining of certificates. Please correct the PKI objects or reduce the number of certificates below 500.";
+                        "Could not build information about the chaining of certificates. Please correct the PKI " +
+                                "objects or reduce the number of certificates below 500.";
                 logger.warn(message);
             }
         }
@@ -413,7 +418,7 @@ public class Utils
 
         // START algorithm to exchange the ids with ids only located in this test case PKIObjects (because in the
         // original list the references are found).
-        ArrayList<String> idsCopy = new ArrayList<String>();
+        ArrayList<String> idsCopy = new ArrayList<>();
 
         for (String id : ids)
         {
@@ -481,12 +486,12 @@ public class Utils
         return returnList;
     }
 
-    public static ArrayList<String> sortCertificatesFromTCToTA(PKIObjects pkiObjects) throws IOException, JAXBException
+    public static ArrayList<String> sortCertificatesFromTCToTA(PKIObjects pkiObjects) throws IOException
     {
         return sortCertificates(pkiObjects, false);
     }
 
-    public static ArrayList<String> sortCertificatesFromTAToTC(PKIObjects pkiObjects) throws IOException, JAXBException
+    public static ArrayList<String> sortCertificatesFromTAToTC(PKIObjects pkiObjects) throws IOException
     {
         return sortCertificates(pkiObjects, true);
     }
@@ -533,23 +538,22 @@ public class Utils
     public static boolean hasOverwrite(Certificate certificate)
     {
 
-        String overwrite = certificate.getOverwrite();
+        Set<Boolean> values = new HashSet<>();
+        values.add(Optional.ofNullable(certificate.getVerifiedBy()).isPresent());
+        values.add(Optional.ofNullable(certificate.getIssuerDN()).isPresent());
+        values.add(Optional.ofNullable(certificate.getNotAfter()).isPresent());
+        values.add(Optional.ofNullable(certificate.getNotBefore()).isPresent());
+        values.add(Optional.ofNullable(certificate.getSubjectDN()).isPresent());
+        values.add(Optional.ofNullable(certificate.getSignature()).isPresent());
+        values.add(Optional.ofNullable(certificate.getSerialNumber()).isPresent());
+        values.add(Optional.ofNullable(certificate.getPublicKey()).isPresent());
+        values.add(Optional.ofNullable(certificate.getIssuerUniqueID()).isPresent());
+        values.add(Optional.ofNullable(certificate.getSubjectUniqueID()).isPresent());
+        values.add(Optional.ofNullable(certificate.getVersion()).isPresent());
+        values.add(Optional.ofNullable(certificate.getModification()).isPresent());
+        values.add(CollectionUtils.isNotEmpty(certificate.getExtensions()));
 
-        if (overwrite != null && !overwrite.isEmpty())
-        {
-            overwrite = overwrite.trim();
-            if ("false".equalsIgnoreCase(overwrite))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-
-        }
-
-        return false;
+        return values.contains(Boolean.TRUE);
     }
 
     public static List<String> getIdOfReferencedCertificates(TestCase testCase)
@@ -576,12 +580,12 @@ public class Utils
     }
 
     /**
-     *
      * Returns the id of this test case to uniquely identify a test case. This can be used for storing the test cases
      * but also reading them from the cache. If the id is not present or is an empty string then this method returns
      * null.
      *
      * @param testCase the test case whose id needs to be extracted.
+     *
      * @return the id of this testCase or null if this testCase is null or the id is not present or is an empty string.
      */
     public static String getTestCaseId(TestCase testCase)
@@ -620,7 +624,7 @@ public class Utils
         if (profiles.size() != 1)
         {
             Utils.exitProgramm("Test case with id '" + Utils.getTestCaseId(testCase)
-                + "' has more than one profile. Only one profile is supported.");
+                                       + "' has more than one profile. Only one profile is supported.");
         }
 
         return profiles.get(0);
@@ -630,14 +634,14 @@ public class Utils
     {
         String expectedResult = null;
         if (testCase.getTestStep() != null && testCase.getTestStep().size() > 0 && testCase.getTestStep().get(0) != null
-            && testCase.getTestStep().get(0).getExpectedResult() != null
-            && testCase.getTestStep().get(0).getExpectedResult().get(0) != null
-            && testCase.getTestStep().get(0).getExpectedResult().get(0).getText() != null
-            && testCase.getTestStep().get(0).getExpectedResult().get(0).getText().getContent() != null
-            && testCase.getTestStep().get(0).getExpectedResult().get(0).getText().getContent().get(0) != null)
+                && testCase.getTestStep().get(0).getExpectedResult() != null
+                && testCase.getTestStep().get(0).getExpectedResult().get(0) != null
+                && testCase.getTestStep().get(0).getExpectedResult().get(0).getText() != null
+                && testCase.getTestStep().get(0).getExpectedResult().get(0).getText().getContent() != null
+                && testCase.getTestStep().get(0).getExpectedResult().get(0).getText().getContent().get(0) != null)
         {
             expectedResult =
-                (String) testCase.getTestStep().get(0).getExpectedResult().get(0).getText().getContent().get(0);
+                    (String) testCase.getTestStep().get(0).getExpectedResult().get(0).getText().getContent().get(0);
         }
         return expectedResult;
     }
@@ -647,8 +651,8 @@ public class Utils
         String severity = null;
 
         if (testCase.getTestStep() != null && testCase.getTestStep().size() > 0 && testCase.getTestStep().get(0) != null
-            && testCase.getTestStep().get(0).getSeverity() != null
-            && testCase.getTestStep().get(0).getSeverity().value() != null)
+                && testCase.getTestStep().get(0).getSeverity() != null
+                && testCase.getTestStep().get(0).getSeverity().value() != null)
         {
             severity = (String) testCase.getTestStep().get(0).getSeverity().value();
         }
@@ -660,7 +664,7 @@ public class Utils
         String purpose = null;
 
         if (testCase.getPurpose() != null && testCase.getPurpose().getContent() != null
-            && testCase.getPurpose().getContent().get(0) != null)
+                && testCase.getPurpose().getContent().get(0) != null)
         {
             purpose = (String) testCase.getPurpose().getContent().get(0);
         }
@@ -668,11 +672,11 @@ public class Utils
     }
 
     /**
-     *
      * Returns the id of this crl to uniquely identify a CRL. This can be used for storing CRLs but also reading them
      * from the cache. If the id is not present or is an empty string then this method returns null.
      *
      * @param crl the CRL whose id needs to be extracted.
+     *
      * @return the id of this crl or null if this crl is null or its id is not present or is an empty string.
      */
     public static String getCRLId(CRL crl)
@@ -693,15 +697,33 @@ public class Utils
         return id;
     }
 
+    public static Optional<String> getOcspResponseId(OcspResponse ocspResponse)
+    {
+
+        if (ocspResponse == null)
+        {
+            return Optional.empty();
+        }
+
+        String id = ocspResponse.getId();
+
+        if (StringUtils.isEmpty(id))
+        {
+            return Optional.empty();
+        }
+
+        return Optional.of(id);
+    }
+
     /**
-     *
      * Returns the id of this certificate to uniquely identify a certificate. This can be used for storing certificates
      * but also reading them from the cache. If the id is not present or is an empty string then this method returns
      * null.
      *
      * @param certificate the certificate whose id needs to be extracted.
+     *
      * @return the id of this certificate or null if this certificate is null or the id is not present or is an empty
-     *         string.
+     * string.
      */
     public static String getCertificateId(Certificate certificate)
     {
@@ -741,10 +763,10 @@ public class Utils
         for (RDN sourceRDN : sourceRDNs)
         {
             AttributeTypeAndValue ava =
-                new AttributeTypeAndValue(sourceRDN.getFirst().getType(), new DERPrintableString(
-                                                                                                 sourceRDN.getFirst()
-                                                                                                          .getValue()
-                                                                                                          .toString()));
+                    new AttributeTypeAndValue(sourceRDN.getFirst().getType(), new DERPrintableString(
+                            sourceRDN.getFirst()
+                                    .getValue()
+                                    .toString()));
             targetRDNs[counter] = new RDN(ava);
             counter = +1;
         }
@@ -861,7 +883,7 @@ public class Utils
     }
 
     public static Certificate createCompleteCertificateFromReference(Certificate certificate)
-                    throws JAXBException, IOException
+            throws JAXBException, IOException
     {
 
         ObjectCache objectCache = ObjectCache.getInstance();
@@ -883,7 +905,7 @@ public class Utils
     }
 
     private static Certificate updateCertificateData(Certificate sourceCertificate, Certificate targetCertificate)
-                    throws JAXBException, IOException
+            throws JAXBException, IOException
     {
         Certificate sourceCertificateCopy = Utils.cloneCertificate(sourceCertificate);
 
@@ -934,9 +956,9 @@ public class Utils
             // the modification DUPLICATE_EXTENSION is present
 
             String targetModificationValue =
-                Optional.ofNullable(targetCertificate.getModification()).map(mod -> mod.getId()).orElse(null);
+                    Optional.ofNullable(targetCertificate.getModification()).map(mod -> mod.getId()).orElse(null);
             String sourceModificationValue =
-                Optional.ofNullable(sourceCertificate.getModification()).map(mod -> mod.getId()).orElse(null);
+                    Optional.ofNullable(sourceCertificate.getModification()).map(mod -> mod.getId()).orElse(null);
 
             Modification targetModification;
             Modification sourceModification;
@@ -1015,8 +1037,6 @@ public class Utils
 
         sourceCertificateCopy.setId(targetCertificate.getId());
 
-        Optional.ofNullable(targetCertificate.getOverwrite())
-                .ifPresent(overwrite -> sourceCertificateCopy.setOverwrite(overwrite));
         Optional.ofNullable(targetCertificate.getRefid()).ifPresent(refId -> sourceCertificateCopy.setRefid(refId));
         Optional.ofNullable(targetCertificate.getType()).ifPresent(type -> sourceCertificateCopy.setType(type));
 
@@ -1024,12 +1044,13 @@ public class Utils
     }
 
     /**
-     *
      * Creates a new copy of this certificate by marshalling the source object and unmarshalling it to a new traget
      * object, therefore it is not a copy of references but copy of the data in the certificate.
      *
      * @param certificate the source certificate.
+     *
      * @return a copy of this certificate.
+     *
      * @throws JAXBException if an exception during marshalling/unmarshalling occurs.
      * @throws IOException if an exception during marshalling/unmarshalling occurs.
      */
@@ -1060,45 +1081,22 @@ public class Utils
 
     }
 
-    public static PKIObjects applyReplacementsOnPKIObjects(PKIObjects pkiObjects) throws JAXBException, IOException
+    public static PKIObjects applyVariableValuesOnPKIObjects(PKIObjects pkiObjects) throws JAXBException, IOException
     {
-
-        JAXBContext jaxbContext = JAXBContext.newInstance(PKIObjects.class);
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8");
-        marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-        StringWriter stringWriter = new StringWriter();
-        marshaller.marshal(pkiObjects, stringWriter);
-        stringWriter.flush();
-        stringWriter.close();
-        String pkiObjectsString = stringWriter.toString();
 
         ConfigurationProperties configurationProperties = ConfigurationProperties.getInstance();
         Hashtable<String, String> replacementProperties = configurationProperties.getReplacementProperties();
         Enumeration<String> keys = replacementProperties.keys();
 
+        Map<String, String> cleanedGlobalVariables = new HashMap<>();
         while (keys.hasMoreElements())
         {
             String key = keys.nextElement();
+            String value = replacementProperties.get(key).trim();
             // remove "replace."
             String xmlKey = key.substring(8);
-            pkiObjectsString =
-                pkiObjectsString.replaceAll(Pattern.quote("${" + xmlKey + "}"), replacementProperties.get(key).trim());
+            cleanedGlobalVariables.put(xmlKey, value);
         }
-
-        byte[] pkiObjectsBytes = pkiObjectsString.getBytes();
-        ByteArrayInputStream bais = new ByteArrayInputStream(pkiObjectsBytes);
-
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        PKIObjects replacedPKIObjects = (PKIObjects) unmarshaller.unmarshal(bais);
-        bais.close();
-
-        return replacedPKIObjects;
-
-    }
-
-    public static PKIObjects applyVariableValuesOnPKIObjects(PKIObjects pkiObjects) throws JAXBException, IOException
-    {
 
         JAXBContext jaxbContext = JAXBContext.newInstance(PKIObjects.class);
         Marshaller marshaller = jaxbContext.createMarshaller();
@@ -1112,26 +1110,57 @@ public class Utils
 
         ArrayList<Variable> variables = pkiObjects.getVariables();
 
-        if (CollectionUtils.isNotEmpty(variables)) {
-            for (Variable var :variables) {
-                String name =  var.getName();
-                String value =  var.getValue();
-                pkiObjectsString = pkiObjectsString.replaceAll(Pattern.quote("%" + name + "%"), value);
+        Map<String, String> uncleanedLocalVariables = new HashMap<>();
+
+        if (CollectionUtils.isNotEmpty(variables))
+        {
+            for (Variable var : variables)
+            {
+                String name = var.getName().trim();
+                String value = var.getValue().trim();
+
+                if (value.indexOf("${") != -1)
+                {
+                    uncleanedLocalVariables.put(name, value);
+                }
+                else
+                {
+                    // local variables are overwriting here the global variables, this is OK because this is the
+                    // intended use
+                    cleanedGlobalVariables.put(name, value);
+                }
             }
         }
 
+        for (String uncleanedKey : uncleanedLocalVariables.keySet())
+        {
+            String value = (String) uncleanedLocalVariables.get(uncleanedKey);
+            for (String cleanedKey : cleanedGlobalVariables.keySet())
+            {
+                value = value.replaceAll(Pattern.quote("${" + cleanedKey + "}"),
+                                         (String) cleanedGlobalVariables.get(cleanedKey));
+            }
+            cleanedGlobalVariables.put(uncleanedKey, value);
+        }
+
+        for (String key : cleanedGlobalVariables.keySet())
+        {
+            pkiObjectsString = pkiObjectsString.replaceAll(Pattern.quote("${" + key + "}"),
+                                                           (String) cleanedGlobalVariables.get(key));
+        }
+
         byte[] pkiObjectsBytes = pkiObjectsString.getBytes();
-        ByteArrayInputStream bais = new ByteArrayInputStream(pkiObjectsBytes);
 
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        PKIObjects replacedPKIObjects = (PKIObjects) unmarshaller.unmarshal(bais);
-        bais.close();
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(pkiObjectsBytes))
+        {
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            PKIObjects replacedPKIObjects = (PKIObjects) unmarshaller.unmarshal(bais);
+            return replacedPKIObjects;
+        }
 
-        return replacedPKIObjects;
     }
 
     /**
-     *
      * Writes this certificate on the filesystem in the file with this filename.
      *
      * @param certificate the certificate to export in the filesystem.
@@ -1151,7 +1180,6 @@ public class Utils
     }
 
     /**
-     *
      * Writes this bytes on the filesystem in the file with this filename.
      *
      * @param bytes the bytes to write in the filesystem.
@@ -1172,7 +1200,7 @@ public class Utils
 
     public static byte[] calculateBleichenbacherSignature(byte[] toBeSigned, int garbageLength, BigInteger d,
                                                           BigInteger n, String signatureOID)
-                    throws NoSuchAlgorithmException
+            throws NoSuchAlgorithmException
     {
 
         int numberOfFFs = 0;
@@ -1219,8 +1247,8 @@ public class Utils
         else
         {
             throw new IllegalArgumentException(
-                                               "It is not possible to apply the transformation for this algorithm '"
-                                                   + signatureOID + "'.");
+                    "It is not possible to apply the transformation for this algorithm '"
+                            + signatureOID + "'.");
         }
 
         ByteArray result = new ByteArray(hashAlgorithm.getDigestInfo());
@@ -1296,15 +1324,15 @@ public class Utils
         if (size < 281 || size > 65539)
         {
             throw new IllegalArgumentException(
-                                               "Cannot create certificate with less than 281 bytes or more than 65539.");
+                    "Cannot create certificate with less than 281 bytes or more than 65539.");
         }
 
         String hardcodedPK =
-            "30819F300D06092A864886F70D01010105000" + "3818D0030818902818100C7E707BBEFDD66083CF8C781DFB6A3A"
-                + "EE0CAD223DB4023309BD318FE2E4860A26555FC8D55C62E1C693"
-                + "931EA84BFE117AE4565F0474F53A7CE7F42335E67B08B54790CF"
-                + "343712F1E6DC73A9B5AD596B023402229B6E8B02FF24CA0D5AB3"
-                + "1FF8C3DE211577C0CDD625387C530AE68C288B84E8F663466E06" + "89293711D153983DD0203010001";
+                "30819F300D06092A864886F70D01010105000" + "3818D0030818902818100C7E707BBEFDD66083CF8C781DFB6A3A"
+                        + "EE0CAD223DB4023309BD318FE2E4860A26555FC8D55C62E1C693"
+                        + "931EA84BFE117AE4565F0474F53A7CE7F42335E67B08B54790CF"
+                        + "343712F1E6DC73A9B5AD596B023402229B6E8B02FF24CA0D5AB3"
+                        + "1FF8C3DE211577C0CDD625387C530AE68C288B84E8F663466E06" + "89293711D153983DD0203010001";
 
         SimpleCertificate simpleCertificate = new SimpleCertificate();
 
@@ -1370,6 +1398,11 @@ public class Utils
 
         return cert;
 
+    }
+
+    public static boolean hasExplicitPath(PKIObjects pkiObjects)
+    {
+        return pkiObjects.getPath() != null;
     }
 
     public static void writeZip(String zipFilename, Path path) throws IOException

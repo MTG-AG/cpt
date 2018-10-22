@@ -1,22 +1,22 @@
 
 package de.mtg.certpathtest.testcase.handlers;
 
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import javax.xml.bind.JAXBException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Collections;
+import java.util.StringTokenizer;
 
 import de.mtg.certpathtest.ConfigurationProperties;
 import de.mtg.certpathtest.ObjectCache;
 import de.mtg.certpathtest.Utils;
 import de.mtg.certpathtest.pkiobjects.PKIObjects;
 import de.mtg.tr03124.TestCase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PathExportHandler extends TestCaseHandler
 {
@@ -47,7 +47,6 @@ public class PathExportHandler extends TestCaseHandler
 
     public void execute() throws IOException, JAXBException
     {
-
         String testCaseId = testCase.getId();
         ObjectCache objectCache = ObjectCache.getInstance();
 
@@ -55,8 +54,8 @@ public class PathExportHandler extends TestCaseHandler
         String tcId = Utils.getTargetCertificateCertificateID(objectCache.getPKIobjectsFromTestCase(testCaseId));
 
         String outputDirectoryName =
-            ConfigurationProperties.getInstance().getProperties()
-                                   .getString(ConfigurationProperties.OUTPUT_DIRECTORY_PROPERTY);
+                ConfigurationProperties.getInstance().getProperties()
+                        .getString(ConfigurationProperties.OUTPUT_DIRECTORY_PROPERTY);
 
         Path path = Paths.get(outputDirectoryName, testCaseId);
 
@@ -72,17 +71,47 @@ public class PathExportHandler extends TestCaseHandler
             pathsOutputPath.toFile().mkdirs();
         }
 
+        // Two cases: Either an explicit path is declared in the PKIObjects (the path MUST be created for whatever
+        // reason) or the number of certificates in the intended path, as this specified in the PKI objects, matches
+        // the total number of certificates. (There are test cases where it is necessary for the library to check
+        // that the correct patch is constructed).
+
         PKIObjects pkiObjects = objectCache.getPKIobjectsFromTestCase(testCaseId);
 
-        int size = Utils.getNumberOfCertificates(pkiObjects);
+        if (Utils.hasExplicitPath(pkiObjects))
+        {
 
-        ArrayList<String> issuedBy = Utils.sortCertificatesFromTAToTC(pkiObjects);
-        ArrayList<String> issuedTo = Utils.sortCertificatesFromTCToTA(pkiObjects);
+            de.mtg.certpathtest.pkiobjects.Path pkiObjectsPath = pkiObjects.getPath();
+            String pathValue = pkiObjectsPath.getValue();
+            StringTokenizer tokenizer = new StringTokenizer(pathValue, ",");
 
+            ArrayList<String> issuedBy = new ArrayList<>();
+            ArrayList<String> issuedTo = new ArrayList<>();
+            while (tokenizer.hasMoreTokens())
+            {
+                String id = tokenizer.nextToken().trim();
+                issuedBy.add(id);
+                issuedTo.add(id);
+            }
+            Collections.reverse(issuedTo);
+            writePaths(issuedBy, issuedTo, testCaseId, taId, tcId, -1, outputDirectoryName);
+        }
+        else
+        {
+            int size = Utils.getNumberOfCertificates(pkiObjects);
+            ArrayList<String> issuedBy = Utils.sortCertificatesFromTAToTC(pkiObjects);
+            ArrayList<String> issuedTo = Utils.sortCertificatesFromTCToTA(pkiObjects);
+            writePaths(issuedBy, issuedTo, testCaseId, taId, tcId, size, outputDirectoryName);
+        }
+    }
+
+    private void writePaths(ArrayList<String> issuedBy, ArrayList<String> issuedTo, String testCaseId, String taId,
+                            String tcId, int size, String outputDirectoryName) throws IOException
+    {
         StringBuilder issuedByStringBuilder = new StringBuilder();
         StringBuilder issuedToStringBuilder = new StringBuilder();
 
-        if (issuedBy.size() == issuedTo.size() && size == issuedBy.size())
+        if ((issuedBy.size() == issuedTo.size() && size == issuedBy.size()) || size == -1)
         {
 
             for (String id : issuedBy)
@@ -165,10 +194,10 @@ public class PathExportHandler extends TestCaseHandler
             // content.getBytes());
             //
 
-            // issuedTo excluding TA (needed by e.g OpenVPN)
+            // issuedTo excluding TA (needed by e.g. OpenVPN)
             content = getContent(issuedTo, false, true);
             Files.write(Paths.get(outputDirectoryName, testCaseId, PATHS_SUBDIR_NAME, ISSUED_TO_DIRECTION_WITHOUT_TA),
-                        content.getBytes());
+                    content.getBytes());
             //
             // // issuedTo excluding TC/TA
             // content = getContent(issuedTo, true, true);

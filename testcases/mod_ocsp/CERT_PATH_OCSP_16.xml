@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_16" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_16</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when an a certificate does not contain the AIA extension. The target certificate is contained in this OCSP response with status "revoked". This path is invalid because it is not allowed for an application to ignore the revocation status of a certificate in the case of an unknown responser URL.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 6960</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_16.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

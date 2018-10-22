@@ -5,6 +5,7 @@ import de.mtg.certpathtest.ValueValidator;
 import de.mtg.certpathtest.pkiobjects.NextUpdate;
 import de.mtg.certpathtest.pkiobjects.NotAfter;
 import de.mtg.certpathtest.pkiobjects.NotBefore;
+import de.mtg.certpathtest.pkiobjects.ProducedAt;
 import de.mtg.certpathtest.pkiobjects.RevocationDate;
 import de.mtg.certpathtest.pkiobjects.ThisUpdate;
 
@@ -52,8 +53,14 @@ public class DateValidator extends ValueValidator
             value = revocationDate.getValue();
             encoding = revocationDate.getEncoding();
         }
+        else if (xmlValue instanceof ProducedAt)
+        {
+            ProducedAt productedAtDate = (ProducedAt) xmlValue;
+            value = productedAtDate.getValue();
+            encoding = productedAtDate.getEncoding();
+        }
 
-        RegExpValidator regexpValidator = new RegExpValidator("[\\+\\-]{1}\\d+[YMDH]{1}");
+        RegExpValidator regexpValidator = new RegExpValidator("[\\+\\-]{1}\\d+[YMDHmS]{1}");
         boolean correctValue = regexpValidator.validate(value);
 
         boolean correctEncoding = false;

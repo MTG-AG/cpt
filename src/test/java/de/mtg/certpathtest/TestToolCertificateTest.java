@@ -17,6 +17,7 @@ import org.bouncycastle.asn1.ASN1GeneralizedTime;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERSet;
@@ -157,6 +158,17 @@ public class TestToolCertificateTest
 
         highLevelCertificate.verify(certificateCreator.getRootCACertificate().getPublicKey());
         asn1Certificate.verify(certificateCreator.getRootCACertificate().getPublicKey());
+
+        // check for encoding of DNs
+
+        X500Name name = new X500Name(highLevelCertificate.getSubjectDN().getName());
+        ASN1Sequence seq;
+        try (ASN1InputStream asn1InputStream = new ASN1InputStream(asn1Certificate.getSubjectX500Principal().getEncoded()))
+            {
+                 seq = (ASN1Sequence) asn1InputStream.readObject();
+            }
+
+        Assert.assertTrue(Arrays.equals(name.getEncoded(), seq.getEncoded()));
 
     }
 

@@ -2,6 +2,8 @@
 package de.mtg.certpathtest.testcase.handlers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -9,6 +11,10 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import de.mtg.certpathtest.TestToolOCSPResponse;
+import de.mtg.certpathtest.pkiobjects.OcspResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,9 +63,11 @@ public class CreateCertificateHandler extends TestCaseHandler
 
         ArrayList<Certificate> certificates = pkiObjects.getCertificates();
         ArrayList<CRL> crls = pkiObjects.getCRLs();
+        ArrayList<OcspResponse> ocspResponses = pkiObjects.getOcspResponses();
 
         int certSize = certificates.size();
         int crlSize = crls.size();
+        int ocspResponsesSize = ocspResponses.size();
 
         try
         {
@@ -72,22 +80,28 @@ public class CreateCertificateHandler extends TestCaseHandler
 
                 logger.info("Creating certificate.");
 
-                if (Utils.hasReference(certificate) && !Utils.hasOverwrite(certificate))
+                if (Utils.hasReference(certificate))
                 {
 
                     // certificate is a copy
-
                     String refid = certificate.getRefid();
 
                     if (refid == null || refid.isEmpty())
                     {
                         Utils.exitProgramm("Certificate with id '" + certificateId
-                            + "' needs to be overwritten, but there is no reference cetificate specified.");
+                                                   + "' needs to be overwritten, but there is no reference certificate specified.");
                     }
 
-                    if (refid.equalsIgnoreCase(certificateId)) {
+                    if (refid.equalsIgnoreCase(certificateId))
+                    {
                         Utils.exitProgramm("Certificate with id '" + certificateId + "' references itself.");
                     }
+                }
+
+                if (Utils.hasReference(certificate) && !Utils.hasOverwrite(certificate))
+                {
+                    // certificate is a copy
+                    String refid = certificate.getRefid();
 
                     logger.debug("This certificate is a direct copy of certificate with id '{}'.", refid);
                     logger.debug("Certificate definition: {}.", certificate.toString());
@@ -176,6 +190,44 @@ public class CreateCertificateHandler extends TestCaseHandler
             logger.info("Successfully created revocation list(s) for test case '{}'.", testCase.getId());
         }
 
+
+
+        try
+        {
+            for (OcspResponse ocspResponse : ocspResponses)
+            {
+
+                String ocspResponseId = ocspResponse.getId();
+                MDC.put("OCSP", ocspResponseId);
+                byte[] rawOCSPResponse = null;
+
+                logger.info("Creating OCSP response.");
+
+                rawOCSPResponse = createOCSPResponse(ocspResponse);
+
+                if (Optional.ofNullable(rawOCSPResponse).isPresent())
+                {
+                    objectCache.addOCSPResponse(ocspResponseId, rawOCSPResponse);
+                    logger.info("Successfully created OCSP Response.");
+                }
+                else
+                {
+                    Utils.logError("Could not create CRL.");
+                }
+
+            }
+        }
+        finally
+        {
+            MDC.remove("OCSP");
+        }
+
+        if (ocspResponsesSize > 0)
+        {
+            logger.info("Successfully created OCSP Responses for test case '{}'.", testCase.getId());
+        }
+
+
     }
 
     private byte[] createCertificate(Certificate certificate) throws Exception
@@ -187,20 +239,9 @@ public class CreateCertificateHandler extends TestCaseHandler
 
         Certificate certificateToWorkOn = null;
 
-        if (refid != null && !refid.isEmpty())
+        if (StringUtils.isNotEmpty(refid))
         {
-
-            // overwrite must be set and must be true otherwise there is no need to create a certificate,
-            String overwrite = certificate.getOverwrite();
-
-            if (overwrite == null || !("true".equalsIgnoreCase(overwrite.trim())))
-            {
-                Utils.exitProgramm("Creating certificate with id '" + certificate.getId()
-                    + "', but the certificate is not overwriting any other certificate.");
-            }
-
             certificateToWorkOn = Utils.createCompleteCertificateFromReference(certificate);
-
         }
         else
         {
@@ -208,6 +249,8 @@ public class CreateCertificateHandler extends TestCaseHandler
         }
 
         logger.debug("Creating certificate for adjusted certificate definition {}.", certificateToWorkOn.toString());
+
+        ObjectCache.getInstance().addResolvedCertificate(certificateToWorkOn);
 
         TestToolCertificate testToolCertificate = new TestToolCertificate(certificateToWorkOn);
         return testToolCertificate.getEncoded();
@@ -221,5 +264,30 @@ public class CreateCertificateHandler extends TestCaseHandler
         TestToolCRL testToolCRL = new TestToolCRL(crl);
         return testToolCRL.getEncoded();
     }
+
+    private byte[] createOCSPResponse(OcspResponse ocspResponse) throws Exception
+    {
+        logger.debug("OCSP:" + ocspResponse);
+        TestToolOCSPResponse testToolOCSPResponse = new TestToolOCSPResponse();
+        testToolOCSPResponse.createOCSPResponse(ocspResponse);
+
+        storeOcspAiaLocation(ocspResponse);
+
+        return testToolOCSPResponse.getEncoded();
+    }
+
+
+    private void storeOcspAiaLocation(de.mtg.certpathtest.pkiobjects.OcspResponse ocspResponse) throws DuplicateKeyException, MalformedURLException
+    {
+        String location = ocspResponse.getLocation();
+        ObjectCache cache = ObjectCache.getInstance();
+        if (location != null)
+        {
+            URL url = new URL(location.trim());
+            // use only path, because this is how the mapping is performed in the servlet.
+            cache.addOcspAia(url.getPath(), Utils.getOcspResponseId(ocspResponse).get());
+        }
+    }
+
 
 }

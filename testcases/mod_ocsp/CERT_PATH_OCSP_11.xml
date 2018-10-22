@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_11" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_11</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the OCSP response for an intermediate certificate indicates the revocation status as "unknown". This path is invalid because revocation information for a CA certificate in the path is not available.</Purpose>
+    <Profile>COMMON</Profile>
+    <Reference>RFC 6960</Reference>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_11.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF8" standalone="yes"?>
+<testCase id="CERT_PATH_OCSP_18" xmlns="http://bsi.bund.de/TR03124">
+    <Title>Test case of CERT_PATH_OCSP_18</Title>
+    <Version>1.0</Version>
+    <Purpose>Checks the behaviour of the application when the target certificate is indicated as revoked in an OCSP response but has a negative serial number. This path is invalid because the target certificate is revoked, and applications are required to either reject negative serial numbers or to accept them gracefully.</Purpose>
+    <Profile>COMMON</Profile>
+    <TestStep>
+        <TestDataReference>PO_CERT_PATH_OCSP_18.xml</TestDataReference>
+        <ExpectedResult>
+            <Text>INVALID</Text>
+        </ExpectedResult>
+        <Severity>ERROR</Severity>
+    </TestStep>
+</testCase>

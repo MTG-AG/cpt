@@ -606,7 +606,6 @@ public class UtilsTest
         objectCache.addCertificate(levelZero);
 
         Certificate levelOne = new Certificate();
-        levelOne.setOverwrite("true");
         levelOne.setType("TC");
         levelOne.setId("CERT_PATH_EMAIL_02_EE");
         levelOne.setRefid(levelZeroId);
@@ -638,11 +637,11 @@ public class UtilsTest
     }
 
     /**
-     * Tests the {@link Utils#applyReplacementsOnPKIObjects(PKIObjects)} method .
+     * Tests the {@link Utils#applyVariableValuesOnPKIObjects(PKIObjects)} (PKIObjects)} method .
      *
      * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
      * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
-     * @see Utils#applyReplacementsOnPKIObjects(PKIObjects) applyReplacementsOnPKIObjects
+     * @see Utils#applyVariableValuesOnPKIObjects(PKIObjects) applyReplacementsOnPKIObjects
      */
     @Test
     public void testApplyReplacements() throws JAXBException, IOException
@@ -680,7 +679,7 @@ public class UtilsTest
         Assert.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
         Assert.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
 
-        String newPkiObjects = Utils.applyReplacementsOnPKIObjects(pkiObjects).toString();
+        String newPkiObjects = Utils.applyVariableValuesOnPKIObjects(pkiObjects).toString();
 
         Assert.assertTrue(newPkiObjects.indexOf("RSA,2048") != -1);
         Assert.assertTrue(newPkiObjects.indexOf("CN=Test Issuer, C=DE") != -1);
@@ -717,16 +716,20 @@ public class UtilsTest
         xmlCertificate.setSignature("1.2.840.113549.1.1.11"); // SHA256WithRSAEncryption
         xmlCertificate.setVerifiedBy(id);
 
-        String crlDistributionPointValue =
-                "%rootCrldp%";
         xmlCertificate.getExtensions().add(new Extension(
-                "%rootCrldp%",
+                "${rootCrldp}",
                 "2.5.29.31",
                 "false",
                 "CRL Distribution Points",
                 "pretty"));
         xmlCertificate.getExtensions().add(new Extension(
-                "%subCrldp%",
+                "${subCrldp}",
+                "2.5.29.31",
+                "false",
+                "CRL Distribution Points",
+                "pretty"));
+        xmlCertificate.getExtensions().add(new Extension(
+                "http://${httpHost}.crl",
                 "2.5.29.31",
                 "false",
                 "CRL Distribution Points",
@@ -737,7 +740,7 @@ public class UtilsTest
         firstVar.setValue("https://root.crl");
         Variable secondVar = new Variable();
         secondVar.setName("subCrldp");
-        secondVar.setValue("https://sub.crl");
+        secondVar.setValue("https://${httpHost}.crl");
 
         PKIObjects pkiObjects = new PKIObjects();
         pkiObjects.getCertificates().add(xmlCertificate);
@@ -750,15 +753,18 @@ public class UtilsTest
         properties.addSimpleProperty("replace.publicKey", "RSA,2048");
         properties.addSimpleProperty("replace.issuerDN", "CN=Test Issuer, C=DE");
         properties.addSimpleProperty("replace.serialNumber", "12345678");
+        properties.addSimpleProperty("replace.httpHost", "cert_path_host");
         Hashtable<String, String> replacementProperties = properties.getReplacementProperties();
 
         Assert.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
         Assert.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
         Assert.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
 
-        pkiObjects = Utils.applyReplacementsOnPKIObjects(pkiObjects);
+        // pkiObjects = Utils.applyReplacementsOnPKIObjects(pkiObjects);
 
+        System.out.println(pkiObjects);
         PKIObjects newPkiObjects = Utils.applyVariableValuesOnPKIObjects(pkiObjects);
+        System.out.println(newPkiObjects);
 
         Assert.assertTrue(newPkiObjects.toString().indexOf("RSA,2048") != -1);
         Assert.assertTrue(newPkiObjects.toString().indexOf("CN=Test Issuer, C=DE") != -1);
@@ -776,7 +782,7 @@ public class UtilsTest
         // once as a variable and once as a replaced value
         Assert.assertEquals(2, matchCounter);
 
-        pattern = Pattern.compile(Pattern.quote("https://sub.crl"));
+        pattern = Pattern.compile(Pattern.quote("https://cert_path_host.crl"));
         matcher = pattern.matcher(newPkiObjects.toString());
         matchCounter = 0;
         while (matcher.find())
@@ -786,6 +792,138 @@ public class UtilsTest
 
         // once as a variable and once as a replaced value
         Assert.assertEquals(2, matchCounter);
+
+        pattern = Pattern.compile(Pattern.quote("http://cert_path_host.crl"));
+        matcher = pattern.matcher(newPkiObjects.toString());
+        matchCounter = 0;
+        while (matcher.find())
+        {
+            matchCounter++;
+        }
+
+        // only once as a replaced value
+        Assert.assertEquals(1, matchCounter);
+
+    }
+
+    /**
+     * Tests the {@link Utils#applyVariableValuesOnPKIObjects(PKIObjects)} (PKIObjects)} method .
+     *
+     * @throws IOException if an exception during marshalling/unmarshalling XML occurs.
+     * @throws JAXBException if an exception during marshalling/unmarshalling XML occurs.
+     * @see Utils#applyVariableValuesOnPKIObjects(PKIObjects) applyVariableValuesOnPKIObjects
+     */
+    @Test
+    public void testApplyVariableValuesOnPKIObjectsWithLocalOverwritingGlobal() throws JAXBException, IOException
+    {
+
+        Random random = new Random();
+
+        String id = "JUNIT-" + random.nextInt(Integer.MAX_VALUE);
+
+        Certificate xmlCertificate = new Certificate();
+
+        xmlCertificate.setId(id);
+        xmlCertificate.setIssuerDN(new IssuerDN("${issuerDN}", "UTF8"));
+        xmlCertificate.setSubjectDN(new SubjectDN("CN=Test User, C=DE", "UTF8"));
+        xmlCertificate.setSerialNumber("${serialNumber}");
+        xmlCertificate.setVersion("2");
+        xmlCertificate.setNotBefore(new NotBefore("-3D", "UTC"));
+        xmlCertificate.setNotAfter(new NotAfter("+3D", "UTC"));
+        xmlCertificate.setPublicKey(new PublicKey("${publicKey}", "pretty"));
+        xmlCertificate.setSignature("1.2.840.113549.1.1.11"); // SHA256WithRSAEncryption
+        xmlCertificate.setVerifiedBy(id);
+
+        xmlCertificate.getExtensions().add(new Extension(
+                "${rootCrldp}",
+                "2.5.29.31",
+                "false",
+                "CRL Distribution Points",
+                "pretty"));
+        xmlCertificate.getExtensions().add(new Extension(
+                "${subCrldp}",
+                "2.5.29.31",
+                "false",
+                "CRL Distribution Points",
+                "pretty"));
+        xmlCertificate.getExtensions().add(new Extension(
+                "http://${httpHost}.crl",
+                "2.5.29.31",
+                "false",
+                "CRL Distribution Points",
+                "pretty"));
+
+        Variable firstVar = new Variable();
+        firstVar.setName("rootCrldp");
+        firstVar.setValue("https://root.crl");
+        Variable secondVar = new Variable();
+        secondVar.setName("subCrldp");
+        secondVar.setValue("https://${httpHost}.crl");
+        Variable thirdVariable = new Variable();
+        // test local variable overwrites global
+        thirdVariable.setName("httpHost");
+        thirdVariable.setValue("overwriteGlobal");
+
+        PKIObjects pkiObjects = new PKIObjects();
+        pkiObjects.getCertificates().add(xmlCertificate);
+        pkiObjects.getVariables().add(firstVar);
+        pkiObjects.getVariables().add(secondVar);
+        pkiObjects.getVariables().add(thirdVariable);
+
+        ConfigurationProperties properties = ConfigurationProperties.getInstance();
+
+        properties.getProperties();
+        properties.addSimpleProperty("replace.publicKey", "RSA,2048");
+        properties.addSimpleProperty("replace.issuerDN", "CN=Test Issuer, C=DE");
+        properties.addSimpleProperty("replace.serialNumber", "12345678");
+        properties.addSimpleProperty("replace.httpHost", "cert_path_host");
+        Hashtable<String, String> replacementProperties = properties.getReplacementProperties();
+
+        Assert.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
+        Assert.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
+        Assert.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
+
+        System.out.println(pkiObjects);
+        PKIObjects newPkiObjects = Utils.applyVariableValuesOnPKIObjects(pkiObjects);
+        System.out.println(newPkiObjects);
+
+        Assert.assertTrue(newPkiObjects.toString().indexOf("RSA,2048") != -1);
+        Assert.assertTrue(newPkiObjects.toString().indexOf("CN=Test Issuer, C=DE") != -1);
+        Assert.assertTrue(newPkiObjects.toString().indexOf("12345678") != -1);
+        Assert.assertTrue(newPkiObjects.toString().indexOf("https://root.crl") != -1);
+
+        Pattern pattern = Pattern.compile(Pattern.quote("https://root.crl"));
+        Matcher matcher = pattern.matcher(newPkiObjects.toString());
+        int matchCounter = 0;
+        while (matcher.find())
+        {
+            matchCounter++;
+        }
+
+        // once as a variable and once as a replaced value
+        Assert.assertEquals(2, matchCounter);
+
+        pattern = Pattern.compile(Pattern.quote("https://overwriteGlobal.crl"));
+        matcher = pattern.matcher(newPkiObjects.toString());
+        matchCounter = 0;
+        while (matcher.find())
+        {
+            matchCounter++;
+        }
+
+        // once as a variable and once as a replaced value
+        Assert.assertEquals(2, matchCounter);
+
+        pattern = Pattern.compile(Pattern.quote("http://overwriteGlobal.crl"));
+        matcher = pattern.matcher(newPkiObjects.toString());
+        matchCounter = 0;
+        while (matcher.find())
+        {
+            matchCounter++;
+        }
+
+        // only once as a replaced value
+        Assert.assertEquals(1, matchCounter);
 
     }
 
@@ -825,6 +963,84 @@ public class UtilsTest
 
         }
 
+    }
+
+    /**
+     * Tests the {@link Utils#hasOverwrite(Certificate)} (int)} method .
+     *
+     * @throws CertificateException if an exception occurs while creating the certificate.
+     * @throws IOException if an exception occurs while creating the certificate.
+     * @see Utils#createDummyCertificate(int) createDummyCertificate
+     */
+    @Test
+    public void testHasOverwriteNew() throws CertificateException, IOException
+    {
+
+        Assert.assertFalse(Utils.hasOverwrite(getEmptyCertificate()));
+
+        Certificate cert = getEmptyCertificate();
+        cert.setSerialNumber("1");
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setVersion("0");
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setNotBefore(new NotBefore("-1H", "GEN"));
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setNotAfter(new NotAfter("-1H", "GEN"));
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setIssuerDN(new IssuerDN("C=DE", "UTF8"));
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setSubjectDN(new SubjectDN("C=DE", "UTF8"));
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setIssuerUniqueID("100001");
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setSubjectUniqueID("100001");
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setSignature("1.2.3.4.5");
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setPublicKey(new PublicKey("RSA,2048", "pretty"));
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setVerifiedBy("ROOTCA");
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        cert = getEmptyCertificate();
+        cert.setModification(new Modification("WRONG_SIGNATURE"));
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+        Extension extension = new Extension("testvalue", "1.2.3", "false", "testname", "pretty");
+        ArrayList<Extension> extensions = new ArrayList<>();
+        extensions.add(extension);
+        cert = getEmptyCertificate();
+        cert.setExtensions(extensions);
+        Assert.assertTrue(Utils.hasOverwrite(cert));
+
+    }
+
+    private Certificate getEmptyCertificate() {
+        Certificate cert = new Certificate();
+        cert.setId("456");
+        cert.setRefid("123");
+        cert.setType("TC");
+        return cert;
     }
 
     /**
