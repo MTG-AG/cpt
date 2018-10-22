@@ -12,10 +12,12 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import javax.mail.Address;
@@ -29,6 +31,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.cms.AttributeTable;
@@ -87,7 +90,7 @@ public class EmailExportHandler extends TestCaseHandler
      * @throws IOException if certificates and/or emails could not be created/parsed/sent.
      * @throws JAXBException if an exception occurs when working on PKI Objects.
      */
-    public void execute() throws IOException, JAXBException
+    public void execute() throws IOException
     {
 
         String testCaseId = testCase.getId();
@@ -119,49 +122,27 @@ public class EmailExportHandler extends TestCaseHandler
         int size = Utils.getNumberOfCertificates(pkiObjects);
 
         ArrayList<String> issuedBy = Utils.sortCertificatesFromTAToTC(pkiObjects);
-        ArrayList<String> issuedTo = Utils.sortCertificatesFromTCToTA(pkiObjects);
 
-        StringBuilder issuedByStringBuilder = new StringBuilder();
-        StringBuilder issuedToStringBuilder = new StringBuilder();
+        if (size != issuedBy.size()) {
 
-        if (issuedBy.size() == issuedTo.size() && size == issuedBy.size())
+            issuedBy = new ArrayList<>();
+
+            if (Utils.hasExplicitPath(pkiObjects))
+            {
+                de.mtg.certpathtest.pkiobjects.Path pkiObjectsPath = pkiObjects.getPath();
+                String pathValue = pkiObjectsPath.getValue();
+                StringTokenizer tokenizer = new StringTokenizer(pathValue, ",");
+
+                while (tokenizer.hasMoreTokens())
+                {
+                    String id = tokenizer.nextToken().trim();
+                    issuedBy.add(id);
+                }
+            }
+        }
+
+        if (CollectionUtils.isNotEmpty(issuedBy))
         {
-
-            for (String id : issuedBy)
-            {
-                issuedByStringBuilder.append(id);
-                if (id.equalsIgnoreCase(taId))
-                {
-                    issuedByStringBuilder.append(OutputHandler.TRUST_ANCHOR_FILE_ENDING);
-                }
-                else if (id.equalsIgnoreCase(tcId))
-                {
-                    issuedByStringBuilder.append(OutputHandler.TARGET_CERTIFICATE_FILE_ENDING);
-                }
-                else
-                {
-                    issuedByStringBuilder.append(OutputHandler.CA_CERTIFICATE_FILE_ENDING);
-                }
-                issuedByStringBuilder.append(System.getProperty("line.separator"));
-            }
-
-            for (String id : issuedTo)
-            {
-                issuedToStringBuilder.append(id);
-                if (id.equalsIgnoreCase(taId))
-                {
-                    issuedToStringBuilder.append(OutputHandler.TRUST_ANCHOR_FILE_ENDING);
-                }
-                else if (id.equalsIgnoreCase(tcId))
-                {
-                    issuedToStringBuilder.append(OutputHandler.TARGET_CERTIFICATE_FILE_ENDING);
-                }
-                else
-                {
-                    issuedToStringBuilder.append(OutputHandler.CA_CERTIFICATE_FILE_ENDING);
-                }
-                issuedToStringBuilder.append(System.getProperty("line.separator"));
-            }
 
             try
             {
@@ -207,7 +188,7 @@ public class EmailExportHandler extends TestCaseHandler
                     MessagingException, SMIMEException, CMSException, IOException, CertificateException
     {
 
-        Hashtable<String, String> certificateReplacements = new Hashtable<String, String>();
+        Hashtable<String, String> certificateReplacements = new Hashtable<>();
 
         boolean hasReplacements = false;
 
