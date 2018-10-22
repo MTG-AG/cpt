@@ -2,7 +2,7 @@
 <testCase id="CERT_PATH_OCSP_19" xmlns="http://bsi.bund.de/TR03124">
     <Title>Test case of CERT_PATH_OCSP_19</Title>
     <Version>1.0</Version>
-    <Purpose>Checks whether the application correcly processes an OCSP with a wrong OCSP response version number. The response is indicating that the certificate status is "good".  The path is invalid since an application must reject such an invalid response.</Purpose>
+    <Purpose>Checks whether the application correctly processes an OCSP response with a wrong response version number. The response is indicating that the certificate status is "good".  The path is invalid since an application must reject such an invalid response.</Purpose>
     <Profile>COMMON</Profile>
     <TestStep>
         <TestDataReference>PO_CERT_PATH_OCSP_19.xml</TestDataReference>

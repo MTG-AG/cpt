@@ -2,7 +2,7 @@
 <testCase id="CERT_PATH_OCSP_01" xmlns="http://bsi.bund.de/TR03124">
     <Title>Test case of CERT_PATH_OCSP_01</Title>
     <Version>1.0</Version>
-    <Purpose>Checks whether the application correcly processes an OCSP response indicating that the certificate status is "good".</Purpose>
+    <Purpose>Checks whether the application correctly processes an OCSP response indicating that the certificate status is "good".</Purpose>
     <Profile>COMMON</Profile>
     <TestStep>
         <TestDataReference>PO_CERT_PATH_OCSP_01.xml</TestDataReference>
