@@ -1,5 +1,5 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_EXT_06_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_EXT_06_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" type="TA"/>
     <Certificate id="CERT_PATH_EXT_06_SUB_CA">
         <VerifiedBy>CERT_PATH_EXT_06_ROOT_CA</VerifiedBy>
         <Version>2</Version>
@@ -15,7 +15,7 @@
         <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">keyCertSign,cRLSign</Extension>
         <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
     </Certificate>
-    <Certificate id="CERT_PATH_EXT_06_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_EXT_06_EE" refid="CERT_PATH_COMMON_01_EE" type="TC">
         <VerifiedBy>CERT_PATH_EXT_06_SUB_CA</VerifiedBy>
         <SerialNumber>20006</SerialNumber>
     </Certificate>

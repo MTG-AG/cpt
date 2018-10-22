@@ -499,26 +499,23 @@ public class Utils
     public static boolean hasReference(TestCase testCase)
     {
 
-        boolean hasReference = false;
-
         PKIObjects pkiObjects = Utils.getPKIObjects(testCase);
 
         List<Certificate> certificates = pkiObjects.getCertificates();
 
-        if (certificates != null)
+        if (CollectionUtils.isNotEmpty(certificates))
         {
             for (Certificate certificate : certificates)
             {
                 String refId = certificate.getRefid();
 
-                if (refId != null && !refId.isEmpty())
+                if (StringUtils.isNotEmpty(refId))
                 {
                     return true;
                 }
-
             }
         }
-        return hasReference;
+        return false;
     }
 
     public static boolean hasReference(Certificate certificate)
@@ -562,7 +559,7 @@ public class Utils
 
         ArrayList<Certificate> certificates = pkiObjects.getCertificates();
 
-        List<String> referenceIds = new ArrayList<String>();
+        List<String> referenceIds = new ArrayList<>();
 
         if (certificates != null)
         {

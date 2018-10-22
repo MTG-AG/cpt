@@ -1,5 +1,5 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_EXT_19_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" overwrite="false" type="TA" />
+    <Certificate id="CERT_PATH_EXT_19_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" type="TA"/>
     <Certificate id="CERT_PATH_EXT_19_SUB_CA_L1">
         <VerifiedBy>CERT_PATH_EXT_19_ROOT_CA</VerifiedBy>
         <Version>2</Version>

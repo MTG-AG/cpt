@@ -1,6 +1,6 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_EXT_18_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" overwrite="false" type="TA" />
-    <Certificate id="CERT_PATH_EXT_18_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA" overwrite="true">
+    <Certificate id="CERT_PATH_EXT_18_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_EXT_18_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA">
         <SerialNumber>21018</SerialNumber>
         <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
         <Extension oid="2.5.29.36" critical="true" name="Policy Constraints" type="pretty">requireExplicitPolicy=0</Extension>

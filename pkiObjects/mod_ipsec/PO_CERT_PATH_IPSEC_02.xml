@@ -1,10 +1,10 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_IPSEC_02_ROOT_CA" refid="CERT_PATH_IPSEC_01_ROOT_CA" overwrite="false" type="TA" />
-    <Certificate id="CERT_PATH_IPSEC_02_SUB_CA" refid="CERT_PATH_IPSEC_01_SUB_CA" overwrite="true">
+    <Certificate id="CERT_PATH_IPSEC_02_ROOT_CA" refid="CERT_PATH_IPSEC_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_IPSEC_02_SUB_CA" refid="CERT_PATH_IPSEC_01_SUB_CA">
         <SerialNumber>71002</SerialNumber>
         <Extension oid="2.5.29.19" critical="false" name="Basic Constraints" type="pretty">true,0</Extension>
     </Certificate>
-    <Certificate id="CERT_PATH_IPSEC_02_EE" refid="CERT_PATH_IPSEC_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_IPSEC_02_EE" refid="CERT_PATH_IPSEC_01_EE" type="TC">
         <SerialNumber>70002</SerialNumber>
         <VerifiedBy>CERT_PATH_IPSEC_02_SUB_CA</VerifiedBy>
     </Certificate>

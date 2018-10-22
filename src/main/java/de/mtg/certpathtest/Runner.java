@@ -50,8 +50,8 @@ public class Runner
         Enumeration<TestCase> testCaseEnumeration = testCases.elements();
 
         // insertion order is important, otherwise objects may reference other objects that have not been created.
-        List<TestCase> insertionOrderTestCases = new ArrayList<TestCase>();
-        List<String> insertionOrderTestCasesId = new ArrayList<String>();
+        List<TestCase> insertionOrderTestCases = new ArrayList<>();
+        List<String> insertionOrderTestCasesId = new ArrayList<>();
 
         while (testCaseEnumeration.hasMoreElements())
         {
@@ -75,7 +75,7 @@ public class Runner
 
             testCaseEnumeration = testCases.elements();
 
-            wrongTestCases = new ArrayList<String>();
+            wrongTestCases = new ArrayList<>();
 
             while (testCaseEnumeration.hasMoreElements())
             {

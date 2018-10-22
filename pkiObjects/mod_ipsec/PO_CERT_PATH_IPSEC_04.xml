@@ -1,7 +1,7 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_IPSEC_04_ROOT_CA" refid="CERT_PATH_IPSEC_01_ROOT_CA" overwrite="false" type="TA" />
-    <Certificate id="CERT_PATH_IPSEC_04_SUB_CA" refid="CERT_PATH_IPSEC_01_SUB_CA" overwrite="false" />
-    <Certificate id="CERT_PATH_IPSEC_04_EE" refid="CERT_PATH_IPSEC_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_IPSEC_04_ROOT_CA" refid="CERT_PATH_IPSEC_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_IPSEC_04_SUB_CA" refid="CERT_PATH_IPSEC_01_SUB_CA"/>
+    <Certificate id="CERT_PATH_IPSEC_04_EE" refid="CERT_PATH_IPSEC_01_EE" type="TC">
         <SerialNumber>70004</SerialNumber>
         <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">keyAgreement</Extension>
     </Certificate>

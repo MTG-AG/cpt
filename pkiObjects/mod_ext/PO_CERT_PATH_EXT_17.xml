@@ -1,11 +1,11 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_EXT_17_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" overwrite="false" type="TA" />
-    <Certificate id="CERT_PATH_EXT_17_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA" overwrite="true">
+    <Certificate id="CERT_PATH_EXT_17_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_EXT_17_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA">
         <SerialNumber>21017</SerialNumber>
         <Extension oid="2.5.29.32" critical="false" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
         <Extension oid="2.5.29.36" critical="false" name="Policy Constraints" type="pretty">requireExplicitPolicy=1,inhibitPolicyMapping=1</Extension>
     </Certificate>
-    <Certificate id="CERT_PATH_EXT_17_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_EXT_17_EE" refid="CERT_PATH_COMMON_01_EE" type="TC">
         <SerialNumber>20017</SerialNumber>
         <Extension oid="2.5.29.32" critical="false" name="Certificate Policies" type="pretty">1.2.3.4</Extension>
         <VerifiedBy>CERT_PATH_EXT_17_SUB_CA</VerifiedBy>

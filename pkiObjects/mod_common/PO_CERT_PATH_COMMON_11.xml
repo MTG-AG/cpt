@@ -1,9 +1,7 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_COMMON_11_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA">
-    </Certificate>
-    <Certificate id="CERT_PATH_COMMON_11_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="false">
-    </Certificate>
-    <Certificate id="CERT_PATH_COMMON_11_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_COMMON_11_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_COMMON_11_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA"/>
+    <Certificate id="CERT_PATH_COMMON_11_EE" refid="CERT_PATH_COMMON_01_EE" type="TC">
         <SerialNumber>10011</SerialNumber>
         <Version>5</Version>
     </Certificate>

@@ -1,7 +1,7 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_EXT_12_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" overwrite="false" type="TA" />
-    <Certificate id="CERT_PATH_EXT_12_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA" overwrite="false"/>
-    <Certificate id="CERT_PATH_EXT_12_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_EXT_12_ROOT_CA" refid="CERT_PATH_EXT_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_EXT_12_SUB_CA" refid="CERT_PATH_EXT_01_SUB_CA"/>
+    <Certificate id="CERT_PATH_EXT_12_EE" refid="CERT_PATH_COMMON_01_EE" type="TC">
         <SerialNumber>20012</SerialNumber>
         <Extension oid="2.5.29.32" critical="true" name="Certificate Policies" type="pretty">1.2.3.4,1.2.3.4</Extension>
     </Certificate>

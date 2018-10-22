@@ -1,11 +1,10 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_COMMON_07_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA">
-    </Certificate>
-    <Certificate id="CERT_PATH_COMMON_07_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="true">
+    <Certificate id="CERT_PATH_COMMON_07_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_COMMON_07_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA">
         <SerialNumber>11007</SerialNumber>
         <NotBefore>+1M</NotBefore>
     </Certificate>
-    <Certificate id="CERT_PATH_COMMON_07_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_COMMON_07_EE" refid="CERT_PATH_COMMON_01_EE" type="TC">
         <SerialNumber>10007</SerialNumber>
         <VerifiedBy>CERT_PATH_COMMON_07_SUB_CA</VerifiedBy>
     </Certificate>

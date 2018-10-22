@@ -1,11 +1,11 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_EXT_11_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA" />
-    <Certificate id="CERT_PATH_EXT_11_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="true" >
+    <Certificate id="CERT_PATH_EXT_11_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_EXT_11_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA">
         <VerifiedBy>CERT_PATH_EXT_11_ROOT_CA</VerifiedBy>
         <SerialNumber>21011</SerialNumber>
         <Extension oid="2.5.29.15" critical="true" name="Key Usage" type="pretty">cRLSign</Extension>
     </Certificate>
-    <Certificate id="CERT_PATH_EXT_11_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_EXT_11_EE" refid="CERT_PATH_COMMON_01_EE" type="TC">
         <VerifiedBy>CERT_PATH_EXT_11_SUB_CA</VerifiedBy>
         <SerialNumber>20011</SerialNumber>
     </Certificate>

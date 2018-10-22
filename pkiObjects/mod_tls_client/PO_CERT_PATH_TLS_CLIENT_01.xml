@@ -1,7 +1,7 @@
 <PKIObjects>
-    <Certificate id="CERT_PATH_TLS_CLIENT_01_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" overwrite="false" type="TA" />
-    <Certificate id="CERT_PATH_TLS_CLIENT_01_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA" overwrite="false" />
-    <Certificate id="CERT_PATH_TLS_CLIENT_01_EE" refid="CERT_PATH_COMMON_01_EE" overwrite="true" type="TC">
+    <Certificate id="CERT_PATH_TLS_CLIENT_01_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" type="TA"/>
+    <Certificate id="CERT_PATH_TLS_CLIENT_01_SUB_CA" refid="CERT_PATH_COMMON_01_SUB_CA"/>
+    <Certificate id="CERT_PATH_TLS_CLIENT_01_EE" refid="CERT_PATH_COMMON_01_EE" type="TC">
         <SerialNumber>80001</SerialNumber>
         <SubjectDN encoding="UTF8">CN=localhost, C=DE</SubjectDN>
         <Extension oid="2.5.29.17" critical="false" name="Subject Alternative Name" type="pretty">${extension.san.value}</Extension>

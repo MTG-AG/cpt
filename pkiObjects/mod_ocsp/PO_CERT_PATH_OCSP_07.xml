@@ -1,7 +1,7 @@
 <PKIObjects>
     <Variable name="rootAIA">http://${httpHost}:${httpPort}/CERT_PATH_OCSP_07_ROOT_CA_AIA</Variable>
     <Variable name="subAIA">http://${httpHost}:${httpPort}/CERT_PATH_OCSP_07_SUB_CA_AIA</Variable>
-    <Certificate id="CERT_PATH_OCSP_07_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" type="TA" />
+    <Certificate id="CERT_PATH_OCSP_07_ROOT_CA" refid="CERT_PATH_COMMON_01_ROOT_CA" type="TA"/>
     <Certificate id="CERT_PATH_OCSP_07_SUB_CA" refid="CERT_PATH_OCSP_01_SUB_CA">
         <VerifiedBy>CERT_PATH_OCSP_07_ROOT_CA</VerifiedBy>
         <SerialNumber>42107</SerialNumber>
