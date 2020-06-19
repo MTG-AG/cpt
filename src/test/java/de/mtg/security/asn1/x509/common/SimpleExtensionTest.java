@@ -8,8 +8,8 @@ import org.bouncycastle.asn1.ASN1Encoding;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.util.ASN1Dump;
 import org.bouncycastle.asn1.x509.Extension;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,9 +41,9 @@ public class SimpleExtensionTest
 
         logger.debug("newExtension: {}", ASN1Dump.dumpAsString(newExtension, true));
 
-        Assert.assertEquals(oid, newExtension.getExtnId());
-        Assert.assertEquals(ASN1Boolean.TRUE, newExtension.getCritical());
-        Assert.assertArrayEquals(extnValueOctets, newExtension.getExtnValueOctets());
+        Assertions.assertEquals(oid, newExtension.getExtnId());
+        Assertions.assertEquals(ASN1Boolean.TRUE, newExtension.getCritical());
+        Assertions.assertArrayEquals(extnValueOctets, newExtension.getExtnValueOctets());
     }
 
 }

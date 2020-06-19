@@ -5,13 +5,11 @@ import java.io.ByteArrayInputStream;
 
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DLSequence;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.Extension;
 import de.mtg.certpathtest.pkiobjects.extensions.SubjectDirectoryAttributes;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -25,18 +23,6 @@ public class SubjectDirectoryAttributesTest
 {
 
     private String base64EncodedValue = "BBwwGjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB";
-
-    /**
-     *
-     * Prepares the environment before every test.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @Before
-    public void setUp() throws Exception
-    {
-
-    }
 
     /**
      *
@@ -57,18 +43,16 @@ public class SubjectDirectoryAttributesTest
         SubjectDirectoryAttributes sdae = new SubjectDirectoryAttributes(extension);
         byte[] encoded = sdae.getEncoded();
 
-        ByteArrayInputStream bais = new ByteArrayInputStream(encoded);
-        ASN1InputStream asn1InputStream = new ASN1InputStream(bais);
-        DLSequence sequence = (DLSequence) asn1InputStream.readObject();
-        asn1InputStream.close();
-        bais.close();
+        try(ByteArrayInputStream bais = new ByteArrayInputStream(encoded);
+            ASN1InputStream asn1InputStream = new ASN1InputStream(bais))
+        {
+            DLSequence sequence = (DLSequence) asn1InputStream.readObject();
+            DLSequence secondSequence = (DLSequence) sequence.getObjectAt(0);
 
-        DLSequence secondSequence = (DLSequence)sequence.getObjectAt(0);
-
-        Assert.assertNotNull(sequence);
-        Assert.assertEquals(1, sequence.size());
-        Assert.assertEquals(2, secondSequence.size());
-
+            Assertions.assertNotNull(sequence);
+            Assertions.assertEquals(1, sequence.size());
+            Assertions.assertEquals(2, secondSequence.size());
+        }
     }
 
     /**
@@ -77,8 +61,8 @@ public class SubjectDirectoryAttributesTest
      *
      * @throws Exception if any exception occurs.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testIncorrect() throws Exception
+    @Test
+    public void testIncorrect()
     {
 
         Extension extension = new Extension();
@@ -87,19 +71,7 @@ public class SubjectDirectoryAttributesTest
         extension.setType("pretty");
         extension.setValue("This should be empty");
 
-        new SubjectDirectoryAttributes(extension);
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
+        Assertions.assertThrows(UnsupportedOperationException.class, () -> new SubjectDirectoryAttributes(extension));
 
     }
 

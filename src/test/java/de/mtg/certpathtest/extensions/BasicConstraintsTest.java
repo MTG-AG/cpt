@@ -8,40 +8,22 @@ import org.bouncycastle.asn1.ASN1Boolean;
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.DLSequence;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.Extension;
 import de.mtg.certpathtest.pkiobjects.WrongPKIObjectException;
 import de.mtg.certpathtest.pkiobjects.extensions.BasicConstraints;
-import junit.framework.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Unit tests for {@link de.mtg.certpathtest.pkiobjects.extensions.BasicConstraints}.
  *
  * @see de.mtg.certpathtest.pkiobjects.extensions.BasicConstraints BasicConstraints
- *
- *
  */
 public class BasicConstraintsTest
 {
 
     /**
-     *
-     * Prepares the environment before every test.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @Before
-    public void setUp() throws Exception
-    {
-
-    }
-
-    /**
-     *
      * Tests whether this extension can be created correctly from a correct representation.
      *
      * @throws Exception if any exception occurs.
@@ -61,20 +43,17 @@ public class BasicConstraintsTest
         BasicConstraints basicConstraints = new BasicConstraints(extension);
         byte[] encoded = basicConstraints.getEncoded();
 
-        ByteArrayInputStream bais = new ByteArrayInputStream(encoded);
-        ASN1InputStream asn1InputStream = new ASN1InputStream(bais);
+        try(ByteArrayInputStream bais = new ByteArrayInputStream(encoded); ASN1InputStream asn1InputStream = new ASN1InputStream(bais))
+        {
 
-        DLSequence seq = (DLSequence) asn1InputStream.readObject();
+            DLSequence seq = (DLSequence) asn1InputStream.readObject();
 
-        ASN1Boolean isCA = (ASN1Boolean) seq.getObjectAt(0);
-        ASN1Integer pathLengthConstraints = (ASN1Integer) seq.getObjectAt(1);
+            ASN1Boolean isCA = (ASN1Boolean) seq.getObjectAt(0);
+            ASN1Integer pathLengthConstraints = (ASN1Integer) seq.getObjectAt(1);
 
-        Assert.assertEquals(isCA.isTrue(), true);
-        Assert.assertEquals(pathLengthConstraints.getValue().intValue(), 1);
-        asn1InputStream.close();
-        bais.close();
-
-        // New case
+            Assertions.assertEquals(isCA.isTrue(), true);
+            Assertions.assertEquals(pathLengthConstraints.getValue().intValue(), 1);
+        }
 
         correctValue = "false, 12";
         extension.setValue(correctValue);
@@ -82,18 +61,17 @@ public class BasicConstraintsTest
         basicConstraints = new BasicConstraints(extension);
         encoded = basicConstraints.getEncoded();
 
-        bais = new ByteArrayInputStream(encoded);
-        asn1InputStream = new ASN1InputStream(bais);
+        try(ByteArrayInputStream bais = new ByteArrayInputStream(encoded); ASN1InputStream asn1InputStream = new ASN1InputStream(bais))
+        {
+            DLSequence seq = (DLSequence) asn1InputStream.readObject();
 
-        seq = (DLSequence) asn1InputStream.readObject();
+            ASN1Boolean isCA = (ASN1Boolean) seq.getObjectAt(0);
+            ASN1Integer pathLengthConstraints = (ASN1Integer) seq.getObjectAt(1);
 
-        isCA = (ASN1Boolean) seq.getObjectAt(0);
-        pathLengthConstraints = (ASN1Integer) seq.getObjectAt(1);
+            Assertions.assertEquals(isCA.isTrue(), false);
+            Assertions.assertEquals(pathLengthConstraints.getValue().intValue(), 12);
 
-        Assert.assertEquals(isCA.isTrue(), false);
-        Assert.assertEquals(pathLengthConstraints.getValue().intValue(), 12);
-        asn1InputStream.close();
-        bais.close();
+        }
 
         // New case
 
@@ -103,18 +81,16 @@ public class BasicConstraintsTest
         basicConstraints = new BasicConstraints(extension);
         encoded = basicConstraints.getEncoded();
 
-        bais = new ByteArrayInputStream(encoded);
-        asn1InputStream = new ASN1InputStream(bais);
+        try(ByteArrayInputStream bais = new ByteArrayInputStream(encoded); ASN1InputStream asn1InputStream = new ASN1InputStream(bais))
+        {
+            DLSequence seq = (DLSequence) asn1InputStream.readObject();
 
-        seq = (DLSequence) asn1InputStream.readObject();
+            ASN1Boolean isCA = (ASN1Boolean) seq.getObjectAt(0);
+            ASN1Integer pathLengthConstraints = (ASN1Integer) seq.getObjectAt(1);
 
-        isCA = (ASN1Boolean) seq.getObjectAt(0);
-        pathLengthConstraints = (ASN1Integer) seq.getObjectAt(1);
-
-        Assert.assertEquals(isCA.isTrue(), true);
-        Assert.assertEquals(pathLengthConstraints.getValue().intValue(), -2);
-        asn1InputStream.close();
-        bais.close();
+            Assertions.assertEquals(isCA.isTrue(), true);
+            Assertions.assertEquals(pathLengthConstraints.getValue().intValue(), -2);
+        }
 
         // New case
 
@@ -124,17 +100,15 @@ public class BasicConstraintsTest
         basicConstraints = new BasicConstraints(extension);
         encoded = basicConstraints.getEncoded();
 
-        bais = new ByteArrayInputStream(encoded);
-        asn1InputStream = new ASN1InputStream(bais);
+        try(ByteArrayInputStream bais = new ByteArrayInputStream(encoded); ASN1InputStream asn1InputStream = new ASN1InputStream(bais))
+        {
+            DLSequence seq = (DLSequence) asn1InputStream.readObject();
 
-        seq = (DLSequence) asn1InputStream.readObject();
+            ASN1Boolean isCA = (ASN1Boolean) seq.getObjectAt(0);
 
-        isCA = (ASN1Boolean) seq.getObjectAt(0);
-
-        Assert.assertEquals(isCA.isTrue(), true);
-        Assert.assertEquals(seq.size(), 1);
-        asn1InputStream.close();
-        bais.close();
+            Assertions.assertEquals(isCA.isTrue(), true);
+            Assertions.assertEquals(seq.size(), 1);
+        }
 
         // New case
 
@@ -144,30 +118,26 @@ public class BasicConstraintsTest
         basicConstraints = new BasicConstraints(extension);
         encoded = basicConstraints.getEncoded();
 
-        bais = new ByteArrayInputStream(encoded);
-        asn1InputStream = new ASN1InputStream(bais);
+        try(ByteArrayInputStream bais = new ByteArrayInputStream(encoded); ASN1InputStream asn1InputStream = new ASN1InputStream(bais))
+        {
+            DLSequence seq = (DLSequence) asn1InputStream.readObject();
 
-        seq = (DLSequence) asn1InputStream.readObject();
+            ASN1Boolean isCA = (ASN1Boolean) seq.getObjectAt(0);
 
-        isCA = (ASN1Boolean) seq.getObjectAt(0);
-
-        Assert.assertEquals(isCA.isTrue(), false);
-        Assert.assertEquals(seq.size(), 1);
-        asn1InputStream.close();
-        bais.close();
+            Assertions.assertEquals(isCA.isTrue(), false);
+            Assertions.assertEquals(seq.size(), 1);
+        }
 
     }
 
     /**
-     *
      * Tests whether this extension cannot be created from a wrong representation and a proper exception is thrown.
      *
      * @throws Exception if any exception occurs.
      */
-    @Test(expected = WrongPKIObjectException.class)
-    public void testIncorrect() throws Exception
+    @Test
+    public void testIncorrect()
     {
-
         String wrongValue = "1,true";
 
         Extension extension = new Extension();
@@ -176,12 +146,10 @@ public class BasicConstraintsTest
         extension.setType("pretty");
         extension.setValue(wrongValue);
 
-        new BasicConstraints(extension);
-
+        Assertions.assertThrows(WrongPKIObjectException.class, () -> new BasicConstraints(extension));
     }
 
     /**
-     *
      * Tests whether this extension cannot be created from a wrong representation and a proper exception is thrown.
      *
      * @throws Exception if any exception occurs.
@@ -189,7 +157,6 @@ public class BasicConstraintsTest
     @Test
     public void testAgainstHighLevel() throws Exception
     {
-
         String correctValue = "true, 0";
 
         Extension extension = new Extension();
@@ -200,9 +167,9 @@ public class BasicConstraintsTest
         BasicConstraints basicConstraints = new BasicConstraints(extension);
 
         org.bouncycastle.asn1.x509.BasicConstraints highLevelBasicConstraints =
-            new org.bouncycastle.asn1.x509.BasicConstraints(0);
+                        new org.bouncycastle.asn1.x509.BasicConstraints(0);
 
-        Assert.assertTrue(Arrays.equals(basicConstraints.getEncoded(), highLevelBasicConstraints.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(basicConstraints.getEncoded(), highLevelBasicConstraints.getEncoded()));
 
         // New case
 
@@ -211,7 +178,7 @@ public class BasicConstraintsTest
         basicConstraints = new BasicConstraints(extension);
 
         highLevelBasicConstraints = new org.bouncycastle.asn1.x509.BasicConstraints(20);
-        Assert.assertTrue(Arrays.equals(basicConstraints.getEncoded(), highLevelBasicConstraints.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(basicConstraints.getEncoded(), highLevelBasicConstraints.getEncoded()));
 
         // New case
 
@@ -220,7 +187,7 @@ public class BasicConstraintsTest
         basicConstraints = new BasicConstraints(extension);
 
         highLevelBasicConstraints = new org.bouncycastle.asn1.x509.BasicConstraints(false);
-        Assert.assertTrue(!Arrays.equals(basicConstraints.getEncoded(), highLevelBasicConstraints.getEncoded()));
+        Assertions.assertTrue(!Arrays.equals(basicConstraints.getEncoded(), highLevelBasicConstraints.getEncoded()));
 
         // New case
 
@@ -230,19 +197,7 @@ public class BasicConstraintsTest
 
         highLevelBasicConstraints = new org.bouncycastle.asn1.x509.BasicConstraints(false);
         // false is always explicitly encoded
-        Assert.assertTrue(!Arrays.equals(basicConstraints.getEncoded(), highLevelBasicConstraints.getEncoded()));
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
+        Assertions.assertTrue(!Arrays.equals(basicConstraints.getEncoded(), highLevelBasicConstraints.getEncoded()));
 
     }
 

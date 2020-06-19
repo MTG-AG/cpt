@@ -18,9 +18,9 @@ import org.bouncycastle.asn1.DERBitString;
 import org.bouncycastle.asn1.util.ASN1Dump;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,10 +43,9 @@ public class UtilTest
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
-
         certificateCreator = CertificateCreator.getInstance();
     }
 
@@ -70,19 +69,19 @@ public class UtilTest
         logger.debug("Algorithm OID: {}", keyOID);
         logger.debug("PublicKeyData: {}",
                      ASN1Dump.dumpAsString(ASN1Primitive.fromByteArray(publicKeyData.getBytes()), true));
-        Assert.assertEquals(0, publicKeyData.getPadBits());
+        Assertions.assertEquals(0, publicKeyData.getPadBits());
 
         // PublicKey publicKey = tbsCert.getPublicKey();
         PublicKey publicKey = Util.buildPublicKey(subjectPublicKeyInfo);
         logger.debug("publicKey: {}", publicKey);
-        Assert.assertEquals("1.2.840.113549.1.1.1", keyOID);
-        Assert.assertTrue(publicKey instanceof java.security.interfaces.RSAPublicKey);
+        Assertions.assertEquals("1.2.840.113549.1.1.1", keyOID);
+        Assertions.assertTrue(publicKey instanceof java.security.interfaces.RSAPublicKey);
 
-        Assert.assertArrayEquals(subjectPublicKeyInfo.getEncoded(ASN1Encoding.DER), publicKey.getEncoded());
+        Assertions.assertArrayEquals(subjectPublicKeyInfo.getEncoded(ASN1Encoding.DER), publicKey.getEncoded());
 
         SubjectPublicKeyInfo spki = Util.buildSubjectPublicKeyInfo(publicKey);
-        Assert.assertEquals(subjectPublicKeyInfo.getAlgorithm(), spki.getAlgorithm());
-        Assert.assertEquals(publicKeyData, spki.getPublicKeyData());
+        Assertions.assertEquals(subjectPublicKeyInfo.getAlgorithm(), spki.getAlgorithm());
+        Assertions.assertEquals(publicKeyData, spki.getPublicKeyData());
     }
 
     /**
@@ -103,19 +102,19 @@ public class UtilTest
         X500Principal issuerPrincipal = Util.nameToPrincipal(issuerName);
         logger.debug("issuerName: {}", issuerName);
         logger.debug("issuerPrincipal: {}", issuerPrincipal);
-        Assert.assertNotNull(issuerName);
-        Assert.assertNotNull(issuerPrincipal);
+        Assertions.assertNotNull(issuerName);
+        Assertions.assertNotNull(issuerPrincipal);
         X500Name iName = Util.principalToName(issuerPrincipal);
-        Assert.assertEquals(issuerName, iName);
+        Assertions.assertEquals(issuerName, iName);
 
         X500Name subjectName = tbsCert.getSubject();
         X500Principal subjectPrincipal = Util.nameToPrincipal(subjectName);
         logger.debug("subjectName: {}", subjectName);
         logger.debug("subjectPrincipal: {}", subjectPrincipal);
-        Assert.assertNotNull(subjectName);
-        Assert.assertNotNull(subjectPrincipal);
+        Assertions.assertNotNull(subjectName);
+        Assertions.assertNotNull(subjectPrincipal);
         X500Name sName = Util.principalToName(subjectPrincipal);
-        Assert.assertEquals(subjectName, sName);
+        Assertions.assertEquals(subjectName, sName);
     }
 
 }

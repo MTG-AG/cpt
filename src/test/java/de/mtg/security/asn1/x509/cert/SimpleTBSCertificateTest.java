@@ -46,9 +46,9 @@ import org.bouncycastle.asn1.x509.SubjectKeyIdentifier;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.asn1.x509.Time;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,10 +78,9 @@ public class SimpleTBSCertificateTest
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
-
         certificateCreator = CertificateCreator.getInstance();
     }
 
@@ -105,7 +104,7 @@ public class SimpleTBSCertificateTest
         SimpleTBSCertificate outTbsCert = SimpleTBSCertificate.getInstance(inTbsCertBytes);
         byte[] outTbsCertBytes = outTbsCert.getEncoded(ASN1Encoding.DER);
 
-        Assert.assertArrayEquals(inTbsCertBytes, outTbsCertBytes);
+        Assertions.assertArrayEquals(inTbsCertBytes, outTbsCertBytes);
     }
 
     /**
@@ -128,7 +127,7 @@ public class SimpleTBSCertificateTest
         SimpleTBSCertificate outTbsCert = SimpleTBSCertificate.getInstance(inTbsCertBytes);
         byte[] outTbsCertBytes = outTbsCert.getEncoded(ASN1Encoding.DER);
 
-        Assert.assertArrayEquals(inTbsCertBytes, outTbsCertBytes);
+        Assertions.assertArrayEquals(inTbsCertBytes, outTbsCertBytes);
     }
 
     /**
@@ -151,7 +150,7 @@ public class SimpleTBSCertificateTest
         SimpleTBSCertificate outTbsCert = SimpleTBSCertificate.getInstance(inTbsCertBytes);
         byte[] outTbsCertBytes = outTbsCert.getEncoded(ASN1Encoding.DER);
 
-        Assert.assertArrayEquals(inTbsCertBytes, outTbsCertBytes);
+        Assertions.assertArrayEquals(inTbsCertBytes, outTbsCertBytes);
     }
 
     /**
@@ -185,7 +184,7 @@ public class SimpleTBSCertificateTest
         outTbsCert.setExtensions(inTbsCert.getExtensions());
 
         byte[] outTbsCertBytes = outTbsCert.getEncoded(ASN1Encoding.DER);
-        Assert.assertArrayEquals(inTbsCertBytes, outTbsCertBytes);
+        Assertions.assertArrayEquals(inTbsCertBytes, outTbsCertBytes);
     }
 
     /**
@@ -208,19 +207,19 @@ public class SimpleTBSCertificateTest
         SimpleTBSCertificate tbsCert = SimpleTBSCertificate.getInstance(inTbsCertBytes);
 
         List<SimpleExtension> extensions = tbsCert.getExtensions();
-        Assert.assertNotNull(extensions);
-        Assert.assertFalse(extensions.isEmpty());
+        Assertions.assertNotNull(extensions);
+        Assertions.assertFalse(extensions.isEmpty());
 
         List<SimpleExtension> newExtensions = new ArrayList<SimpleExtension>();
         newExtensions.addAll(extensions);
         newExtensions.addAll(extensions);
         tbsCert.setExtensions(newExtensions);
 
-        Assert.assertEquals(2 * extensions.size(), newExtensions.size());
+        Assertions.assertEquals(2 * extensions.size(), newExtensions.size());
 
         byte[] tbsCertBytes = tbsCert.getEncoded(ASN1Encoding.DER);
         SimpleTBSCertificate outTbsCert = SimpleTBSCertificate.getInstance(tbsCertBytes);
-        Assert.assertEquals(newExtensions.size(), outTbsCert.getExtensions().size());
+        Assertions.assertEquals(newExtensions.size(), outTbsCert.getExtensions().size());
 
         logger.debug("outTbsCert: {}", ASN1Dump.dumpAsString(outTbsCert, true));
     }
@@ -245,8 +244,8 @@ public class SimpleTBSCertificateTest
         SimpleTBSCertificate tbsCert = SimpleTBSCertificate.getInstance(inTbsCertBytes);
 
         List<SimpleExtension> extensions = tbsCert.getExtensions();
-        Assert.assertNotNull(extensions);
-        Assert.assertFalse(extensions.isEmpty());
+        Assertions.assertNotNull(extensions);
+        Assertions.assertFalse(extensions.isEmpty());
 
         for (SimpleExtension ext : extensions)
         {
@@ -260,12 +259,12 @@ public class SimpleTBSCertificateTest
         logger.debug("outTbsCert: {}", ASN1Dump.dumpAsString(outTbsCert, true));
 
         List<SimpleExtension> outExtensions = outTbsCert.getExtensions();
-        Assert.assertNotNull(outExtensions);
-        Assert.assertFalse(outExtensions.isEmpty());
+        Assertions.assertNotNull(outExtensions);
+        Assertions.assertFalse(outExtensions.isEmpty());
 
         for (SimpleExtension ext : outExtensions)
         {
-            Assert.assertEquals(ASN1Boolean.FALSE, ext.getCritical());
+            Assertions.assertEquals(ASN1Boolean.FALSE, ext.getCritical());
         }
     }
 
@@ -287,8 +286,8 @@ public class SimpleTBSCertificateTest
         int versionNumber = tbsCert.getVersionNumber();
         logger.debug("version: {}", version);
         logger.debug("versionNumber: " + versionNumber);
-        Assert.assertEquals(BigInteger.valueOf(2), version.getValue());
-        Assert.assertEquals(3, versionNumber);
+        Assertions.assertEquals(BigInteger.valueOf(2), version.getValue());
+        Assertions.assertEquals(3, versionNumber);
     }
 
     /**
@@ -312,8 +311,8 @@ public class SimpleTBSCertificateTest
         // logger.debug("asn1KeyData: {}", ASN1Dump.dumpAsString(asn1KeyData, true));
         org.bouncycastle.asn1.pkcs.RSAPublicKey rsaPubK = org.bouncycastle.asn1.pkcs.RSAPublicKey.getInstance(keyData);
         BigInteger modulus = rsaPubK.getModulus();
-        Assert.assertNotNull(modulus);
-        Assert.assertNotNull(rsaPubK.getPublicExponent());
+        Assertions.assertNotNull(modulus);
+        Assertions.assertNotNull(rsaPubK.getPublicExponent());
         logger.debug("modulus hex: {}", modulus.toString(16));
     }
 

@@ -20,9 +20,9 @@ import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.util.ASN1Dump;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,6 @@ public class SimpleCertificateTest
     static
     {
         Security.addProvider(BC);
-
     }
 
     /**
@@ -49,10 +48,9 @@ public class SimpleCertificateTest
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
-
         certificateCreator = CertificateCreator.getInstance();
     }
 
@@ -65,7 +63,6 @@ public class SimpleCertificateTest
     @Test
     public void buildAndRebuild() throws IOException, CertificateEncodingException
     {
-
         buildAndRebuild(certificateCreator.getRootCACertificate());
         buildAndRebuild(certificateCreator.getSubCACertificate());
         buildAndRebuild(certificateCreator.getEeCertificate());
@@ -78,7 +75,7 @@ public class SimpleCertificateTest
         SimpleCertificate inCert = SimpleCertificate.getInstance(inCertBytes);
 
         byte[] certBytes = inCert.getEncoded(ASN1Encoding.DER);
-        Assert.assertArrayEquals(inCertBytes, certBytes);
+        Assertions.assertArrayEquals(inCertBytes, certBytes);
 
         SimpleCertificate outCert = new SimpleCertificate();
 
@@ -87,7 +84,7 @@ public class SimpleCertificateTest
         outCert.setSignature(inCert.getSignature());
 
         byte[] outCertBytes = outCert.getEncoded(ASN1Encoding.DER);
-        Assert.assertArrayEquals(inCertBytes, outCertBytes);
+        Assertions.assertArrayEquals(inCertBytes, outCertBytes);
 
         logger.debug("outCert: {}", ASN1Dump.dumpAsString(outCert, true));
 
@@ -110,13 +107,13 @@ public class SimpleCertificateTest
 
         String oid = cert.getSigAlgOID();
         logger.debug("oid: {}", oid);
-        Assert.assertEquals("1.2.840.113549.1.1.11", oid);
+        Assertions.assertEquals("1.2.840.113549.1.1.11", oid);
 
         byte[] params = cert.getSigAlgParams();
         String paramsHex = Hex.toHexString(params);
         logger.debug("paramsHex: {}", paramsHex);
         logger.debug("SigAlgParams: {}", ASN1Dump.dumpAsString(ASN1Primitive.fromByteArray(params), true));
-        Assert.assertArrayEquals(new byte[] {5, 0}, params);
+        Assertions.assertArrayEquals(new byte[] {5, 0}, params);
     }
 
     /**
@@ -145,7 +142,7 @@ public class SimpleCertificateTest
         verifier.initVerify(publicKey);
         verifier.update(tbsBytes);
         boolean verified = verifier.verify(sigBytes);
-        Assert.assertTrue(verified);
+        Assertions.assertTrue(verified);
     }
 
 }

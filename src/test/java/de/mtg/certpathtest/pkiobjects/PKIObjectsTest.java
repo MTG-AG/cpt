@@ -3,39 +3,22 @@ package de.mtg.certpathtest.pkiobjects;
 
 import java.util.Random;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import de.mtg.certpathtest.ObjectCache;
 import de.mtg.certpathtest.Utils;
 import de.mtg.tr03124.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Unit tests for {@link de.mtg.certpathtest.pkiobjects.PKIObjects}.
  *
  * @see de.mtg.certpathtest.pkiobjects.PKIObjects PKIObjects
- *
- *
  */
 public class PKIObjectsTest
 {
-    /**
-     *
-     * Prepares the environment before every test.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @Before
-    public void setUp() throws Exception
-    {
-
-    }
 
     /**
-     *
      * Tests the basic functionality of {@link de.mtg.certpathtest.pkiobjects.PKIObjects}.
      *
      * @throws Exception if any exception occurs.
@@ -72,7 +55,7 @@ public class PKIObjectsTest
 
         objectCache.addPKIobjectsToTestCase(testCaseId, pkiObjects);
 
-        Assert.assertTrue(!Utils.hasReference(testCase));
+        Assertions.assertFalse(Utils.hasReference(testCase));
 
         xmlCertificate = new Certificate();
         xmlCertificate.setRefid(id);
@@ -85,20 +68,19 @@ public class PKIObjectsTest
         testCase.setId(testCaseId);
         objectCache.addPKIobjectsToTestCase(testCaseId, pkiObjectsWithReference);
 
-        Assert.assertTrue(Utils.hasReference(testCase));
+        Assertions.assertTrue(Utils.hasReference(testCase));
 
         objectCache.clear();
 
     }
 
     /**
-     *
      * Performs any necessary cleaning after each test run.
      *
      * @throws Exception if any exception occurs.
      */
-    @After
-    public void tearDown() throws Exception
+    @AfterEach
+    public void tearDown()
     {
         ObjectCache.getInstance().clear();
     }

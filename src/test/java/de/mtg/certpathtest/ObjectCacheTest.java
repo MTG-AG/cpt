@@ -12,23 +12,19 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import de.mtg.certpathtest.pkiobjects.CRL;
 import de.mtg.certpathtest.pkiobjects.Certificate;
 import de.mtg.tr03124.Hypertext;
 import de.mtg.tr03124.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Unit tests for {@link de.mtg.certpathtest.ObjectCache}.
  *
  * @see de.mtg.certpathtest.ObjectCache ObjectCache
- *
- *
  */
 public class ObjectCacheTest
 {
@@ -50,12 +46,11 @@ public class ObjectCacheTest
     private String crlId;
 
     /**
-     *
      * Prepares the environment before every test.
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
@@ -84,13 +79,11 @@ public class ObjectCacheTest
     }
 
     /**
-     *
      * Tests the basic behaviour of the class under test.
      *
-     * @throws DuplicateKeyException if a PKI object with the same id is added more than once.
-     * @throws InvalidKeySpecException if a public key could not be decoded.
+     * @throws DuplicateKeyException    if a PKI object with the same id is added more than once.
+     * @throws InvalidKeySpecException  if a public key could not be decoded.
      * @throws NoSuchAlgorithmException if the algorithm to decode the public key is unknowm.
-     *
      */
     @Test
     public void test() throws DuplicateKeyException, NoSuchAlgorithmException, InvalidKeySpecException
@@ -123,56 +116,56 @@ public class ObjectCacheTest
         cache.addCertificate(certId + "_0003", publicKey.getEncoded());
         cache.addCertificate(certId + "_0004", publicKey.getEncoded());
 
-        Assert.assertNotNull(cache.getCertificate(certId));
-        Assert.assertNotNull(cache.getCRL(crlId));
-        Assert.assertNotNull(cache.getTestCase(testCaseId));
-        Assert.assertNotNull(cache.getPrivateKey(certId));
-        Assert.assertNotNull(cache.getPublicKey((certId + "_0001")));
-        Assert.assertNotNull(cache.getRawCertificate(certId));
-        Assert.assertNotNull(cache.getRawCertificate(certId + "_0003"));
-        Assert.assertNotNull(cache.getRawCRL(crlId));
-        Assert.assertNotNull(cache.getRawCRL(crlId + "_0002"));
+        Assertions.assertNotNull(cache.getCertificate(certId));
+        Assertions.assertNotNull(cache.getCRL(crlId));
+        Assertions.assertNotNull(cache.getTestCase(testCaseId));
+        Assertions.assertNotNull(cache.getPrivateKey(certId));
+        Assertions.assertNotNull(cache.getPublicKey((certId + "_0001")));
+        Assertions.assertNotNull(cache.getRawCertificate(certId));
+        Assertions.assertNotNull(cache.getRawCertificate(certId + "_0003"));
+        Assertions.assertNotNull(cache.getRawCRL(crlId));
+        Assertions.assertNotNull(cache.getRawCRL(crlId + "_0002"));
 
-        Assert.assertEquals(certId, cache.getCertificate(certId).getId());
-        Assert.assertEquals(crlId, cache.getCRL(crlId).getId());
-        Assert.assertEquals(testCaseId, cache.getTestCase(testCaseId).getId());
-        Assert.assertEquals(((RSAPrivateKey) privateKey).getModulus(),
-                            ((RSAPrivateKey) cache.getPrivateKey(certId)).getModulus());
+        Assertions.assertEquals(certId, cache.getCertificate(certId).getId());
+        Assertions.assertEquals(crlId, cache.getCRL(crlId).getId());
+        Assertions.assertEquals(testCaseId, cache.getTestCase(testCaseId).getId());
+        Assertions.assertEquals(((RSAPrivateKey) privateKey).getModulus(),
+                                ((RSAPrivateKey) cache.getPrivateKey(certId)).getModulus());
 
         byte[] encodedPublicKey = cache.getPublicKey(certId + "_0001");
         RSAPublicKey pubKey =
-            (RSAPublicKey) de.mtg.security.asn1.x509.util.Util.buildPublicKey("RSA", encodedPublicKey);
+                        (RSAPublicKey) de.mtg.security.asn1.x509.util.Util.buildPublicKey("RSA", encodedPublicKey);
 
-        Assert.assertEquals(((RSAPublicKey) publicKey).getModulus(), pubKey.getModulus());
-        Assert.assertTrue(Arrays.equals(publicKey.getEncoded(), cache.getRawCertificate(certId)));
-        Assert.assertTrue(Arrays.equals(publicKey.getEncoded(), cache.getRawCertificate(certId + "_0003")));
-        Assert.assertTrue(Arrays.equals(publicKey.getEncoded(), cache.getRawCRL(crlId)));
-        Assert.assertTrue(Arrays.equals(publicKey.getEncoded(), cache.getRawCRL(crlId + "_0002")));
+        Assertions.assertEquals(((RSAPublicKey) publicKey).getModulus(), pubKey.getModulus());
+        Assertions.assertTrue(Arrays.equals(publicKey.getEncoded(), cache.getRawCertificate(certId)));
+        Assertions.assertTrue(Arrays.equals(publicKey.getEncoded(), cache.getRawCertificate(certId + "_0003")));
+        Assertions.assertTrue(Arrays.equals(publicKey.getEncoded(), cache.getRawCRL(crlId)));
+        Assertions.assertTrue(Arrays.equals(publicKey.getEncoded(), cache.getRawCRL(crlId + "_0002")));
 
     }
 
     /**
-     *
      * Tests whether the proper exception is thrown when a certificate with the same id is added twice.
      *
      * @throws DuplicateKeyException if a certificate with the same id is added more than once.
-     *
      */
-    @Test(expected = DuplicateKeyException.class)
+    @Test
     public void testDuplicateCertificate() throws DuplicateKeyException
     {
 
         cache.clear();
         cache.addCertificate(certificate);
-        cache.addCertificate(certificate);
+
+        Assertions.assertThrows(DuplicateKeyException.class, () -> cache.addCertificate(certificate));
+
     }
 
     /**
-     *
      * Tests whether the cache is properly cleared.
      *
      * @throws DuplicateKeyException if a PKI object with the same id is added more than once.
      */
+    @Test
     public void testClear() throws DuplicateKeyException
     {
 
@@ -203,19 +196,18 @@ public class ObjectCacheTest
         }
         catch (DuplicateKeyException dke)
         {
-            Assert.fail("An exception should not have been thrown here because the cache has been cleared.");
+            Assertions.fail("An exception should not have been thrown here because the cache has been cleared.");
         }
     }
 
     /**
-     *
      * Performs any necessary cleaning after each test run.
      *
      * @throws Exception if any exception occurs.
      */
-    @After
-    public void tearDown() throws Exception
+    @AfterEach
+    public void tearDown()
     {
-
+        cache.clear();
     }
 }

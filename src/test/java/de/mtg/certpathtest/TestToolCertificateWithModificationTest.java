@@ -15,10 +15,6 @@ import java.util.Random;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.Certificate;
 import de.mtg.certpathtest.pkiobjects.Extension;
@@ -29,30 +25,29 @@ import de.mtg.certpathtest.pkiobjects.NotBefore;
 import de.mtg.certpathtest.pkiobjects.PublicKey;
 import de.mtg.certpathtest.pkiobjects.SubjectDN;
 import de.mtg.security.asn1.x509.cert.SimpleCertificate;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Units tests for the a {@Link TestToolCertificate} that has modifications.
- *
  */
 public class TestToolCertificateWithModificationTest
 {
 
     /**
-     *
      * Prepares the environment before every test.
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
-    public void setUp() throws Exception
+    @BeforeEach
+    public void setUp()
     {
         Security.addProvider(new BouncyCastleProvider());
         ObjectCache.getInstance().clear();
     }
 
     /**
-     *
      * Tests the correct functionality of the <code>WRONG_SIGNATURE</code> modification.
      *
      * @throws Exception if any exception occurs.
@@ -68,7 +63,7 @@ public class TestToolCertificateWithModificationTest
         String id = "JUnit-" + random.nextInt(Integer.MAX_VALUE);
 
         String encodedPublicKey =
-            new String(Base64.encode(certificateCreator.getRootCACertificate().getPublicKey().getEncoded()));
+                        new String(Base64.encode(certificateCreator.getRootCACertificate().getPublicKey().getEncoded()));
 
         String encodedPrivateKey = new String(Base64.encode(certificateCreator.getRootCAPrivateKey().getEncoded()));
 
@@ -103,7 +98,7 @@ public class TestToolCertificateWithModificationTest
         xmlCertificateWithModification.setSignature("1.2.840.113549.1.1.11"); // SHA256WithRSAEncryption
         xmlCertificateWithModification.setVerifiedBy(id);
         xmlCertificateWithModification.setModification(new Modification(
-                                                                        de.mtg.certpathtest.Modification.WRONG_SIGNATURE.name()));
+                        de.mtg.certpathtest.Modification.WRONG_SIGNATURE.name()));
 
         TestToolCertificate technicalCertificateWithMod = new TestToolCertificate(xmlCertificateWithModification);
 
@@ -116,25 +111,24 @@ public class TestToolCertificateWithModificationTest
         X509Certificate x509ModifiedCertificate = (X509Certificate) cf.generateCertificate(bais);
         bais.close();
 
+        Assertions.assertTrue(!Arrays.equals(x509CertificateReference.getSignature(),
+                                             x509ModifiedCertificate.getSignature()));
 
-        Assert.assertTrue(!Arrays.equals(x509CertificateReference.getSignature(),
-                                         x509ModifiedCertificate.getSignature()));
-
-//        Assert.assertTrue(Arrays.equals(x509CertificateReference.getTBSCertificate(),
-//                                        x509ModifiedCertificate.getTBSCertificate()));
+        //        Assertions.assertTrue(Arrays.equals(x509CertificateReference.getTBSCertificate(),
+        //                                        x509ModifiedCertificate.getTBSCertificate()));
 
         x509CertificateReference.verify(certificateCreator.getRootCACertificate().getPublicKey());
 
         try
         {
             x509ModifiedCertificate.verify(certificateCreator.getRootCACertificate().getPublicKey());
-            Assert.fail("An exception should not have been thrown here because the signature of this certificate is wrong.");
+            Assertions.fail("An exception should not have been thrown here because the signature of this certificate is wrong.");
         }
         catch (Exception e)
         {
             if (!(e instanceof SignatureException))
             {
-                Assert.fail("Expecting Signature Exception but got anotrher one: '" + e.getClass().getName() + "'.");
+                Assertions.fail(String.format("Expecting Signature Exception but got another one: '%s'.", e.getClass().getName()));
             }
         }
 
@@ -143,7 +137,6 @@ public class TestToolCertificateWithModificationTest
     }
 
     /**
-     *
      * Tests the correct functionality of the <code>DUPLICATE_EXTENSION</code> modification.
      *
      * @throws Exception if any exception occurs.
@@ -159,7 +152,7 @@ public class TestToolCertificateWithModificationTest
         String id = "JUnit-" + random.nextInt(Integer.MAX_VALUE);
 
         String encodedPublicKey =
-            new String(Base64.encode(certificateCreator.getRootCACertificate().getPublicKey().getEncoded()));
+                        new String(Base64.encode(certificateCreator.getRootCACertificate().getPublicKey().getEncoded()));
 
         String encodedPrivateKey = new String(Base64.encode(certificateCreator.getRootCAPrivateKey().getEncoded()));
 
@@ -189,21 +182,15 @@ public class TestToolCertificateWithModificationTest
 
         ByteArrayInputStream bais = new ByteArrayInputStream(technicalCertificate.getEncoded());
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        try
-        {
-            cf.generateCertificate(bais);
-            Assert.fail("This certificate should not be parseable.");
-        }
-        catch (CertificateParsingException cpe)
-        {
-        }
+
+        Assertions.assertThrows(CertificateParsingException.class, () -> cf.generateCertificate(bais));
+
         bais.close();
         ObjectCache.getInstance().clear();
 
     }
 
     /**
-     *
      * Tests the correct functionality of the <code>EMPTY_SIGNATURE</code> modification.
      *
      * @throws Exception if any exception occurs.
@@ -219,7 +206,7 @@ public class TestToolCertificateWithModificationTest
         String id = "JUnit-" + random.nextInt(Integer.MAX_VALUE);
 
         String encodedPublicKey =
-            new String(Base64.encode(certificateCreator.getRootCACertificate().getPublicKey().getEncoded()));
+                        new String(Base64.encode(certificateCreator.getRootCACertificate().getPublicKey().getEncoded()));
 
         String encodedPrivateKey = new String(Base64.encode(certificateCreator.getRootCAPrivateKey().getEncoded()));
 
@@ -249,26 +236,19 @@ public class TestToolCertificateWithModificationTest
 
         if (simpleCertificate.getSignature() != null)
         {
-            Assert.fail("This certificate should not have a signature.");
+            Assertions.fail("This certificate should not have a signature.");
         }
 
         ByteArrayInputStream bais = new ByteArrayInputStream(technicalCertificate.getEncoded());
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        try
-        {
-            cf.generateCertificate(bais);
-            Assert.fail("This certificate should not be parseable.");
-        }
-        catch (CertificateException ce)
-        {
 
-        }
+        Assertions.assertThrows(CertificateException.class, () -> cf.generateCertificate(bais));
+
         bais.close();
         ObjectCache.getInstance().clear();
     }
 
     /**
-     *
      * Tests the correct functionality of the <code>DIFF_SIGN_ALGORITHMS</code> modification.
      *
      * @throws Exception if any exception occurs.
@@ -284,7 +264,7 @@ public class TestToolCertificateWithModificationTest
         String id = "JUnit-" + random.nextInt(Integer.MAX_VALUE);
 
         String encodedPublicKey =
-            new String(Base64.encode(certificateCreator.getRootCACertificate().getPublicKey().getEncoded()));
+                        new String(Base64.encode(certificateCreator.getRootCACertificate().getPublicKey().getEncoded()));
 
         String encodedPrivateKey = new String(Base64.encode(certificateCreator.getRootCAPrivateKey().getEncoded()));
 
@@ -312,26 +292,19 @@ public class TestToolCertificateWithModificationTest
 
         SimpleCertificate simpleCertificate = SimpleCertificate.getInstance(technicalCertificate.getEncoded());
 
-        Assert.assertTrue(!(simpleCertificate.getSigAlgOID().equals(simpleCertificate.getTbsCertificate().getSignature()
-                                                                                     .getAlgorithm().getId())));
+        Assertions.assertTrue(!(simpleCertificate.getSigAlgOID().equals(simpleCertificate.getTbsCertificate().getSignature()
+                                                                                         .getAlgorithm().getId())));
 
         ByteArrayInputStream bais = new ByteArrayInputStream(technicalCertificate.getEncoded());
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        try
-        {
-            cf.generateCertificate(bais);
-            Assert.fail("This certificate should not be parseable.");
-        }
-        catch (CertificateException ce)
-        {
 
-        }
+        Assertions.assertThrows(CertificateException.class, () -> cf.generateCertificate(bais));
+
         ObjectCache.getInstance().clear();
 
     }
 
     /**
-     *
      * Tests the correct functionality of the <code>RSA_LOW_EXPONENT</code> modification.
      *
      * @throws Exception if any exception occurs.
@@ -369,7 +342,7 @@ public class TestToolCertificateWithModificationTest
         X509Certificate x509Certificate = (X509Certificate) cf.generateCertificate(bais);
         bais.close();
 
-        Assert.assertEquals(3, ((RSAPublicKey) x509Certificate.getPublicKey()).getPublicExponent().intValue());
+        Assertions.assertEquals(3, ((RSAPublicKey) x509Certificate.getPublicKey()).getPublicExponent().intValue());
 
         Certificate issuedXmlCertificate = new Certificate();
 
@@ -392,21 +365,13 @@ public class TestToolCertificateWithModificationTest
         X509Certificate issuedx509Certificate = (X509Certificate) cf.generateCertificate(bais);
         bais.close();
 
-        try
-        {
-            issuedx509Certificate.verify(x509Certificate.getPublicKey());
-            Assert.fail("An exception should not have been thrown here because the signature of this certificate is wrong.");
-        }
-        catch (SignatureException se)
-        {
+        Assertions.assertThrows(SignatureException.class, () -> issuedx509Certificate.verify(x509Certificate.getPublicKey()));
 
-        }
         ObjectCache.getInstance().clear();
 
     }
 
     /**
-     *
      * Tests the correct functionality of the <code>WRONG_DER_ENCODING</code> modification.
      *
      * @throws Exception if any exception occurs.
@@ -438,29 +403,10 @@ public class TestToolCertificateWithModificationTest
         ByteArrayInputStream bais = new ByteArrayInputStream(technicalCertificate.getEncoded());
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
 
-        try
-        {
-            cf.generateCertificate(bais);
-            Assert.fail("This certificate should not be parseable.");
-        }
-        catch (CertificateException ce)
-        {
-        }
+        Assertions.assertThrows(CertificateException.class, () -> cf.generateCertificate(bais));
 
         bais.close();
         ObjectCache.getInstance().clear();
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
 
     }
 

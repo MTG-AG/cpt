@@ -23,14 +23,9 @@ import de.mtg.certpathtest.pkiobjects.PKIObjects;
 import de.mtg.certpathtest.pkiobjects.PublicKey;
 import de.mtg.certpathtest.pkiobjects.SubjectDN;
 import de.mtg.certpathtest.pkiobjects.Variable;
-import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link Utils}
@@ -39,16 +34,6 @@ import static org.junit.Assert.fail;
  */
 public class UtilsTest
 {
-    /**
-     * Prepares the environment before every test.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @Before
-    public void setUp() throws Exception
-    {
-
-    }
 
     /**
      * Tests the {@link Utils#convertBitString(String)} method.
@@ -62,45 +47,45 @@ public class UtilsTest
 
         test = "110";
         byte[] result = Utils.convertBitString(test);
-        Assert.assertEquals(1, result.length);
-        Assert.assertEquals(6, (int) result[0]);
+        Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(6, (int) result[0]);
 
         test = "0000001";
         result = Utils.convertBitString(test);
-        Assert.assertEquals(1, result.length);
-        Assert.assertEquals(1, (int) result[0]);
+        Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(1, (int) result[0]);
 
         test = "00000001";
         result = Utils.convertBitString(test);
-        Assert.assertEquals(1, result.length);
-        Assert.assertEquals(1, (int) result[0]);
+        Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(1, (int) result[0]);
 
         test = "10000001";
         result = Utils.convertBitString(test);
-        Assert.assertEquals(1, result.length);
-        Assert.assertEquals(-127, (int) result[0]);
+        Assertions.assertEquals(1, result.length);
+        Assertions.assertEquals(-127, (int) result[0]);
 
         test = "110000001";
         result = Utils.convertBitString(test);
-        Assert.assertEquals(result.length, 2);
-        Assert.assertEquals(1, (int) result[0]);
-        Assert.assertEquals(-127, (int) result[1]);
+        Assertions.assertEquals(result.length, 2);
+        Assertions.assertEquals(1, (int) result[0]);
+        Assertions.assertEquals(-127, (int) result[1]);
 
         test = "110101000001";
         result = Utils.convertBitString(test);
-        Assert.assertEquals(result.length, 2);
+        Assertions.assertEquals(result.length, 2);
 
-        Assert.assertEquals(13, (int) result[0]);
-        Assert.assertEquals(65, (int) result[1]);
+        Assertions.assertEquals(13, (int) result[0]);
+        Assertions.assertEquals(65, (int) result[1]);
 
         test = "1101101010100101010111001100";
         result = Utils.convertBitString(test);
-        Assert.assertEquals(result.length, 4);
+        Assertions.assertEquals(result.length, 4);
 
-        Assert.assertEquals(13, (int) result[0]);
-        Assert.assertEquals(-86, (int) result[1]);
-        Assert.assertEquals(85, (int) result[2]);
-        Assert.assertEquals(-52, (int) result[3]);
+        Assertions.assertEquals(13, (int) result[0]);
+        Assertions.assertEquals(-86, (int) result[1]);
+        Assertions.assertEquals(85, (int) result[2]);
+        Assertions.assertEquals(-52, (int) result[3]);
 
     }
 
@@ -162,23 +147,23 @@ public class UtilsTest
 
         Certificate workCertificate = Utils.createCompleteCertificateFromReference(levelOne);
 
-        Assert.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
-        Assert.assertEquals("300", workCertificate.getVersion());
-        Assert.assertEquals("1", workCertificate.getSerialNumber());
-        Assert.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
-        Assert.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
-        Assert.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
-        Assert.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
-        Assert.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
-        Assert.assertEquals(levelZero.getNotBefore().getEncoding(), workCertificate.getNotBefore().getEncoding());
-        Assert.assertEquals(levelZero.getNotBefore().getValue(), workCertificate.getNotBefore().getValue());
-        Assert.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
-        Assert.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
-        Assert.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
-        Assert.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
-        Assert.assertEquals(levelZero.getModification().getId(), workCertificate.getModification().getId());
+        Assertions.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
+        Assertions.assertEquals("300", workCertificate.getVersion());
+        Assertions.assertEquals("1", workCertificate.getSerialNumber());
+        Assertions.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
+        Assertions.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
+        Assertions.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
+        Assertions.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
+        Assertions.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
+        Assertions.assertEquals(levelZero.getNotBefore().getEncoding(), workCertificate.getNotBefore().getEncoding());
+        Assertions.assertEquals(levelZero.getNotBefore().getValue(), workCertificate.getNotBefore().getValue());
+        Assertions.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
+        Assertions.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
+        Assertions.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
+        Assertions.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
+        Assertions.assertEquals(levelZero.getModification().getId(), workCertificate.getModification().getId());
 
         ObjectCache.getInstance().clear();
     }
@@ -230,23 +215,23 @@ public class UtilsTest
 
         Certificate workCertificate = Utils.createCompleteCertificateFromReference(levelTwo);
 
-        Assert.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
-        Assert.assertEquals("300", workCertificate.getVersion()); // from level 1
-        Assert.assertEquals("478", workCertificate.getSerialNumber()); // from level 2
-        Assert.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
-        Assert.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
-        Assert.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
-        Assert.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
-        Assert.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
-        Assert.assertEquals(levelZero.getNotBefore().getEncoding(), workCertificate.getNotBefore().getEncoding());
-        Assert.assertEquals(levelZero.getNotBefore().getValue(), workCertificate.getNotBefore().getValue());
-        Assert.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
-        Assert.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
-        Assert.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
-        Assert.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
-        Assert.assertEquals(levelZero.getModification().getId(), workCertificate.getModification().getId());
+        Assertions.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
+        Assertions.assertEquals("300", workCertificate.getVersion()); // from level 1
+        Assertions.assertEquals("478", workCertificate.getSerialNumber()); // from level 2
+        Assertions.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
+        Assertions.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
+        Assertions.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
+        Assertions.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
+        Assertions.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
+        Assertions.assertEquals(levelZero.getNotBefore().getEncoding(), workCertificate.getNotBefore().getEncoding());
+        Assertions.assertEquals(levelZero.getNotBefore().getValue(), workCertificate.getNotBefore().getValue());
+        Assertions.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
+        Assertions.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
+        Assertions.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
+        Assertions.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
+        Assertions.assertEquals(levelZero.getModification().getId(), workCertificate.getModification().getId());
 
         ObjectCache.getInstance().clear();
     }
@@ -307,23 +292,23 @@ public class UtilsTest
 
         Certificate workCertificate = Utils.createCompleteCertificateFromReference(levelThree);
 
-        Assert.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
-        Assert.assertEquals("300", workCertificate.getVersion()); // from level 1
-        Assert.assertEquals("4096", workCertificate.getSerialNumber()); // from level 2
-        Assert.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
-        Assert.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
-        Assert.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
-        Assert.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
-        Assert.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
-        Assert.assertEquals("GEN", workCertificate.getNotBefore().getEncoding());
-        Assert.assertEquals("4", workCertificate.getNotBefore().getValue());
-        Assert.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
-        Assert.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
-        Assert.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
-        Assert.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
-        Assert.assertEquals(de.mtg.certpathtest.Modification.DUPLICATE_EXTENSION.name(),
+        Assertions.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
+        Assertions.assertEquals("300", workCertificate.getVersion()); // from level 1
+        Assertions.assertEquals("4096", workCertificate.getSerialNumber()); // from level 2
+        Assertions.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
+        Assertions.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
+        Assertions.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
+        Assertions.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
+        Assertions.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
+        Assertions.assertEquals("GEN", workCertificate.getNotBefore().getEncoding());
+        Assertions.assertEquals("4", workCertificate.getNotBefore().getValue());
+        Assertions.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
+        Assertions.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
+        Assertions.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
+        Assertions.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
+        Assertions.assertEquals(de.mtg.certpathtest.Modification.DUPLICATE_EXTENSION.name(),
                             workCertificate.getModification().getId());
 
         ObjectCache.getInstance().clear();
@@ -404,25 +389,25 @@ public class UtilsTest
 
         Certificate workCertificate = Utils.createCompleteCertificateFromReference(levelThree);
 
-        Assert.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
-        Assert.assertEquals("300", workCertificate.getVersion()); // from level 1
-        Assert.assertEquals("4096", workCertificate.getSerialNumber()); // from level 2
-        Assert.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
-        Assert.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
-        Assert.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
-        Assert.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
-        Assert.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
-        Assert.assertEquals("GEN", workCertificate.getNotBefore().getEncoding());
-        Assert.assertEquals("4", workCertificate.getNotBefore().getValue());
-        Assert.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
-        Assert.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
-        Assert.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
-        Assert.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
-        Assert.assertEquals(de.mtg.certpathtest.Modification.WRONG_SIGNATURE.name(),
+        Assertions.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
+        Assertions.assertEquals("300", workCertificate.getVersion()); // from level 1
+        Assertions.assertEquals("4096", workCertificate.getSerialNumber()); // from level 2
+        Assertions.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
+        Assertions.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
+        Assertions.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
+        Assertions.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
+        Assertions.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
+        Assertions.assertEquals("GEN", workCertificate.getNotBefore().getEncoding());
+        Assertions.assertEquals("4", workCertificate.getNotBefore().getValue());
+        Assertions.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
+        Assertions.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
+        Assertions.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
+        Assertions.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
+        Assertions.assertEquals(de.mtg.certpathtest.Modification.WRONG_SIGNATURE.name(),
                             workCertificate.getModification().getId());
-        Assert.assertEquals(4, workCertificate.getExtensions().size());
+        Assertions.assertEquals(4, workCertificate.getExtensions().size());
 
         HashMap<String, String> currentExtensions = new HashMap<String, String>();
 
@@ -431,8 +416,8 @@ public class UtilsTest
             currentExtensions.put(extension.getOid(), extension.getValue());
         }
 
-        Assert.assertTrue(currentExtensions.containsKey("1.2.3.4.4"));
-        Assert.assertEquals("Updated Forth Extension", currentExtensions.get(("1.2.3.4.4")));
+        Assertions.assertTrue(currentExtensions.containsKey("1.2.3.4.4"));
+        Assertions.assertEquals("Updated Forth Extension", currentExtensions.get(("1.2.3.4.4")));
 
         ObjectCache.getInstance().clear();
     }
@@ -513,25 +498,25 @@ public class UtilsTest
 
         Certificate workCertificate = Utils.createCompleteCertificateFromReference(levelThree);
 
-        Assert.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
-        Assert.assertEquals("300", workCertificate.getVersion()); // from level 1
-        Assert.assertEquals("4096", workCertificate.getSerialNumber()); // from level 2
-        Assert.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
-        Assert.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
-        Assert.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
-        Assert.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
-        Assert.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
-        Assert.assertEquals("GEN", workCertificate.getNotBefore().getEncoding());
-        Assert.assertEquals("4", workCertificate.getNotBefore().getValue());
-        Assert.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
-        Assert.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
-        Assert.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
-        Assert.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
-        Assert.assertEquals(de.mtg.certpathtest.Modification.DUPLICATE_EXTENSION.name(),
+        Assertions.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
+        Assertions.assertEquals("300", workCertificate.getVersion()); // from level 1
+        Assertions.assertEquals("4096", workCertificate.getSerialNumber()); // from level 2
+        Assertions.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
+        Assertions.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
+        Assertions.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
+        Assertions.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
+        Assertions.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
+        Assertions.assertEquals("GEN", workCertificate.getNotBefore().getEncoding());
+        Assertions.assertEquals("4", workCertificate.getNotBefore().getValue());
+        Assertions.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
+        Assertions.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
+        Assertions.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
+        Assertions.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
+        Assertions.assertEquals(de.mtg.certpathtest.Modification.DUPLICATE_EXTENSION.name(),
                             workCertificate.getModification().getId());
-        Assert.assertEquals(5, workCertificate.getExtensions().size());
+        Assertions.assertEquals(5, workCertificate.getExtensions().size());
 
         HashMap<String, String> currentExtensions = new HashMap<String, String>();
 
@@ -540,10 +525,10 @@ public class UtilsTest
             currentExtensions.put(extension.getValue(), extension.getOid());
         }
 
-        Assert.assertTrue(currentExtensions.containsKey("Updated Forth Extension"));
-        Assert.assertTrue(currentExtensions.containsKey("Forth Extension"));
-        Assert.assertEquals("1.2.3.4.4", currentExtensions.get(("Updated Forth Extension")));
-        Assert.assertEquals("1.2.3.4.4", currentExtensions.get(("Forth Extension")));
+        Assertions.assertTrue(currentExtensions.containsKey("Updated Forth Extension"));
+        Assertions.assertTrue(currentExtensions.containsKey("Forth Extension"));
+        Assertions.assertEquals("1.2.3.4.4", currentExtensions.get(("Updated Forth Extension")));
+        Assertions.assertEquals("1.2.3.4.4", currentExtensions.get(("Forth Extension")));
 
         ObjectCache.getInstance().clear();
     }
@@ -559,7 +544,7 @@ public class UtilsTest
 
         String algorithmOID = "1.2.840.113549.1.1.11";
 
-        Assert.assertNotSame(algorithmOID, Utils.getDifferentAlgorithm(algorithmOID));
+        Assertions.assertNotSame(algorithmOID, Utils.getDifferentAlgorithm(algorithmOID));
 
     }
 
@@ -614,24 +599,24 @@ public class UtilsTest
 
         Certificate workCertificate = Utils.createCompleteCertificateFromReference(levelOne);
 
-        Assert.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
-        Assert.assertEquals(6, workCertificate.getExtensions().size());
-        Assert.assertEquals("1", workCertificate.getSerialNumber());
-        Assert.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
-        Assert.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
-        Assert.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
-        Assert.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
-        Assert.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
-        Assert.assertEquals(levelZero.getNotBefore().getEncoding(), workCertificate.getNotBefore().getEncoding());
-        Assert.assertEquals(levelZero.getNotBefore().getValue(), workCertificate.getNotBefore().getValue());
-        Assert.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
-        Assert.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
-        Assert.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
-        Assert.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
-        Assert.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
+        Assertions.assertEquals(levelZero.getVerifiedBy(), workCertificate.getVerifiedBy());
+        Assertions.assertEquals(6, workCertificate.getExtensions().size());
+        Assertions.assertEquals("1", workCertificate.getSerialNumber());
+        Assertions.assertEquals(levelZero.getSignature(), workCertificate.getSignature());
+        Assertions.assertEquals(levelZero.getIssuerDN().getEncoding(), workCertificate.getIssuerDN().getEncoding());
+        Assertions.assertEquals(levelZero.getIssuerDN().getValue(), workCertificate.getIssuerDN().getValue());
+        Assertions.assertEquals(levelZero.getSubjectDN().getEncoding(), workCertificate.getSubjectDN().getEncoding());
+        Assertions.assertEquals(levelZero.getSubjectDN().getValue(), workCertificate.getSubjectDN().getValue());
+        Assertions.assertEquals(levelZero.getNotBefore().getEncoding(), workCertificate.getNotBefore().getEncoding());
+        Assertions.assertEquals(levelZero.getNotBefore().getValue(), workCertificate.getNotBefore().getValue());
+        Assertions.assertEquals(levelZero.getNotAfter().getEncoding(), workCertificate.getNotAfter().getEncoding());
+        Assertions.assertEquals(levelZero.getNotAfter().getValue(), workCertificate.getNotAfter().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getValue(), workCertificate.getPublicKey().getValue());
+        Assertions.assertEquals(levelZero.getPublicKey().getType(), workCertificate.getPublicKey().getType());
+        Assertions.assertEquals(levelZero.getIssuerUniqueID(), workCertificate.getIssuerUniqueID());
+        Assertions.assertEquals(levelZero.getSubjectUniqueID(), workCertificate.getSubjectUniqueID());
 
-        Assert.assertEquals("CERT_PATH_EMAIL_02_EE", workCertificate.getId());
+        Assertions.assertEquals("CERT_PATH_EMAIL_02_EE", workCertificate.getId());
 
         ObjectCache.getInstance().clear();
     }
@@ -675,15 +660,15 @@ public class UtilsTest
         properties.addSimpleProperty("replace.serialNumber", "12345678");
         Hashtable<String, String> replacementProperties = properties.getReplacementProperties();
 
-        Assert.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
-        Assert.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
-        Assert.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
+        Assertions.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
+        Assertions.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
+        Assertions.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
 
         String newPkiObjects = Utils.applyVariableValuesOnPKIObjects(pkiObjects).toString();
 
-        Assert.assertTrue(newPkiObjects.indexOf("RSA,2048") != -1);
-        Assert.assertTrue(newPkiObjects.indexOf("CN=Test Issuer, C=DE") != -1);
-        Assert.assertTrue(newPkiObjects.indexOf("12345678") != -1);
+        Assertions.assertTrue(newPkiObjects.indexOf("RSA,2048") != -1);
+        Assertions.assertTrue(newPkiObjects.indexOf("CN=Test Issuer, C=DE") != -1);
+        Assertions.assertTrue(newPkiObjects.indexOf("12345678") != -1);
 
     }
 
@@ -756,9 +741,9 @@ public class UtilsTest
         properties.addSimpleProperty("replace.httpHost", "cert_path_host");
         Hashtable<String, String> replacementProperties = properties.getReplacementProperties();
 
-        Assert.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
-        Assert.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
-        Assert.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
+        Assertions.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
+        Assertions.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
+        Assertions.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
 
         // pkiObjects = Utils.applyReplacementsOnPKIObjects(pkiObjects);
 
@@ -766,10 +751,10 @@ public class UtilsTest
         PKIObjects newPkiObjects = Utils.applyVariableValuesOnPKIObjects(pkiObjects);
         System.out.println(newPkiObjects);
 
-        Assert.assertTrue(newPkiObjects.toString().indexOf("RSA,2048") != -1);
-        Assert.assertTrue(newPkiObjects.toString().indexOf("CN=Test Issuer, C=DE") != -1);
-        Assert.assertTrue(newPkiObjects.toString().indexOf("12345678") != -1);
-        Assert.assertTrue(newPkiObjects.toString().indexOf("https://root.crl") != -1);
+        Assertions.assertTrue(newPkiObjects.toString().indexOf("RSA,2048") != -1);
+        Assertions.assertTrue(newPkiObjects.toString().indexOf("CN=Test Issuer, C=DE") != -1);
+        Assertions.assertTrue(newPkiObjects.toString().indexOf("12345678") != -1);
+        Assertions.assertTrue(newPkiObjects.toString().indexOf("https://root.crl") != -1);
 
         Pattern pattern = Pattern.compile(Pattern.quote("https://root.crl"));
         Matcher matcher = pattern.matcher(newPkiObjects.toString());
@@ -780,7 +765,7 @@ public class UtilsTest
         }
 
         // once as a variable and once as a replaced value
-        Assert.assertEquals(2, matchCounter);
+        Assertions.assertEquals(2, matchCounter);
 
         pattern = Pattern.compile(Pattern.quote("https://cert_path_host.crl"));
         matcher = pattern.matcher(newPkiObjects.toString());
@@ -791,7 +776,7 @@ public class UtilsTest
         }
 
         // once as a variable and once as a replaced value
-        Assert.assertEquals(2, matchCounter);
+        Assertions.assertEquals(2, matchCounter);
 
         pattern = Pattern.compile(Pattern.quote("http://cert_path_host.crl"));
         matcher = pattern.matcher(newPkiObjects.toString());
@@ -802,7 +787,7 @@ public class UtilsTest
         }
 
         // only once as a replaced value
-        Assert.assertEquals(1, matchCounter);
+        Assertions.assertEquals(1, matchCounter);
 
     }
 
@@ -879,18 +864,18 @@ public class UtilsTest
         properties.addSimpleProperty("replace.httpHost", "cert_path_host");
         Hashtable<String, String> replacementProperties = properties.getReplacementProperties();
 
-        Assert.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
-        Assert.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
-        Assert.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
+        Assertions.assertEquals("12345678", replacementProperties.get("replace.serialNumber"));
+        Assertions.assertEquals("CN=Test Issuer, C=DE", replacementProperties.get("replace.issuerDN"));
+        Assertions.assertEquals("RSA,2048", replacementProperties.get("replace.publicKey"));
 
         System.out.println(pkiObjects);
         PKIObjects newPkiObjects = Utils.applyVariableValuesOnPKIObjects(pkiObjects);
         System.out.println(newPkiObjects);
 
-        Assert.assertTrue(newPkiObjects.toString().indexOf("RSA,2048") != -1);
-        Assert.assertTrue(newPkiObjects.toString().indexOf("CN=Test Issuer, C=DE") != -1);
-        Assert.assertTrue(newPkiObjects.toString().indexOf("12345678") != -1);
-        Assert.assertTrue(newPkiObjects.toString().indexOf("https://root.crl") != -1);
+        Assertions.assertTrue(newPkiObjects.toString().indexOf("RSA,2048") != -1);
+        Assertions.assertTrue(newPkiObjects.toString().indexOf("CN=Test Issuer, C=DE") != -1);
+        Assertions.assertTrue(newPkiObjects.toString().indexOf("12345678") != -1);
+        Assertions.assertTrue(newPkiObjects.toString().indexOf("https://root.crl") != -1);
 
         Pattern pattern = Pattern.compile(Pattern.quote("https://root.crl"));
         Matcher matcher = pattern.matcher(newPkiObjects.toString());
@@ -901,7 +886,7 @@ public class UtilsTest
         }
 
         // once as a variable and once as a replaced value
-        Assert.assertEquals(2, matchCounter);
+        Assertions.assertEquals(2, matchCounter);
 
         pattern = Pattern.compile(Pattern.quote("https://overwriteGlobal.crl"));
         matcher = pattern.matcher(newPkiObjects.toString());
@@ -912,7 +897,7 @@ public class UtilsTest
         }
 
         // once as a variable and once as a replaced value
-        Assert.assertEquals(2, matchCounter);
+        Assertions.assertEquals(2, matchCounter);
 
         pattern = Pattern.compile(Pattern.quote("http://overwriteGlobal.crl"));
         matcher = pattern.matcher(newPkiObjects.toString());
@@ -923,7 +908,7 @@ public class UtilsTest
         }
 
         // only once as a replaced value
-        Assert.assertEquals(1, matchCounter);
+        Assertions.assertEquals(1, matchCounter);
 
     }
 
@@ -948,15 +933,15 @@ public class UtilsTest
             try
             {
                 X509Certificate cert = Utils.createDummyCertificate(randomInteger);
-                assertNotNull(cert);
-                assertTrue(cert.getSerialNumber().compareTo(BigInteger.TEN) == 0);
-                assertTrue(cert.getEncoded().length == randomInteger);
+                Assertions.assertNotNull(cert);
+                Assertions.assertTrue(cert.getSerialNumber().compareTo(BigInteger.TEN) == 0);
+                Assertions.assertTrue(cert.getEncoded().length == randomInteger);
             }
             catch (IllegalArgumentException e)
             {
                 if (randomInteger >= 281)
                 {
-                    fail("Should not have thrown illegal argument exception.");
+                    Assertions.fail("Should not have thrown illegal argument exception.");
                 }
 
             }
@@ -976,62 +961,62 @@ public class UtilsTest
     public void testHasOverwriteNew() throws CertificateException, IOException
     {
 
-        Assert.assertFalse(Utils.hasOverwrite(getEmptyCertificate()));
+        Assertions.assertFalse(Utils.hasOverwrite(getEmptyCertificate()));
 
         Certificate cert = getEmptyCertificate();
         cert.setSerialNumber("1");
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setVersion("0");
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setNotBefore(new NotBefore("-1H", "GEN"));
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setNotAfter(new NotAfter("-1H", "GEN"));
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setIssuerDN(new IssuerDN("C=DE", "UTF8"));
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setSubjectDN(new SubjectDN("C=DE", "UTF8"));
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setIssuerUniqueID("100001");
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setSubjectUniqueID("100001");
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setSignature("1.2.3.4.5");
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setPublicKey(new PublicKey("RSA,2048", "pretty"));
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setVerifiedBy("ROOTCA");
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         cert = getEmptyCertificate();
         cert.setModification(new Modification("WRONG_SIGNATURE"));
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
         Extension extension = new Extension("testvalue", "1.2.3", "false", "testname", "pretty");
         ArrayList<Extension> extensions = new ArrayList<>();
         extensions.add(extension);
         cert = getEmptyCertificate();
         cert.setExtensions(extensions);
-        Assert.assertTrue(Utils.hasOverwrite(cert));
+        Assertions.assertTrue(Utils.hasOverwrite(cert));
 
     }
 
@@ -1048,8 +1033,8 @@ public class UtilsTest
      *
      * @throws Exception if any exception occurs.
      */
-    @After
-    public void tearDown() throws Exception
+    @AfterEach
+    public void tearDown()
     {
         ObjectCache.getInstance().clear();
     }

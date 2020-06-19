@@ -168,6 +168,7 @@ public class EmbeddedADSVerTrunk
         // Disable the ChangeLog system
         this.service.getChangeLog().setEnabled(false);
         this.service.setDenormalizeOpAttrsEnabled(true);
+        this.service.setAllowAnonymousAccess(true);
 
         // And start the service
         this.service.startup();

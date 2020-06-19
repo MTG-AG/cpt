@@ -7,40 +7,22 @@ import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DLSequence;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.Extension;
 import de.mtg.certpathtest.pkiobjects.WrongPKIObjectException;
 import de.mtg.certpathtest.pkiobjects.extensions.CRLDP;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Unit tests for {@link de.mtg.certpathtest.pkiobjects.extensions.CRLDP}.
  *
  * @see de.mtg.certpathtest.pkiobjects.extensions.CRLDP CRLDP
- *
- *
  */
 public class CRLDPTest
 {
 
     /**
-     *
-     * Prepares the environment before every test.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @Before
-    public void setUp() throws Exception
-    {
-
-    }
-
-    /**
-     *
      * Tests whether this extension can be created correctly from a correct representation.
      *
      * @throws Exception if any exception occurs.
@@ -63,40 +45,37 @@ public class CRLDPTest
         CRLDP akie = new CRLDP(extension);
         byte[] encoded = akie.getEncoded();
 
-        ByteArrayInputStream bais = new ByteArrayInputStream(encoded);
-        ASN1InputStream asn1InputStream = new ASN1InputStream(bais);
-        DLSequence sequence = (DLSequence) asn1InputStream.readObject();
-        DLSequence distributionPoint = (DLSequence) sequence.getObjectAt(0);
-        DERTaggedObject distributionPointName = (DERTaggedObject) distributionPoint.getObjectAt(0);
-        Assert.assertEquals(distributionPointName.getTagNo(), 0);
-        DERTaggedObject taggedGeneralNames = (DERTaggedObject) distributionPointName.getObject();
-        Assert.assertEquals(taggedGeneralNames.getTagNo(), 0);
-        DLSequence generalNames = (DLSequence) taggedGeneralNames.getObject();
+        try(ByteArrayInputStream bais = new ByteArrayInputStream(encoded);
+            ASN1InputStream asn1InputStream = new ASN1InputStream(bais))
+        {
+            DLSequence sequence = (DLSequence) asn1InputStream.readObject();
+            DLSequence distributionPoint = (DLSequence) sequence.getObjectAt(0);
+            DERTaggedObject distributionPointName = (DERTaggedObject) distributionPoint.getObjectAt(0);
+            Assertions.assertEquals(distributionPointName.getTagNo(), 0);
+            DERTaggedObject taggedGeneralNames = (DERTaggedObject) distributionPointName.getObject();
+            Assertions.assertEquals(taggedGeneralNames.getTagNo(), 0);
+            DLSequence generalNames = (DLSequence) taggedGeneralNames.getObject();
 
-        DERTaggedObject firstUri = (DERTaggedObject) generalNames.getObjectAt(0);
-        DERTaggedObject secondUri = (DERTaggedObject) generalNames.getObjectAt(1);
-        Assert.assertEquals(firstUri.getTagNo(), 6);
-        Assert.assertEquals(secondUri.getTagNo(), 6);
+            DERTaggedObject firstUri = (DERTaggedObject) generalNames.getObjectAt(0);
+            DERTaggedObject secondUri = (DERTaggedObject) generalNames.getObjectAt(1);
+            Assertions.assertEquals(firstUri.getTagNo(), 6);
+            Assertions.assertEquals(secondUri.getTagNo(), 6);
 
-        DEROctetString firstUriValue = (DEROctetString) firstUri.getObject();
-        DEROctetString secondUriValue = (DEROctetString) secondUri.getObject();
+            DEROctetString firstUriValue = (DEROctetString) firstUri.getObject();
+            DEROctetString secondUriValue = (DEROctetString) secondUri.getObject();
 
-        Assert.assertEquals(new String(firstUriValue.getOctets()), firstComponent);
-        Assert.assertEquals(new String(secondUriValue.getOctets()), secondComponent);
-
-        asn1InputStream.close();
-        bais.close();
-
+            Assertions.assertEquals(new String(firstUriValue.getOctets()), firstComponent);
+            Assertions.assertEquals(new String(secondUriValue.getOctets()), secondComponent);
+        }
     }
 
     /**
-     *
      * Tests whether this extension cannot be created from a wrong representation and a proper exception is thrown.
      *
      * @throws Exception if any exception occurs.
      */
-    @Test(expected = WrongPKIObjectException.class)
-    public void testIncorrect() throws Exception
+    @Test
+    public void testIncorrect()
     {
 
         String wrongValue = "";
@@ -107,31 +86,7 @@ public class CRLDPTest
         extension.setType("pretty");
         extension.setValue(wrongValue);
 
-        CRLDP crldp = new CRLDP(extension);
-        byte[] encoded = crldp.getEncoded();
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(encoded);
-        ASN1InputStream asn1InputStream = new ASN1InputStream(bais);
-        DLSequence sequence = (DLSequence) asn1InputStream.readObject();
-        DERTaggedObject taggedObject = (DERTaggedObject) sequence.getObjectAt(0);
-        DEROctetString octetString = (DEROctetString) taggedObject.getObject();
-        asn1InputStream.close();
-        bais.close();
-
-        Assert.assertNotNull(octetString);
-        Assert.assertEquals(octetString.getOctets().length, 20);
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
+        Assertions.assertThrows(WrongPKIObjectException.class, () -> new CRLDP(extension));
 
     }
 

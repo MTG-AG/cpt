@@ -15,9 +15,9 @@ import java.util.List;
 import org.bouncycastle.asn1.ASN1Encoding;
 import org.bouncycastle.asn1.util.ASN1Dump;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +37,6 @@ public class SimpleCertificateListTest
     static
     {
         Security.addProvider(BC);
-
     }
 
     /**
@@ -46,10 +45,9 @@ public class SimpleCertificateListTest
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
-
         certificateCreator = CertificateCreator.getInstance();
     }
 
@@ -67,7 +65,7 @@ public class SimpleCertificateListTest
         SimpleCertificateList inCrl = SimpleCertificateList.getInstance(inCrlBytes);
 
         byte[] crlBytes = inCrl.getEncoded(ASN1Encoding.DER);
-        Assert.assertArrayEquals(inCrlBytes, crlBytes);
+        Assertions.assertArrayEquals(inCrlBytes, crlBytes);
 
         SimpleCertificateList outCrl = new SimpleCertificateList();
 
@@ -76,7 +74,7 @@ public class SimpleCertificateListTest
         outCrl.setSignatureValue(inCrl.getSignatureValue());
 
         byte[] outCrlBytes = outCrl.getEncoded(ASN1Encoding.DER);
-        Assert.assertArrayEquals(inCrlBytes, outCrlBytes);
+        Assertions.assertArrayEquals(inCrlBytes, outCrlBytes);
     }
 
     /**
@@ -93,7 +91,7 @@ public class SimpleCertificateListTest
         SimpleCertificateList inCrl = SimpleCertificateList.getInstance(inCrlBytes);
 
         byte[] crlBytes = inCrl.getEncoded(ASN1Encoding.DER);
-        Assert.assertArrayEquals(inCrlBytes, crlBytes);
+        Assertions.assertArrayEquals(inCrlBytes, crlBytes);
 
         // clone the CRL (has no common components)
         SimpleCertificateList newCrl = SimpleCertificateList.getInstance(inCrlBytes);
@@ -109,8 +107,8 @@ public class SimpleCertificateListTest
         logger.debug("CrlExtensions: {}", tbsCertList.getCrlExtensions());
 
         List<RevokedCertificate> revokedCerts = tbsCertList.getRevokedCertificates();
-        Assert.assertNotNull(revokedCerts);
-        Assert.assertFalse(revokedCerts.isEmpty());
+        Assertions.assertNotNull(revokedCerts);
+        Assertions.assertFalse(revokedCerts.isEmpty());
 
         RevokedCertificate revokedCert = revokedCerts.get(0);
 
@@ -128,7 +126,7 @@ public class SimpleCertificateListTest
         newCrl.setSignatureValue(new byte[0]);
 
         byte[] shortCrlBytes = newCrl.getEncoded(ASN1Encoding.DER);
-        Assert.assertTrue(shortCrlBytes.length < inCrlBytes.length);
+        Assertions.assertTrue(shortCrlBytes.length < inCrlBytes.length);
 
         String inCrlString = ASN1Dump.dumpAsString(inCrl, true);
         String newCrlString = ASN1Dump.dumpAsString(newCrl, true);

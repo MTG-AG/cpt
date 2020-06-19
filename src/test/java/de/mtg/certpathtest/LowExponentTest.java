@@ -17,10 +17,6 @@ import java.util.Random;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.Certificate;
 import de.mtg.certpathtest.pkiobjects.IssuerDN;
@@ -28,29 +24,29 @@ import de.mtg.certpathtest.pkiobjects.NotAfter;
 import de.mtg.certpathtest.pkiobjects.NotBefore;
 import de.mtg.certpathtest.pkiobjects.PublicKey;
 import de.mtg.certpathtest.pkiobjects.SubjectDN;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Units tests for the Low Exponent modification.
- *
  */
 public class LowExponentTest
 {
 
     /**
-     *
      * Prepares the environment before every test.
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
-    public void setUp() throws Exception
+    @BeforeAll
+    public static void setUp()
     {
         Security.addProvider(new BouncyCastleProvider());
     }
 
     /**
-     *
      * Tests whether the calculated signature from the tool matches a signature calculated by the provider. If this is
      * successful then the manipulated value is most probably calculated also correctly.
      *
@@ -150,24 +146,12 @@ public class LowExponentTest
             jcaSignature.initSign(rsaPrivateKey);
             jcaSignature.update(tbsCertificate);
             byte[] newSignature = jcaSignature.sign();
-            Assert.assertTrue(Arrays.equals(signature, newSignature));
+            Assertions.assertTrue(Arrays.equals(signature, newSignature));
 
             byte[] calculatedSignature = Utils.calculateBleichenbacherSignature(tbsCertificate, 0, d, n, oid);
 
-            Assert.assertTrue(Arrays.equals(calculatedSignature, newSignature));
+            Assertions.assertTrue(Arrays.equals(calculatedSignature, newSignature));
         }
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
 
     }
 

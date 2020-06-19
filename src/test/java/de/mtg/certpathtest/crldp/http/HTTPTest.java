@@ -1,10 +1,6 @@
 
 package de.mtg.certpathtest.crldp.http;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -25,19 +21,18 @@ import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.mtg.certpathtest.CertificateCreator;
 
 /**
- *
  * Tests basic functionality of the HTTP server like starting/stopping the server, starting /stopping the client and
  * writing a CRL.
- *
  */
 public class HTTPTest
 {
@@ -47,12 +42,11 @@ public class HTTPTest
     private static String workDirName = System.getProperty("java.io.tmpdir") + "/http-server-work";
 
     /**
-     *
      * Prepares the environment before every test.
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         Security.addProvider(new BouncyCastleProvider());
@@ -65,7 +59,6 @@ public class HTTPTest
     }
 
     /**
-     *
      * Tests basic functionality of the HTTP server like starting/stopping the server, starting /stopping the client and
      * writing a CRL.
      *
@@ -113,7 +106,7 @@ public class HTTPTest
             catch (Exception e)
             {
                 logger.error("Could not start HTTP server. Please check if another instance of the server is running.");
-                fail("Failed to start HTTP server.");
+                Assertions.fail("Failed to start HTTP server.");
             }
 
             httpClient = null;
@@ -125,22 +118,22 @@ public class HTTPTest
 
             byte[] readRawCrl = httpClient.GET(url).getContent();
 
-            assertNotNull(readRawCrl);
+            Assertions.assertNotNull(readRawCrl);
 
             InputStream is = new ByteArrayInputStream(readRawCrl);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             X509CRL readCrl = (X509CRL) cf.generateCRL(is);
             is.close();
 
-            assertNotNull(readCrl);
+            Assertions.assertNotNull(readCrl);
 
-            assertTrue(Arrays.equals(crl.getEncoded(), readRawCrl));
+            Assertions.assertTrue(Arrays.equals(crl.getEncoded(), readRawCrl));
 
         }
         catch (Exception e)
         {
             logger.error("", e);
-            fail("Error during starting/stopping HTTP server or/and connecting with the client.");
+            Assertions.fail("Error during starting/stopping HTTP server or/and connecting with the client.");
         }
         finally
         {
@@ -159,12 +152,11 @@ public class HTTPTest
     }
 
     /**
-     *
      * Performs any necessary cleaning after each test run.
      *
      * @throws Exception if any exception occurs.
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception
     {
         File workDir = new File(workDirName);

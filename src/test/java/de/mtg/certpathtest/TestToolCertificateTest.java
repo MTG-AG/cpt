@@ -53,10 +53,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.util.encoders.Base64;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.Certificate;
 import de.mtg.certpathtest.pkiobjects.Extension;
@@ -65,6 +61,10 @@ import de.mtg.certpathtest.pkiobjects.NotAfter;
 import de.mtg.certpathtest.pkiobjects.NotBefore;
 import de.mtg.certpathtest.pkiobjects.PublicKey;
 import de.mtg.certpathtest.pkiobjects.SubjectDN;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -80,8 +80,8 @@ public class TestToolCertificateTest
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
-    public void setUp() throws Exception
+    @BeforeAll
+    public static void setUp()
     {
         Security.addProvider(new BouncyCastleProvider());
     }
@@ -152,9 +152,9 @@ public class TestToolCertificateTest
         X509Certificate highLevelCertificate =
             new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getSignature(), highLevelCertificate.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getEncoded(), highLevelCertificate.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getSignature(), highLevelCertificate.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getEncoded(), highLevelCertificate.getEncoded()));
 
         highLevelCertificate.verify(certificateCreator.getRootCACertificate().getPublicKey());
         asn1Certificate.verify(certificateCreator.getRootCACertificate().getPublicKey());
@@ -168,7 +168,7 @@ public class TestToolCertificateTest
                  seq = (ASN1Sequence) asn1InputStream.readObject();
             }
 
-        Assert.assertTrue(Arrays.equals(name.getEncoded(), seq.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(name.getEncoded(), seq.getEncoded()));
 
     }
 
@@ -227,9 +227,9 @@ public class TestToolCertificateTest
         X509Certificate highLevelCertificate =
             new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getSignature(), highLevelCertificate.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getEncoded(), highLevelCertificate.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getSignature(), highLevelCertificate.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getEncoded(), highLevelCertificate.getEncoded()));
 
         highLevelCertificate.verify(asn1Certificate.getPublicKey());
         asn1Certificate.verify(asn1Certificate.getPublicKey());
@@ -303,7 +303,7 @@ public class TestToolCertificateTest
         highLevelCertificate.verify(certificateCreator.getSubCACertificate().getPublicKey());
         asn1Certificate.verify(certificateCreator.getSubCACertificate().getPublicKey());
 
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
 
     }
 
@@ -364,7 +364,7 @@ public class TestToolCertificateTest
         highLevelCertificate.verify(asn1Certificate.getPublicKey());
         asn1Certificate.verify(asn1Certificate.getPublicKey());
 
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
 
     }
 
@@ -743,24 +743,12 @@ public class TestToolCertificateTest
         X509Certificate highLevelCertificate =
             new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getSignature(), highLevelCertificate.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getEncoded(), highLevelCertificate.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getSignature(), highLevelCertificate.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getEncoded(), highLevelCertificate.getEncoded()));
 
         highLevelCertificate.verify(asn1Certificate.getPublicKey());
         asn1Certificate.verify(asn1Certificate.getPublicKey());
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
-
     }
 
 }

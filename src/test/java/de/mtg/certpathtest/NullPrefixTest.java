@@ -20,10 +20,6 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.Certificate;
 import de.mtg.certpathtest.pkiobjects.Extension;
@@ -32,29 +28,29 @@ import de.mtg.certpathtest.pkiobjects.NotAfter;
 import de.mtg.certpathtest.pkiobjects.NotBefore;
 import de.mtg.certpathtest.pkiobjects.PublicKey;
 import de.mtg.certpathtest.pkiobjects.SubjectDN;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Simple units tests to check functionality of the null-prefix attack.
- *
  */
 public class NullPrefixTest
 {
 
     /**
-     *
      * Prepares the environment before every test.
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
-    public void setUp() throws Exception
+    @BeforeAll
+    public static void setUp()
     {
         Security.addProvider(new BouncyCastleProvider());
     }
 
     /**
-     *
      * Tests whether the proper "Null" byte is present at the correct position and therefore render the attack possible.
      *
      * @throws Exception if any exception occurs.
@@ -87,11 +83,11 @@ public class NullPrefixTest
         String sanValue = "rfc822Name=" + rfc822Value + ",dNSName=" + dnsValue + ",iPAddress=" + ipValue + "";
 
         xmlCertificate.getExtensions().add(new Extension(
-                                                         sanValue,
-                                                             "2.5.29.17",
-                                                             "false",
-                                                             "Subject Alternative Name",
-                                                             "pretty"));
+                        sanValue,
+                        "2.5.29.17",
+                        "false",
+                        "Subject Alternative Name",
+                        "pretty"));
 
         TestToolCertificate technicalCertificate = new TestToolCertificate(xmlCertificate);
 
@@ -104,13 +100,13 @@ public class NullPrefixTest
         X500Name subject = new X500Name("CN=Test User, C=DE");
 
         X509v3CertificateBuilder certificateGenerator = new X509v3CertificateBuilder(
-                                                                                     issuer,
-                                                                                         new BigInteger("1234567678"),
-                                                                                         asn1Certificate.getNotBefore(),
-                                                                                         asn1Certificate.getNotAfter(),
-                                                                                         subject,
-                                                                                         SubjectPublicKeyInfo.getInstance(asn1Certificate.getPublicKey()
-                                                                                                                                         .getEncoded()));
+                        issuer,
+                        new BigInteger("1234567678"),
+                        asn1Certificate.getNotBefore(),
+                        asn1Certificate.getNotAfter(),
+                        subject,
+                        SubjectPublicKeyInfo.getInstance(asn1Certificate.getPublicKey()
+                                                                        .getEncoded()));
 
         // Subject Alternative Name
 
@@ -128,32 +124,20 @@ public class NullPrefixTest
         PrivateKey privateKey = ObjectCache.getInstance().getPrivateKey(id);
 
         ContentSigner signer =
-            new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC").build(privateKey);
+                        new JcaContentSignerBuilder("SHA256WithRSAEncryption").setProvider("BC").build(privateKey);
 
         X509CertificateHolder certHolder = certificateGenerator.build(signer);
         X509Certificate highLevelCertificate =
-            new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
+                        new JcaX509CertificateConverter().setProvider("BC").getCertificate(certHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getSignature(), highLevelCertificate.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1Certificate.getEncoded(), highLevelCertificate.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getTBSCertificate(), highLevelCertificate.getTBSCertificate()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getSignature(), highLevelCertificate.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1Certificate.getEncoded(), highLevelCertificate.getEncoded()));
 
         highLevelCertificate.verify(asn1Certificate.getPublicKey());
         asn1Certificate.verify(asn1Certificate.getPublicKey());
-        Assert.assertTrue(ByteArray.prettyPrint(asn1Certificate.getEncoded())
-                                   .indexOf("41 42 43 44 45 46 47 00 2E 48 49 4A") != -1);
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
+        Assertions.assertTrue(ByteArray.prettyPrint(asn1Certificate.getEncoded())
+                                       .indexOf("41 42 43 44 45 46 47 00 2E 48 49 4A") != -1);
 
     }
 

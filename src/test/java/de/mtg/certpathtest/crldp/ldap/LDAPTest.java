@@ -1,26 +1,20 @@
 
 package de.mtg.certpathtest.crldp.ldap;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.security.Security;
 
 import org.apache.directory.api.util.FileUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * Tests basic functionality of the HTTP server like starting/stopping the server, starting /stopping the client and
  * writing a CRL.
- *
  */
 public class LDAPTest
 {
@@ -30,12 +24,11 @@ public class LDAPTest
     private static String workDirName = System.getProperty("java.io.tmpdir") + "/ldap-server-work";
 
     /**
-     *
      * Prepares the environment before every test.
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         Security.addProvider(new BouncyCastleProvider());
@@ -48,14 +41,13 @@ public class LDAPTest
     }
 
     /**
-     *
      * Tests basic functionality about LDAP like starting/stopping the server, starting /stopping the client and writing
      * a CRL.
      *
      * @throws Exception if any exception occurs.
      */
     @Test
-    public void test() throws Exception
+    public void test()
     {
 
         try
@@ -79,7 +71,7 @@ public class LDAPTest
 
             LDAPClient client = new LDAPClient("localhost", "10389", rootDN, "uid=admin,ou=system", "secret");
 
-            assertNotNull(client);
+            Assertions.assertNotNull(client);
 
             client.publishCRL(dn, "1234".getBytes());
 
@@ -87,30 +79,18 @@ public class LDAPTest
 
             client.createLDIF(leaf, sb, rootDN);
 
-            assertTrue("Could not create LDIF for node.", sb.length() != 0);
+            Assertions.assertTrue(sb.length() != 0, "Could not create LDIF for node.");
 
-            assertTrue("Did not publish CRL on node.", sb.toString().indexOf("certificateRevocationList") != -1);
+            Assertions.assertTrue(sb.toString().indexOf("certificateRevocationList") != -1, "Did not publish CRL on node.");
 
             client.close();
-
 
         }
         catch (Exception e)
         {
             logger.error("", e);
-            fail("Error during starting/stopping LDAP server or/and connecting with the client.");
+            Assertions.fail("Error during starting/stopping LDAP server or/and connecting with the client.");
         }
     }
 
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
-
-    }
 }

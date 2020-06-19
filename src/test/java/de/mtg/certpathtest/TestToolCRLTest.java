@@ -52,10 +52,6 @@ import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.CRL;
 import de.mtg.certpathtest.pkiobjects.Extension;
@@ -64,6 +60,9 @@ import de.mtg.certpathtest.pkiobjects.NextUpdate;
 import de.mtg.certpathtest.pkiobjects.RevocationDate;
 import de.mtg.certpathtest.pkiobjects.RevokedCertificate;
 import de.mtg.certpathtest.pkiobjects.ThisUpdate;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -79,8 +78,8 @@ public class TestToolCRLTest
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
-    public void setUp() throws Exception
+    @BeforeAll
+    public static void setUp()
     {
         Security.addProvider(new BouncyCastleProvider());
     }
@@ -135,9 +134,9 @@ public class TestToolCRLTest
         X509CRLHolder crlHolder = crlBuilder.build(signer);
         X509CRL highLevelCRL = new JcaX509CRLConverter().setProvider("BC").getCRL(crlHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
 
         highLevelCRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
         asn1CRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
@@ -211,9 +210,9 @@ public class TestToolCRLTest
         X509CRLHolder crlHolder = crlBuilder.build(signer);
         X509CRL highLevelCRL = new JcaX509CRLConverter().setProvider("BC").getCRL(crlHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
 
         highLevelCRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
         asn1CRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
@@ -297,9 +296,9 @@ public class TestToolCRLTest
         X509CRLHolder crlHolder = crlBuilder.build(signer);
         X509CRL highLevelCRL = new JcaX509CRLConverter().setProvider("BC").getCRL(crlHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
 
         highLevelCRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
         asn1CRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
@@ -385,9 +384,9 @@ public class TestToolCRLTest
         X509CRLHolder crlHolder = crlBuilder.build(signer);
         X509CRL highLevelCRL = new JcaX509CRLConverter().setProvider("BC").getCRL(crlHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
 
         highLevelCRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
         asn1CRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
@@ -1003,26 +1002,14 @@ public class TestToolCRLTest
         X509CRLHolder crlHolder = crlBuilder.build(signer);
         X509CRL highLevelCRL = new JcaX509CRLConverter().setProvider("BC").getCRL(crlHolder);
 
-        Assert.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
-        Assert.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getTBSCertList(), highLevelCRL.getTBSCertList()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getSignature(), highLevelCRL.getSignature()));
+        Assertions.assertTrue(Arrays.equals(asn1CRL.getEncoded(), highLevelCRL.getEncoded()));
 
         highLevelCRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
         asn1CRL.verify(certificateCreator.getRootCACertificate().getPublicKey());
 
         objectCache.clear();
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
 
     }
 

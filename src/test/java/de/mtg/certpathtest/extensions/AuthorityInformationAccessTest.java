@@ -10,40 +10,22 @@ import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DLSequence;
 import org.bouncycastle.asn1.x509.GeneralName;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import de.mtg.certpathtest.pkiobjects.Extension;
 import de.mtg.certpathtest.pkiobjects.WrongPKIObjectException;
 import de.mtg.certpathtest.pkiobjects.extensions.AuthorityInformationAccess;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Unit tests for {@link de.mtg.certpathtest.pkiobjects.extensions.AuthorityInformationAccess}.
  *
  * @see de.mtg.certpathtest.pkiobjects.extensions.AuthorityInformationAccess AuthorityInformationAccess
- *
- *
  */
 public class AuthorityInformationAccessTest
 {
 
     /**
-     *
-     * Prepares the environment before every test.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @Before
-    public void setUp() throws Exception
-    {
-
-    }
-
-    /**
-     *
      * Tests whether this extension can be created correctly from a correct representation.
      *
      * @throws Exception if any exception occurs.
@@ -71,25 +53,24 @@ public class AuthorityInformationAccessTest
         ASN1ObjectIdentifier accessMethod = (ASN1ObjectIdentifier) accessDescription.getObjectAt(0);
         DERTaggedObject accessLocation = (DERTaggedObject) accessDescription.getObjectAt(1);
 
-        Assert.assertNotNull(accessDescription);
-        Assert.assertEquals(2, accessDescription.size());
-        Assert.assertEquals("1.3.6.1.5.5.7.48.1", accessMethod.getId());
-        Assert.assertEquals(GeneralName.uniformResourceIdentifier, accessLocation.getTagNo());
+        Assertions.assertNotNull(accessDescription);
+        Assertions.assertEquals(2, accessDescription.size());
+        Assertions.assertEquals("1.3.6.1.5.5.7.48.1", accessMethod.getId());
+        Assertions.assertEquals(GeneralName.uniformResourceIdentifier, accessLocation.getTagNo());
 
         DEROctetString name = (DEROctetString) accessLocation.getObject();
 
-        Assert.assertTrue(Arrays.equals("https://testurl.de".getBytes(), name.getOctets()));
+        Assertions.assertTrue(Arrays.equals("https://testurl.de".getBytes(), name.getOctets()));
 
     }
 
     /**
-     *
      * Tests whether this extension cannot be created from a wrong representation and a proper exception is thrown.
      *
      * @throws Exception if any exception occurs.
      */
-    @Test(expected = WrongPKIObjectException.class)
-    public void testIncorrect() throws Exception
+    @Test
+    public void testIncorrect()
     {
 
         Extension extension = new Extension();
@@ -98,19 +79,7 @@ public class AuthorityInformationAccessTest
         extension.setType("pretty");
         extension.setValue("");
 
-        new AuthorityInformationAccess(extension);
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
+        Assertions.assertThrows(WrongPKIObjectException.class, () -> new AuthorityInformationAccess(extension));
 
     }
 

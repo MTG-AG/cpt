@@ -1,20 +1,15 @@
 
 package de.mtg.certpathtest.validators;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import de.mtg.certpathtest.ValueValidator;
-import junit.framework.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- *
  * Unit tests for {@link de.mtg.certpathtest.validators.ConcreteValuesValidator}.
  *
  * @see de.mtg.certpathtest.validators.ConcreteValuesValidator ConcreteValuesValidator
- *
- *
  */
 public class ConcreteValuesValidatorTest
 {
@@ -22,19 +17,17 @@ public class ConcreteValuesValidatorTest
     private ValueValidator validator;
 
     /**
-     *
      * Prepares the environment before every test.
      *
      * @throws Exception if any exception occurs.
      */
-    @Before
-    public void setUp() throws Exception
+    @BeforeEach
+    public void setUp()
     {
         validator = new ConcreteValuesValidator();
     }
 
     /**
-     *
      * Tests the basic behaviour of the class under test.
      *
      * @throws Exception if any exception occurs.
@@ -46,27 +39,13 @@ public class ConcreteValuesValidatorTest
         validator = new ConcreteValuesValidator("TA", "TC");
 
         String test = "TA";
-        Assert.assertTrue(validator.validate(test));
+        Assertions.assertTrue(validator.validate(test));
 
         test = "TC";
-        Assert.assertTrue(validator.validate(test));
+        Assertions.assertTrue(validator.validate(test));
 
         test = "TA,TC";
-        Assert.assertTrue(!validator.validate(test));
-
-
-
-    }
-
-    /**
-     *
-     * Performs any necessary cleaning after each test run.
-     *
-     * @throws Exception if any exception occurs.
-     */
-    @After
-    public void tearDown() throws Exception
-    {
+        Assertions.assertTrue(!validator.validate(test));
 
     }
 
