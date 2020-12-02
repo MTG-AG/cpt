@@ -26,7 +26,7 @@
         <commons-lang3.version>3.10</commons-lang3.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <poi.version>4.1.2</poi.version>
-        <jetty.version>9.4.30.v20200611</jetty.version>
+        <jetty.version>9.4.35.v20201120</jetty.version>
         <apacheds-all.version>2.0.0-M24</apacheds-all.version>
 
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
